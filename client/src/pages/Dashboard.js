@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import {getArtists} from '../helpers/apihelpers.js'
+import {getArtists} from '../helpers/seatgeek-helpers/apihelpers.js/index.js'
 
 
 export default function Dashboard(props) {
