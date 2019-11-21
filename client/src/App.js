@@ -1,16 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 
-class App extends Component {
-  render() {
+export default function App(props) {
+
+  
     const App = () => (
       <div>
         <Switch>
-          <Route exact path='/' component={Login}/>
-          <Route path='/dashboard' component={Dashboard}/>
+          <Route exact path='/'>
+            <Login/>
+          </Route>
+          <Route path='/dashboard'>
+            <Dashboard/>
+          </Route>/>
         </Switch>
       </div>
     )
@@ -22,6 +27,5 @@ class App extends Component {
       </Router>
     );
   }
-}
 
-export default App;
+

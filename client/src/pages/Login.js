@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 
-class Login extends Component {
-  render() {
+export default function Login(props) {
     return (
     <div className="App">
       <h1>Login to Spotify</h1>
@@ -12,6 +11,4 @@ class Login extends Component {
         </a>
     </div>
     );
-  }
 }
-export default Login;

@@ -1,53 +1,46 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
 
-class Dashboard extends Component {
+export default function Dashboard(props) {
 
-  constructor(props){
-    super(props);
-    this.state = { }
-  }
+const [state, setState] = useState({})
 
+const getArtists = async(token, arr) => {
+  try {
 
-  getArtists = async (arr) => {
-    try {
+  let queryStrings = arr.map( artist => {
+    let split = artist.split(' ')
+    return split.join('%20')
+  })
 
-    let queryStrings = arr.map( artist => {
-      let split = artist.split(' ')
-      return split.join('%20')
+  let artists = {}
+  for (let each of queryStrings) {
+    let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist`, {
+      type: 'GET',
+      headers: {'Authorization': 'Bearer ' + token}
     })
-
-    let artists = {}
-    for (let each of queryStrings) {
-      let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist`, {
-        type: 'GET',
-        headers: {'Authorization': 'Bearer ' + this.state.token}
-      })
-      artists[each] = res.data.artists.items[0]
-    }
-    console.log(artists)
-    this.setState({...this.state, artists})
-
-  } catch (error) {
-  console.error(error)
-}
-}
-
-  componentDidMount() {
-    axios.get('/getUser')
-      .then(async res => {
-        this.setState(res.data)
-        this.getArtists(['Sum 41', 'Metallica', 'Red Hot Chili Peppers']);
-      })
+    artists[each] = res.data.artists.items[0]
   }
+  console.log(artists)
+  setState(state => ({...state, artists}))
 
-  render() {
+} catch (error) {
+console.error(error)
+}
+}
+
+useEffect(() => {
+  axios.get('/getUser')
+    .then(async res => {
+      setState(res.data)
+      getArtists(state.token, ['Sum 41', 'Metallica', 'Red Hot Chili Peppers'])
+    }).catch((e) => console.log('error:', e))
+}, [state.token])
+
     return (
     <div className="App">
-      Token: {this.state.token}
+      Token: {state.token}
     </div>
     );
   }
-}
-export default Dashboard;
