@@ -1,0 +1,27 @@
+{
+  "name": "LHLFinalProject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duncan-mann/LHLFinalProject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duncan-mann/LHLFinalProject/issues"
+  },
+  "homepage": "https://github.com/duncan-mann/LHLFinalProject#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "passport": "^0.4.0",
+    "passport-spotify": "^1.1.0"
+  }
+}
