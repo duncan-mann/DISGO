@@ -8,8 +8,8 @@ export default function SongListItem(props) {
   const [token, setToken] = useState(
     'XXX'
   );
-  const [deviceId, SetDeviceId] = useState(null);
-  const [currentPlayer, SetPlayer] = useState(null);
+  const [deviceId, setDeviceId] = useState(null);
+  const [currentPlayer, setPlayer] = useState(null);
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -17,7 +17,37 @@ export default function SongListItem(props) {
     script.async = true;
     script.src = "https://sdk.scdn.co/spotify-player.js";
     document.head.appendChild(script);
-  }, [])
+  }, []);
+  // initialize Spotify Web Playback SDK
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    console.log('script loaded');
+
+    const Spotify = window.Spotify;
+    const _token = token;
+    const player = new Spotify.Player({
+      name: 'JK Web Playback SDK Player',
+      getOAuthToken: callback => {
+        callback(_token);
+      }
+    });
+    // add player object to state
+    console.log(player);
+    setPlayer(player);
+    // error handling
+    player.addListener('initialization_error', ({ msg }) => {
+      console.error(msg);
+    });
+    player.addListener('authentication_error', ({ msg }) => {
+      console.error(msg);
+    });
+    player.addListener('account_error', ({ msg }) => {
+      console.error(msg);
+    });
+    player.addListener('playback_error', ({ msg }) => {
+      console.error(msg);
+    });
+
+  }
 
   return (
     <div className='SongListItem'>
