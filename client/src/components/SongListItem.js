@@ -83,7 +83,17 @@ export default function SongListItem(props) {
         ...prev,
         deviceId: device_id
       }));
-    })
+    });
+    // Not Ready
+    player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id);
+      setState(prev => ({
+        ...prev,
+        deviceId: null
+      }));
+    });
+    
+
   }
 
   return (
