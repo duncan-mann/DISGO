@@ -34,6 +34,7 @@ export const getSongs = async (token, artists) => {
   try {
     console.log
 
+    let songs = []
     for (let artist in artists) {
       if (artists[artist]) {
     let res = await axios(`https://api.spotify.com/v1/artists/${artists[artist].id}/top-tracks?country=from_token`, {
@@ -42,13 +43,12 @@ export const getSongs = async (token, artists) => {
     })
 
     if (res.data.tracks[0]) {
-    console.log(res.data.tracks[0].uri)
+    songs.push(res.data.tracks[0].uri)
     }
   }
-
-
   }
-
+  console.log('songs',songs)
+  return songs
 
   } catch (error) {
     console.error(error)

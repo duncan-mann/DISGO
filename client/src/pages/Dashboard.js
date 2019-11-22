@@ -31,8 +31,9 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     if (state.token && state.events && state.events !== {}) {
-      getArtists(state.token, state.events).then(artists => {
-        setState(prev => ({ ...prev, artists }));
+      getArtists(state.token, state.events)
+        .then(artists => {
+          setState(prev => ({ ...prev, artists }));
       });
     }
   }, [state.token, state.events]);
@@ -40,7 +41,16 @@ export default function Dashboard(props) {
   ///// TESTING HELPER /////
   getEventDetails(state.events);
 
-  getSongs(state.token, state.artists)
+
+  useEffect(() => {
+    if (state.token) {
+      getSongs(state.token, state.artists)
+        .then(songs => {
+          setState(prev => ({...prev, songs}))
+        })
+    }
+  }, [state.token, state.events, state.artists]);
+ 
 
 
   return (
