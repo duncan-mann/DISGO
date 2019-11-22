@@ -4,12 +4,17 @@ import './SongListItem.scss';
 export default function SongListItem(props) {
   
   // initialize state: Spotify Playback SDK (incorporate into master state later)
-  const [playing, setPlaying] = useState(false);
-  const [token, setToken] = useState(
-    'XXX'
-  );
-  const [deviceId, setDeviceId] = useState(null);
-  const [currentPlayer, setPlayer] = useState(null);
+  const [state, setState] = useState({
+    token: null,
+    deviceId: null,
+    currentPlayer: null,
+    position: 0,
+    duration: 0,
+    trackName: 'Track Name',
+    albumName: 'Artist Name',
+    artistName: 'Album Name',
+    playing: false
+  });
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -32,7 +37,10 @@ export default function SongListItem(props) {
     });
     // add player object to state
     console.log(player);
-    setPlayer(player);
+    setState(prev => ({
+      ...prev,
+      currentPlayer: player
+    }));
     // error handling
     player.addListener('initialization_error', ({ msg }) => {
       console.error(msg);
@@ -46,7 +54,28 @@ export default function SongListItem(props) {
     player.addListener('playback_error', ({ msg }) => {
       console.error(msg);
     });
-
+    // playback status updates
+    player.addListener('player_state_changed', state => {
+      console.log(state);
+      // commented out as the information is not being used
+      const { current_track, position, duration } = state.track_window;
+      const trackName = current_track.name;
+      const albumName = current_track.name;
+      const artistName = current_track.album.name
+        .map(artist => artist.name)
+        .join(', ');
+      const playing = !state.paused;
+      
+      setState(prev => ({
+        ...prev,
+        position,
+        duration,
+        trackName,
+        albumName,
+        artistName,
+        playing
+      }));
+    });
   }
 
   return (
