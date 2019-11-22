@@ -100,6 +100,11 @@ export default function SongListItem(props) {
     });
   };
 
+  // music player control functions
+  const handlePrev = () => {state.currentPlayer.previousTrack()};
+  const handleNext = () => {state.currentPlayer.nextTrack()};
+  const handleToggle = () => {state.currentPlayer.togglePlay()};
+
   return (
     <div className='SongListItem'>
       Hello World!
