@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'
-import { getArtists } from '../helpers/spotifyHelper'
-import { getPerformers } from '../helpers/seatGeekHelper'
-
-// import components
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { getArtists, getSongs } from "../helpers/spotifyHelper";
+import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
 import SongListItem from '../components/SongListItem';
 
-
 export default function Dashboard(props) {
+  const [state, setState] = useState({
+    user: {},
+    token: null,
+    artists: {},
+    events: {}
+  });
 
-  const [state, setState] = useState({ 
-      user: {}, 
-      token: null, 
-      artists: {}, 
-      events: []
-    });
-  
   useEffect(() => {
-    axios.get('/getUser')
+    axios
+      .get("/getUser")
       .then(async res => {
         setState(state => ({...state, ...res.data}));
       }).catch((e) => console.log('error:', e))
@@ -25,26 +22,34 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     if (state.token) {
-      getPerformers()
-        .then((events) => {
-          console.log('test', events);
-          setState(prev => ({ ...prev, events }))
-        })
+      getPerformers().then(events => {
+        console.log("test", events);
+        setState(prev => ({ ...prev, events }));
+      });
     }
-  }, [state.token])
+  }, [state.token]);
 
   useEffect(() => {
-    if (state.token && state.events && state.events.length > 0) {
+    if (state.token && state.events && state.events !== {}) {
       getArtists(state.token, state.events)
-        .then((artists) => {
-          setState(prev => ({ ...prev, artists }))
-        })
+        .then(artists => {
+          setState(prev => ({ ...prev, artists }));
+      });
     }
   }, [state.token, state.events]);
 
+
+  useEffect(() => {
+    if (state.token) {
+      getSongs(state.token, state.artists)
+        .then(songs => {
+          setState(prev => ({...prev, songs}))
+        })
+    }
+  }, [state.token, state.events, state.artists]);
+ 
   return (
     <div className="App">
-      Token: {state.token}
 
     <SongListItem
       token={state.token}
@@ -53,3 +58,14 @@ export default function Dashboard(props) {
     </div>
   );
 }
+
+
+
+
+
+
+  
+  
+    
+
+  
