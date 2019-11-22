@@ -6,7 +6,14 @@ import { getPerformers } from '../helpers/seatGeekHelper'
 
 export default function Dashboard(props) {
 
-  const [state, setState] = useState({ user: {}, token: null, artists: {}, events: [] })
+  const [state, setState] = useState({ 
+
+      user: {}, 
+      token: null, 
+      artists: {}, 
+      events: [] 
+      
+    })
 
 
 
@@ -27,15 +34,14 @@ export default function Dashboard(props) {
     }
   }, [state.token])
 
-  //   useEffect(() => {
-  //   axios.get('/getUser')
-  //     .then(async res => {
-  //       setState(res.data)
-  //       let artists = await getArtists(state.token, ['Sum 41', 'Metallica', 'Red Hot Chili Peppers'])
-
-  //       setState(prev => ({...prev, artists}))
-  //     }).catch((e) => console.log('error:', e))
-  // }, [state.token])
+  useEffect(() => {
+    if (state.token && state.events && state.events.length > 0) {
+      getArtists(state.token, state.events)
+        .then((artists) => {
+          setState(prev => ({ ...prev, artists }))
+        })
+    }
+  }, [state.token, state.events])
 
   return (
     <div className="App">
