@@ -1,35 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import {getArtists} from '../helpers/spotifyHelper'
+import { getArtists } from '../helpers/spotifyHelper'
 import { getPerformers } from '../helpers/seatGeekHelper'
 
 
 export default function Dashboard(props) {
 
-  const [state, setState] = useState({user : {}, token: null, artists: {}})
+  const [state, setState] = useState({ 
 
-// useEffect(() => {
-//   axios.get('/getUser')
-//     .then(async res => {
-//       setState(res.data)
-//       let artists = await getArtists(state.token, ['Sum 41', 'Metallica', 'Red Hot Chili Peppers'])
+      user: {}, 
+      token: null, 
+      artists: {}, 
+      events: [] 
+      
+    })
 
-//       setState(prev => ({...prev, artists}))
-//     }).catch((e) => console.log('error:', e))
-// }, [state.token])
+
 
   useEffect(() => {
     axios.get('/getUser')
-      .then( async res => {
+      .then(async res => {
         setState(res.data)
-        if (state.token) {
-          await getPerformers().then( async performers => {
-            let artists = await getArtists(state.token, performers)
-            setState(prev => ({...prev, artists}))
-          })
-        }
       }).catch((e) => console.log('error:', e))
+  }, [])
+
+  useEffect(() => {
+    if (state.token) {
+      getPerformers()
+        .then((events) => {
+          console.log('test', events);
+          setState(prev => ({ ...prev, events }))
+        })
+    }
   }, [state.token])
+
+  useEffect(() => {
+    if (state.token && state.events && state.events.length > 0) {
+      getArtists(state.token, state.events)
+        .then((artists) => {
+          setState(prev => ({ ...prev, artists }))
+        })
+    }
+  }, [state.token, state.events])
 
   return (
     <div className="App">
