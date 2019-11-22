@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SongListItem.scss';
 
 export default function SongListItem(props) {
-  
-  // initialize state: Spotify Playback SDK (incorporate into master state later)
-  const [state, setState] = useState({
-    token: null,
+  // initialize state for SongListItem
+  const [state, setState] = useState({ 
     deviceId: null,
-    currentPlayer: null,
     position: 0,
     duration: 0,
     trackName: 'Track Name',
@@ -15,7 +12,12 @@ export default function SongListItem(props) {
     artistName: 'Album Name',
     playing: false
   });
+  // for some reason i need to have this separate to have the music controls work
+  const [currentPlayer, setPlayer] = useState(null);
 
+  //////////////////////////////////////////////
+  ////////// SPOTIFY WEB PLAYBACK SDK //////////
+  //////////////////////////////////////////////
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
     const script = document.createElement('script');
@@ -28,40 +30,33 @@ export default function SongListItem(props) {
     console.log('script loaded');
 
     const Spotify = window.Spotify;
-    const _token = token;
+    const _token = props.token;
     const player = new Spotify.Player({
-      name: 'JK Web Playback SDK Player',
+      name: "Jim's Web Playback SDK Player",
       getOAuthToken: callback => {
         callback(_token);
       }
     });
     // add player object to state
     console.log(player);
-    setState(prev => ({
-      ...prev,
-      currentPlayer: player
-    }));
+    setPlayer(player);
+    // setState(prev => ({
+    //   ...prev,
+    //   currentPlayer: player
+    // }));
     // error handling
-    player.addListener('initialization_error', ({ msg }) => {
-      console.error(msg);
-    });
-    player.addListener('authentication_error', ({ msg }) => {
-      console.error(msg);
-    });
-    player.addListener('account_error', ({ msg }) => {
-      console.error(msg);
-    });
-    player.addListener('playback_error', ({ msg }) => {
-      console.error(msg);
-    });
+    player.addListener('initialization_error', ({ msg }) => console.error(msg));
+    player.addListener('authentication_error', ({ msg }) => console.error(msg));
+    player.addListener('account_error', ({ msg }) => console.error(msg));
+    player.addListener('playback_error', ({ msg }) => console.error(msg));
     // playback status updates
     player.addListener('player_state_changed', state => {
       console.log(state);
-      // commented out as the information is not being used
+
       const { current_track, position, duration } = state.track_window;
       const trackName = current_track.name;
-      const albumName = current_track.name;
-      const artistName = current_track.album.name
+      const albumName = current_track.album.name;
+      const artistName = current_track.artists
         .map(artist => artist.name)
         .join(', ');
       const playing = !state.paused;
@@ -102,12 +97,12 @@ export default function SongListItem(props) {
 
   // Play specific songs on app (device) by default
   useEffect(() => {
-
-    if (state.deviceId !== null) {
-      fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${device}`, {
+    
+    if (props.token && state.deviceId) {
+      fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
          method: "PUT",
          headers: {
-           authorization: `Bearer ${token}`,
+           authorization: `Bearer ${props.token}`,
            "Content-Type": "application/json"
          },
          body: JSON.stringify({
@@ -119,16 +114,15 @@ export default function SongListItem(props) {
          })
        });
     }
-  }, [state.token, state.deviceId]);
-
+  }, [state.deviceId]);
   // music player control functions
-  const handlePrev = () => {state.currentPlayer.previousTrack()};
-  const handleNext = () => {state.currentPlayer.nextTrack()};
-  const handleToggle = () => {state.currentPlayer.togglePlay()};
+  const handlePrev = () => {currentPlayer.previousTrack()};
+  const handleNext = () => {currentPlayer.nextTrack()};
+  const handleToggle = () => {currentPlayer.togglePlay()};
 
   return (
     <div className='SongListItem'>
-      <title>Music Player Controls</title>
+      <h1>Music Player Controls</h1>
       <p>
         <button onClick={handlePrev}>Previous</button>
         <button onClick={handleToggle}>{state.playing ? 'Pause' : 'Play'}</button>
