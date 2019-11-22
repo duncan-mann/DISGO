@@ -5,7 +5,6 @@ import axios from 'axios'
 export const getArtists = async (token, events) => {
     try {
 
-      console.log('Something')
       let queryStrings = []
 
       for(let artist in events) {
@@ -23,12 +22,38 @@ export const getArtists = async (token, events) => {
         let split = each.split('%20')
         artists[split.join(' ')] = res.data.artists.items[0]
       }
-
       return artists;
 
     } catch (error) {
     console.error(error)
   }
+}
+
+export const getSongs = async (token, artists) => {
+
+  try {
+    console.log
+
+    for (let artist in artists) {
+      if (artists[artist]) {
+    let res = await axios(`https://api.spotify.com/v1/artists/${artists[artist].id}/top-tracks?country=from_token`, {
+      type: 'GET',
+      headers: {'Authorization': 'Bearer ' + token}
+    })
+
+    if (res.data.tracks[0]) {
+    console.log(res.data.tracks[0].uri)
+    }
+  }
+
+
+  }
+
+
+  } catch (error) {
+    console.error(error)
+  }
+
 }
 
 

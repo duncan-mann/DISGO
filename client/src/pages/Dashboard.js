@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { getArtists } from '../helpers/spotifyHelper'
+import { getArtists, getSongs } from '../helpers/spotifyHelper'
 import { getPerformers } from '../helpers/seatGeekHelper'
 
 
@@ -41,6 +41,9 @@ export default function Dashboard(props) {
         })
     }
   }, [state.token, state.events])
+
+  getSongs(state.token, state.artists)
+
 
   return (
     <div className="App">
