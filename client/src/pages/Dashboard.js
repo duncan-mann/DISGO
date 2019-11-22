@@ -1,46 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'
-import { getArtists, getSongs } from '../helpers/spotifyHelper'
-import { getPerformers } from '../helpers/seatGeekHelper'
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { getArtists, getSongs } from "../helpers/spotifyHelper";
+import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
 
 export default function Dashboard(props) {
-
-  const [state, setState] = useState({ 
-
-      user: {}, 
-      token: null, 
-      artists: {}, 
-      events: {}
-      
-    })
-
+  const [state, setState] = useState({
+    user: {},
+    token: null,
+    artists: {},
+    events: {}
+  });
 
   useEffect(() => {
-    axios.get('/getUser')
+    axios
+      .get("/getUser")
       .then(async res => {
-        setState(res.data)
-      }).catch((e) => console.log('error:', e))
-  }, [])
+        setState(res.data);
+      })
+      .catch(e => console.log("error:", e));
+  }, []);
 
   useEffect(() => {
     if (state.token) {
-      getPerformers()
-        .then((events) => {
-          console.log('test', events);
-          setState(prev => ({ ...prev, events }))
-        })
+      getPerformers().then(events => {
+        console.log("test", events);
+        setState(prev => ({ ...prev, events }));
+      });
     }
-  }, [state.token])
+  }, [state.token]);
 
   useEffect(() => {
     if (state.token && state.events && state.events !== {}) {
-      getArtists(state.token, state.events)
-        .then((artists) => {
-          setState(prev => ({ ...prev, artists }))
-        })
+      getArtists(state.token, state.events).then(artists => {
+        setState(prev => ({ ...prev, artists }));
+      });
     }
-  }, [state.token, state.events])
+  }, [state.token, state.events]);
+
+  ///// TESTING HELPER /////
+  getEventDetails(state.events);
 
   getSongs(state.token, state.artists)
 
