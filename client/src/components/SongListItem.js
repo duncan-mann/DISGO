@@ -99,10 +99,9 @@ export default function SongListItem(props) {
       }
     });
   };
-  
-  // Play specific music on app (device) by default
+
+  // Play specific songs on app (device) by default
   useEffect(() => {
-    console.log('Beyonce will play on', state.deviceId);
 
     if (state.deviceId !== null) {
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${device}`, {
@@ -129,7 +128,12 @@ export default function SongListItem(props) {
 
   return (
     <div className='SongListItem'>
-      Hello World!
+      <title>Music Player Controls</title>
+      <p>
+        <button onClick={handlePrev}>Previous</button>
+        <button onClick={handleToggle}>{state.playing ? 'Pause' : 'Play'}</button>
+        <button onClick={handleNext}>Next</button>
+      </p>
       
     </div>
   );
