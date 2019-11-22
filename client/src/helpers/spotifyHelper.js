@@ -1,37 +1,29 @@
 
 import axios from 'axios'
 
-// array = [ 
-//   {
-//     artist: "Kanye West", 
-//     event_id: 1
-//   },
-//   {
-//     artist: "Drake", 
-//     event_id: 2
-//   },
-//   {
-//     artist: "Michael Jackson", 
-//     event_id: 3
-//   },
-// ]
 
-export const getArtists = async (token, arr) => {
+export const getArtists = async (token, events) => {
     try {
 
-      let queryStrings = arr.map( event => {
-        let split = event.artist.split(' ')
-        return split.join('%20')
-      })
+      console.log('Something')
+      let queryStrings = []
+
+      for(let artist in events) {
+        let split = artist.split(' ')
+        queryStrings.push(split.join('%20'))
+      }
 
       let artists = {}
+
       for (let each of queryStrings) {
         let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist`, {
           type: 'GET',
           headers: {'Authorization': 'Bearer ' + token}
         })
-        artists[each] = res.data.artists.items[0]
+        let split = each.split('%20')
+        artists[split.join(' ')] = res.data.artists.items[0]
       }
+
       return artists;
 
     } catch (error) {

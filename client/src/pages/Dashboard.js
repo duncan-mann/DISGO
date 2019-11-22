@@ -11,24 +11,10 @@ export default function Dashboard(props) {
       user: {}, 
       token: null, 
       artists: {}, 
-      events: [] 
+      events: {}
       
     })
 
-    const testEvents = [ 
-      {
-        artist: "Kanye West", 
-        event_id: 1
-      },
-      {
-        artist: "Drake", 
-        event_id: 2
-      },
-      {
-        artist: "Michael Jackson", 
-        event_id: 3
-      },
-    ]
 
   useEffect(() => {
     axios.get('/getUser')
@@ -48,8 +34,8 @@ export default function Dashboard(props) {
   }, [state.token])
 
   useEffect(() => {
-    if (state.token && state.events && state.events.length > 0) {
-      getArtists(state.token, testEvents)
+    if (state.token && state.events && state.events !== {}) {
+      getArtists(state.token, state.events)
         .then((artists) => {
           setState(prev => ({ ...prev, artists }))
         })
