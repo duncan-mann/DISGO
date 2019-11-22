@@ -11,10 +11,9 @@ export default function Dashboard(props) {
       user: {}, 
       token: null, 
       artists: {}, 
-      events: [] 
+      events: {}
       
     })
-
 
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export default function Dashboard(props) {
   }, [state.token])
 
   useEffect(() => {
-    if (state.token && state.events && state.events.length > 0) {
+    if (state.token && state.events && state.events !== {}) {
       getArtists(state.token, state.events)
         .then((artists) => {
           setState(prev => ({ ...prev, artists }))
