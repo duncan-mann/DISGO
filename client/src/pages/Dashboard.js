@@ -3,6 +3,9 @@ import axios from 'axios'
 import { getArtists } from '../helpers/spotifyHelper'
 import { getPerformers } from '../helpers/seatGeekHelper'
 
+// import components
+import SongListItem from '../components/SongListItem';
+
 
 export default function Dashboard(props) {
 
@@ -13,9 +16,7 @@ export default function Dashboard(props) {
       artists: {}, 
       events: [] 
       
-    })
-
-
+    });
 
   useEffect(() => {
     axios.get('/getUser')
@@ -46,6 +47,9 @@ export default function Dashboard(props) {
   return (
     <div className="App">
       Token: {state.token}
+
+    <SongListItem />
+    
     </div>
   );
 }
