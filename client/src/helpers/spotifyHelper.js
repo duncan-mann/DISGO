@@ -18,7 +18,6 @@ export const getArtists = async (token, arr) => {
         artists[each] = res.data.artists.items[0]
       }
       return artists;
-      // setState(state => ({...state, artists}))
 
     } catch (error) {
     console.error(error)
