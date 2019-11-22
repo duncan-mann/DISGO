@@ -1,11 +1,26 @@
 
 import axios from 'axios'
 
+// array = [ 
+//   {
+//     artist: "Kanye West", 
+//     event_id: 1
+//   },
+//   {
+//     artist: "Drake", 
+//     event_id: 2
+//   },
+//   {
+//     artist: "Michael Jackson", 
+//     event_id: 3
+//   },
+// ]
+
 export const getArtists = async (token, arr) => {
     try {
 
-      let queryStrings = arr.map( artist => {
-        let split = artist.split(' ')
+      let queryStrings = arr.map( event => {
+        let split = event.artist.split(' ')
         return split.join('%20')
       })
 
