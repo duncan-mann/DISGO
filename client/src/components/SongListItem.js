@@ -99,6 +99,28 @@ export default function SongListItem(props) {
       }
     });
   };
+  
+  // Play specific music on app (device) by default
+  useEffect(() => {
+    console.log('Beyonce will play on', state.deviceId);
+
+    if (state.deviceId !== null) {
+      fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${device}`, {
+         method: "PUT",
+         headers: {
+           authorization: `Bearer ${token}`,
+           "Content-Type": "application/json"
+         },
+         body: JSON.stringify({
+           uris: [
+             "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
+             "spotify:track:0TwBtDAWpkpM3srywFVOV5",
+             "spotify:track:2b8fOow8UzyDFAE27YhOZM"
+           ]
+         })
+       });
+    }
+  }, [state.token, state.deviceId]);
 
   // music player control functions
   const handlePrev = () => {state.currentPlayer.previousTrack()};
