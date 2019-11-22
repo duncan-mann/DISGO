@@ -23,5 +23,3 @@ useEffect(() => {
     </div>
     );
   }
-
-        // setState(state => ({...state, artists}))
