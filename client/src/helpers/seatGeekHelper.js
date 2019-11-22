@@ -3,7 +3,7 @@ import axios from "axios";
 export const getPerformers = () => {
   return axios
     .get(
-      `https://api.seatgeek.com/2/events?venue.city=toronto&datetime_utc.gte=2020-01-02T00:00:00&datetime_utc.lte=2020-03-02T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+      `https://api.seatgeek.com/2/events?venue.city=chicago&datetime_utc.gte=2020-02-01T00:00:00&datetime_utc.lte=2020-03-09T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
     )
     .then(res => {
       const allEvents = res.data.events;

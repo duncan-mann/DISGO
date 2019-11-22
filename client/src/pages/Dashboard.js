@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getArtists, getSongs } from "../helpers/spotifyHelper";
 import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
+import SongListItem from '../components/SongListItem';
 
 export default function Dashboard(props) {
   const [state, setState] = useState({
@@ -15,9 +16,8 @@ export default function Dashboard(props) {
     axios
       .get("/getUser")
       .then(async res => {
-        setState(res.data);
-      })
-      .catch(e => console.log("error:", e));
+        setState(state => ({...state, ...res.data}));
+      }).catch((e) => console.log('error:', e))
   }, []);
 
   useEffect(() => {
@@ -38,9 +38,6 @@ export default function Dashboard(props) {
     }
   }, [state.token, state.events]);
 
-  ///// TESTING HELPER /////
-  getEventDetails(state.events);
-
 
   useEffect(() => {
     if (state.token) {
@@ -51,11 +48,24 @@ export default function Dashboard(props) {
     }
   }, [state.token, state.events, state.artists]);
  
-
-
   return (
     <div className="App">
-      Token: {state.token}
+
+    <SongListItem
+      token={state.token}
+    />
+    
     </div>
-    );
-  }
+  );
+}
+
+
+
+
+
+
+  
+  
+    
+
+  
