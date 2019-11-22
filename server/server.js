@@ -64,7 +64,7 @@ console.log('App is listening on port 8888');
 app.get(
     '/auth/spotify',
     passport.authenticate('spotify', {
-      scope: ['user-read-email', 'user-read-private', 'streaming'],
+      scope: ['user-read-email', 'user-read-private', 'streaming', 'user-modify-playback-state'],
       showDialog: true
     }),
     function(req, res) {

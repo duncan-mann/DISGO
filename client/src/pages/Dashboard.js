@@ -23,24 +23,24 @@ export default function Dashboard(props) {
       }).catch((e) => console.log('error:', e))
   }, []);
 
-  // useEffect(() => {
-  //   if (state.token) {
-  //     getPerformers()
-  //       .then((events) => {
-  //         console.log('test', events);
-  //         setState(prev => ({ ...prev, events }))
-  //       })
-  //   }
-  // }, [state.token])
+  useEffect(() => {
+    if (state.token) {
+      getPerformers()
+        .then((events) => {
+          console.log('test', events);
+          setState(prev => ({ ...prev, events }))
+        })
+    }
+  }, [state.token])
 
-  // useEffect(() => {
-  //   if (state.token && state.events && state.events.length > 0) {
-  //     getArtists(state.token, state.events)
-  //       .then((artists) => {
-  //         setState(prev => ({ ...prev, artists }))
-  //       })
-  //   }
-  // }, [state.token, state.events]);
+  useEffect(() => {
+    if (state.token && state.events && state.events.length > 0) {
+      getArtists(state.token, state.events)
+        .then((artists) => {
+          setState(prev => ({ ...prev, artists }))
+        })
+    }
+  }, [state.token, state.events]);
 
   return (
     <div className="App">
