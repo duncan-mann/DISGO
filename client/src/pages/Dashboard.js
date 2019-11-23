@@ -1,8 +1,10 @@
-import React from "react"
+import React from "react";
 import './Dashboard.css';
 
+// import custom hooks
+import useDashboardData from "../hooks/useDashboardData";
 // import components
-import useDashboardData from "../hooks/useDashboardData" 
+import NavBar from '../components/NavBar';
 import MusicControls from '../components/MusicControls';
 
 export default function Dashboard(props) {
@@ -11,6 +13,8 @@ export default function Dashboard(props) {
 
   return (
     <div className="Dashboard">
+        <NavBar />
+        
         <MusicControls
         player={currentPlayer}
         playing={state.playing}

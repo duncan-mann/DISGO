@@ -169,11 +169,12 @@ export default function useDashboardData() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            uris: [
-              "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
-              "spotify:track:0TwBtDAWpkpM3srywFVOV5",
-              "spotify:track:2b8fOow8UzyDFAE27YhOZM"
-            ]
+            context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
+            // uris: [
+            //   "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
+            //   "spotify:track:0TwBtDAWpkpM3srywFVOV5",
+            //   "spotify:track:2b8fOow8UzyDFAE27YhOZM"
+            // ]
           })
         });
       }
