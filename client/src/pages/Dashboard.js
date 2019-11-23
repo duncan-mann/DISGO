@@ -1,60 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React from "react"
 import './Dashboard.css';
-import axios from "axios";
-import { getArtists, getSongs } from "../helpers/spotifyHelper";
-import { getPerformers } from "../helpers/seatGeekHelper";
 
 // import components
-import SpotifyPlayback from '../components/SpotifyPlayback';
+import useDashboardData from "../hooks/useDashboardData" 
+import MusicControls from '../components/MusicControls';
 
 export default function Dashboard(props) {
-  const [state, setState] = useState({
-    user: {},
-    token: null,
-    artists: {},
-    events: {}
-  });
 
-  useEffect(() => {
-    axios
-      .get("/getUser")
-      .then(async res => {
-        setState(state => ({...state, ...res.data}));
-      }).catch((e) => console.log('error:', e))
-  }, []);
+  const { state, currentPlayer, handleNext, handlePrev, handleToggle } = useDashboardData();
 
-  useEffect(() => {
-    if (state.token) {
-      getPerformers().then(events => {
-        console.log("test", events);
-        setState(prev => ({ ...prev, events }));
-      });
-    }
-  }, [state.token]);
-
-  useEffect(() => {
-    if (state.token && state.events && state.events !== {}) {
-      getArtists(state.token, state.events)
-        .then(artists => {
-          setState(prev => ({ ...prev, artists }));
-      });
-    }
-  }, [state.token, state.events]);
-
-
-  useEffect(() => {
-    if (state.token) {
-      getSongs(state.token, state.artists)
-        .then(songs => {
-          setState(prev => ({...prev, songs}))
-        })
-    }
-  }, [state.token, state.events, state.artists]);
- 
   return (
     <div className="Dashboard">
-      <SpotifyPlayback
-        token={state.token}
+        <MusicControls
+        player={currentPlayer}
+        playing={state.playing}
+        trackName={state.trackName}
+        albumName={state.albumName}
+        currentAlbumCover={state.currentAlbumCover}
+        prevAlbumCover={state.prevAlbumCover}
+        nextAlbumCover={state.nextAlbumCover}
+        artistName={state.artistName}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
+        handleToggle={handleToggle}
       />
     </div>
   );

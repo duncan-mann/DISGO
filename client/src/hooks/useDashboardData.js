@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import './SpotifyPlayback.css';
+import { useState, useEffect } from 'react';
+import axios from "axios";
+import { getArtists, getSongs } from "../helpers/spotifyHelper";
+import { getPerformers } from "../helpers/seatGeekHelper";
 
-// import components
-import MusicControls from './MusicControls';
+export default function useDashboardData() {
 
-export default function SpotifyPlayback(props) {
-  // initialize state for Spotify component
   const [state, setState] = useState({ 
+    user: {},
+    token: null,
+    artists: {},
+    events: {},
     deviceId: null,
     position: 0,
     duration: 0,
@@ -18,8 +21,44 @@ export default function SpotifyPlayback(props) {
     nextAlbumCover: null,
     playing: false
   });
-   // for some reason i need to have this separate to have the music controls work
-   const [currentPlayer, setPlayer] = useState(null);
+
+  const [currentPlayer, setPlayer] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get("/getUser")
+      .then(async res => {
+        setState(state => ({...state, ...res.data}));
+      }).catch((e) => console.log('error:', e))
+  }, []);
+
+  useEffect(() => {
+    if (state.token) {
+      getPerformers().then(events => {
+        console.log("test", events);
+        setState(prev => ({ ...prev, events }));
+      });
+    }
+  }, [state.token]);
+
+  useEffect(() => {
+    if (state.token && state.events && state.events !== {}) {
+      getArtists(state.token, state.events)
+        .then(artists => {
+          setState(prev => ({ ...prev, artists }));
+      });
+    }
+  }, [state.token, state.events]);
+
+
+  useEffect(() => {
+    if (state.token) {
+      getSongs(state.token, state.artists)
+        .then(songs => {
+          setState(prev => ({...prev, songs}))
+        })
+    }
+  }, [state.token, state.events, state.artists]);
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -28,12 +67,14 @@ export default function SpotifyPlayback(props) {
     script.src = "https://sdk.scdn.co/spotify-player.js";
     document.head.appendChild(script);
   }, []);
+  useEffect(() => {
+
    // initialize Spotify Web Playback SDK
-   window.onSpotifyWebPlaybackSDKReady = () => {
+    window.onSpotifyWebPlaybackSDKReady = () => {
     console.log('script loaded');
 
     const Spotify = window.Spotify;
-    const _token = props.token;
+    const _token = state.token;
     const player = new Spotify.Player({
       name: "Jim's Web Playback SDK Player",
       getOAuthToken: callback => {
@@ -52,6 +93,7 @@ export default function SpotifyPlayback(props) {
     player.addListener('authentication_error', ({ msg }) => console.error(msg));
     player.addListener('account_error', ({ msg }) => console.error(msg));
     player.addListener('playback_error', ({ msg }) => console.error(msg));
+    
     // playback status updates
     player.addListener('player_state_changed', state => {
       console.log(state);
@@ -114,25 +156,27 @@ export default function SpotifyPlayback(props) {
       }
     });
   };
+},[state.token])
+
   // Play specific songs on app (device) by default
   useEffect(() => {
     
-    if (props.token && state.deviceId) {
+    if (state.token && state.deviceId) {
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
-         method: "PUT",
-         headers: {
-           authorization: `Bearer ${props.token}`,
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify({
-           uris: [
-             "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
-             "spotify:track:0TwBtDAWpkpM3srywFVOV5",
-             "spotify:track:2b8fOow8UzyDFAE27YhOZM"
-           ]
-         })
-       });
-    }
+          method: "PUT",
+          headers: {
+            authorization: `Bearer ${state.token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            uris: [
+              "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
+              "spotify:track:0TwBtDAWpkpM3srywFVOV5",
+              "spotify:track:2b8fOow8UzyDFAE27YhOZM"
+            ]
+          })
+        });
+      }
   }, [state.deviceId]);
   
   // music player control functions
@@ -140,21 +184,6 @@ export default function SpotifyPlayback(props) {
   const handleNext = () => {currentPlayer.nextTrack()};
   const handleToggle = () => {currentPlayer.togglePlay()};
 
-  return (
-    <div className='SpotifyPlayback'>
-      <MusicControls
-        player={currentPlayer}
-        playing={state.playing}
-        trackName={state.trackName}
-        albumName={state.albumName}
-        currentAlbumCover={state.currentAlbumCover}
-        prevAlbumCover={state.prevAlbumCover}
-        nextAlbumCover={state.nextAlbumCover}
-        artistName={state.artistName}
-        handlePrev={handlePrev}
-        handleNext={handleNext}
-        handleToggle={handleToggle}
-      />
-    </div>
-  );
+  return {state, currentPlayer, handlePrev, handleNext, handleToggle}
 }
+
