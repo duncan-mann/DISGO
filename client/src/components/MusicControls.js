@@ -1,0 +1,19 @@
+import React from 'react';
+
+export default function MusicControls (props) {
+  
+  return(
+    <div className='MusicControls'>
+      <h1>Music Player Controls</h1>
+      <img src={props.albumCover} />
+      <p>Song Title: {props.trackName}</p>
+      <p>Artist Name: {props.artistName}</p>
+      <p>Album Name: {props.albumName}</p>
+      <p>
+        <button onClick={props.handlePrev}>Previous</button>
+        <button onClick={props.handleToggle}>{props.playing ? 'Pause' : 'Play'}</button>
+        <button onClick={props.handleNext}>Next</button>
+      </p>
+    </div>
+  );
+}

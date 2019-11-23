@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import './Dashboard.css';
 import axios from "axios";
 import { getArtists, getSongs } from "../helpers/spotifyHelper";
-import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
-import SongListItem from '../components/SongListItem';
+import { getPerformers } from "../helpers/seatGeekHelper";
+
+// import components
+import SpotifyPlayback from '../components/SpotifyPlayback';
 
 export default function Dashboard(props) {
   const [state, setState] = useState({
@@ -49,12 +52,10 @@ export default function Dashboard(props) {
   }, [state.token, state.events, state.artists]);
  
   return (
-    <div className="App">
-
-    <SongListItem
-      token={state.token}
-    />
-    
+    <div className="Dashboard">
+      <SpotifyPlayback
+        token={state.token}
+      />
     </div>
   );
 }
