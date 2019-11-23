@@ -13,7 +13,9 @@ export default function SpotifyPlayback(props) {
     trackName: 'Track Name',
     albumName: 'Artist Name',
     artistName: 'Album Name',
-    albumCover: null,
+    currentAlbumCover: null,
+    prevAlbumCover: null,
+    nextAlbumCover: null,
     playing: false
   });
    // for some reason i need to have this separate to have the music controls work
@@ -53,16 +55,31 @@ export default function SpotifyPlayback(props) {
     // playback status updates
     player.addListener('player_state_changed', state => {
       console.log(state);
-
-      const { current_track, position, duration } = state.track_window;
+      // extract information from current track
+      const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
       const trackName = current_track.name;
       const albumName = current_track.album.name;
       const artistName = current_track.artists
         .map(artist => artist.name)
         .join(', ');
-      const albumCover = current_track.album.images[0].url;
+      const currentAlbumCover = current_track.album.images[0].url;
       const playing = !state.paused;
-      
+      // extract information from previous, next tracks
+      if (previous_tracks && previous_tracks.length > 0) {
+        const prevAlbumCover = previous_tracks[0].album.images[0].url;
+        setState(prev => ({
+          ...prev,
+          prevAlbumCover
+        }));
+      }
+      if (next_tracks && next_tracks.length > 0) {
+        const nextAlbumCover = next_tracks[0].album.images[0].url;
+        setState(prev => ({
+          ...prev,
+          nextAlbumCover
+        }));
+      }
+
       setState(prev => ({
         ...prev,
         position,
@@ -71,7 +88,7 @@ export default function SpotifyPlayback(props) {
         albumName,
         artistName,
         playing,
-        albumCover
+        currentAlbumCover
       }));
     });
     // Ready
@@ -130,7 +147,9 @@ export default function SpotifyPlayback(props) {
         playing={state.playing}
         trackName={state.trackName}
         albumName={state.albumName}
-        albumCover={state.albumCover}
+        currentAlbumCover={state.currentAlbumCover}
+        prevAlbumCover={state.prevAlbumCover}
+        nextAlbumCover={state.nextAlbumCover}
         artistName={state.artistName}
         handlePrev={handlePrev}
         handleNext={handleNext}
