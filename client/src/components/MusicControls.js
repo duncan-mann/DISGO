@@ -1,8 +1,6 @@
 import React from 'react';
 
 export default function MusicControls (props) {
-  console.log(props.prevAlbumCover)
-  console.log(props.nextAlbumCover)
   
   return(
     <div className='MusicControls'>
