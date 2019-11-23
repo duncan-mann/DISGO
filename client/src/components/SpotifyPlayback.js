@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './SongListItem.scss';
+import './SpotifyPlayback.css';
 
-export default function SongListItem(props) {
-  // initialize state for SongListItem
+// import components
+import MusicControls from './MusicControls';
+
+export default function SpotifyPlayback(props) {
+  // initialize state for Spotify component
   const [state, setState] = useState({ 
     deviceId: null,
     position: 0,
@@ -10,14 +13,12 @@ export default function SongListItem(props) {
     trackName: 'Track Name',
     albumName: 'Artist Name',
     artistName: 'Album Name',
+    albumCover: null,
     playing: false
   });
-  // for some reason i need to have this separate to have the music controls work
-  const [currentPlayer, setPlayer] = useState(null);
+   // for some reason i need to have this separate to have the music controls work
+   const [currentPlayer, setPlayer] = useState(null);
 
-  //////////////////////////////////////////////
-  ////////// SPOTIFY WEB PLAYBACK SDK //////////
-  //////////////////////////////////////////////
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
     const script = document.createElement('script');
@@ -25,8 +26,8 @@ export default function SongListItem(props) {
     script.src = "https://sdk.scdn.co/spotify-player.js";
     document.head.appendChild(script);
   }, []);
-  // initialize Spotify Web Playback SDK
-  window.onSpotifyWebPlaybackSDKReady = () => {
+   // initialize Spotify Web Playback SDK
+   window.onSpotifyWebPlaybackSDKReady = () => {
     console.log('script loaded');
 
     const Spotify = window.Spotify;
@@ -59,6 +60,7 @@ export default function SongListItem(props) {
       const artistName = current_track.artists
         .map(artist => artist.name)
         .join(', ');
+      const albumCover = current_track.album.images[0].url;
       const playing = !state.paused;
       
       setState(prev => ({
@@ -68,7 +70,8 @@ export default function SongListItem(props) {
         trackName,
         albumName,
         artistName,
-        playing
+        playing,
+        albumCover
       }));
     });
     // Ready
@@ -94,7 +97,6 @@ export default function SongListItem(props) {
       }
     });
   };
-
   // Play specific songs on app (device) by default
   useEffect(() => {
     
@@ -115,20 +117,25 @@ export default function SongListItem(props) {
        });
     }
   }, [state.deviceId]);
+  
   // music player control functions
   const handlePrev = () => {currentPlayer.previousTrack()};
   const handleNext = () => {currentPlayer.nextTrack()};
   const handleToggle = () => {currentPlayer.togglePlay()};
 
   return (
-    <div className='SongListItem'>
-      <h1>Music Player Controls</h1>
-      <p>
-        <button onClick={handlePrev}>Previous</button>
-        <button onClick={handleToggle}>{state.playing ? 'Pause' : 'Play'}</button>
-        <button onClick={handleNext}>Next</button>
-      </p>
-      
+    <div className='SpotifyPlayback'>
+      <MusicControls
+        player={currentPlayer}
+        playing={state.playing}
+        trackName={state.trackName}
+        albumName={state.albumName}
+        albumCover={state.albumCover}
+        artistName={state.artistName}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
+        handleToggle={handleToggle}
+      />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 
 export default function App(props) {
-
   
     const App = () => (
       <div>
