@@ -1,7 +1,7 @@
 import React from 'react';
+import './MusicControls.css';
 
 export default function MusicControls (props) {
-  
   return(
     <div className='MusicControls'>
       <h1>Music Player Controls</h1>

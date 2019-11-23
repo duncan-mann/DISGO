@@ -13,9 +13,8 @@ export default function Dashboard(props) {
 
   return (
     <div className="Dashboard">
-        <NavBar />
-        
-        <MusicControls
+      <NavBar />
+      <MusicControls
         player={currentPlayer}
         playing={state.playing}
         trackName={state.trackName}
@@ -31,14 +30,3 @@ export default function Dashboard(props) {
     </div>
   );
 }
-
-
-
-
-
-
-  
-  
-    
-
-  
