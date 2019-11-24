@@ -160,7 +160,6 @@ export default function useDashboardData() {
 
   // Play specific songs on app (device) by default
   useEffect(() => {
-    
     if (state.token && state.deviceId) {
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
@@ -169,16 +168,16 @@ export default function useDashboardData() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            uris: [
-              "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
-              "spotify:track:0TwBtDAWpkpM3srywFVOV5",
-              "spotify:track:2b8fOow8UzyDFAE27YhOZM"
-            ]
+            context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
+            // uris: [
+            //   "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
+            //   "spotify:track:0TwBtDAWpkpM3srywFVOV5",
+            //   "spotify:track:2b8fOow8UzyDFAE27YhOZM"
+            // ]
           })
         });
       }
   }, [state.deviceId]);
-  
   // music player control functions
   const handlePrev = () => {currentPlayer.previousTrack()};
   const handleNext = () => {currentPlayer.nextTrack()};
