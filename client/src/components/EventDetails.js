@@ -1,17 +1,25 @@
 import React from 'react'
+import EventDetailItems from './EventDetailItems'
 
 export default function EventDetails(props) {
+  const event = props.event.map((event, index)=> {
+    return (
+      <EventDetailItems 
+        key={index}
+        // artist={state.artistName}
+        venue={event.venue.name}
+        address={event.venue.address}
+        date={event.datetime_local.split("T")[0]}
+        avgTicketPrice={event.stats.average_price}
+        url={event.url}
+      />
+    )}
+  )
 
   return (
-    <div>
-      <h2>This is the Event Details!</h2>
-        <ul>
-          <li>Venue: {props.venue}</li>
-          <li>Address: {props.address}</li>
-          <li>Date: {props.date}</li>
-          <li>Average Ticket Price: {props.avgTicketPrice}</li>
-          <a href={props.url}>Purchase Ticket</a>
-        </ul>
-    </div>
+    <ul>
+      {event}
+    </ul>
+    
   )
 }

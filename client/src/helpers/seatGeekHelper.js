@@ -8,17 +8,13 @@ export const getPerformers = () => {
     .then(res => {
       const allEvents = res.data.events;
       const events = {};
-      // console.log("Test", allEvents[20]);
       ////// performers ////////
       for (let event in allEvents) {
         let performer = allEvents[event].performers;
         for (let artist in performer) {
-          if (
-            !events[performer[artist].name] &&
-            performer[artist].name !== "TIFF Bell Lightbox"
-          ) {
+          if (!events[performer[artist].name]) {
             events[performer[artist].name] = [allEvents[event].id];
-          } else if (performer[artist].name !== "TIFF Bell Lightbox") {
+          } else {
             events[performer[artist].name].push(allEvents[event].id);
           }
         }
@@ -27,12 +23,12 @@ export const getPerformers = () => {
     });
 };
 
-export const getEventDetails = (eventArr) => {
+export const getEventDetails = (eventArr, currentArtist) => {
   if (eventArr !== {}) {
     let artistEvent = [];
     for (let artist in eventArr) {
-      if (artist === "Deadmau5") {
-        
+      if (artist === currentArtist) {
+        console.log("Check if artists match for getEventDetails ==>", artist, currentArtist)
         let events = eventArr[artist];
         for (let event in events) {
           axios
@@ -40,13 +36,12 @@ export const getEventDetails = (eventArr) => {
               `https://api.seatgeek.com/2/events/${events[event]}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
             )
             .then(res => {
-              if (res.data.stats.average_price === null) {
-                return;
-              } 
+              // if (res.data.stats.average_price === null) {
+              //   return;
+              // } 
               artistEvent.push(res.data);
             });
         }
-        console.log("Event detail for Deadmau5 ==>", artistEvent);
       }
     }
     return Promise.resolve(artistEvent);

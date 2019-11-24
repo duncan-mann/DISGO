@@ -14,9 +14,9 @@ export default function useDashboardData() {
     deviceId: null,
     position: 0,
     duration: 0,
-    trackName: 'Track Name',
-    albumName: 'Artist Name',
-    artistName: 'Album Name',
+    trackName: '',
+    albumName: '',
+    artistName: '',
     currentAlbumCover: null,
     prevAlbumCover: null,
     nextAlbumCover: null,
@@ -63,13 +63,13 @@ export default function useDashboardData() {
   }, [state.token, state.events, state.artists]);
 
   useEffect(() => {
-    if (state.events && state.events !== {}) {
-      getEventDetails(state.events) 
+    if (state.events && state.events !== {} && state.artistName) {
+      getEventDetails(state.events, state.artistName) 
       .then(event => {
         setState(prev => ({...prev, event}))
       })
     }
-  },[state.events]) 
+  },[state.artistName]) 
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -171,7 +171,6 @@ export default function useDashboardData() {
 
   // Play specific songs on app (device) by default
   useEffect(() => {
-    
     if (state.token && state.deviceId) {
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
@@ -180,16 +179,16 @@ export default function useDashboardData() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
+            // context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
             uris: [
-              "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
-              "spotify:track:0TwBtDAWpkpM3srywFVOV5",
+              "spotify:track:75qz22jgedx8v2M8iDsd8N",
+              "spotify:track:3ZXq1GzRdjcWpgcQwWuZvC",
               "spotify:track:2b8fOow8UzyDFAE27YhOZM"
             ]
           })
         });
       }
   }, [state.deviceId]);
-  
   // music player control functions
   const handlePrev = () => {currentPlayer.previousTrack()};
   const handleNext = () => {currentPlayer.nextTrack()};

@@ -1,32 +1,25 @@
-import React from "react"
+import React from "react";
 import './Dashboard.css';
 
+// import custom hooks
+import useDashboardData from "../hooks/useDashboardData";
 // import components
-import useDashboardData from "../hooks/useDashboardData" 
+import NavBar from '../components/NavBar';
 import MusicControls from '../components/MusicControls';
 import EventDetails from "../components/EventDetails";
 export default function Dashboard(props) {
 
   const { state, currentPlayer, handleNext, handlePrev, handleToggle } = useDashboardData();
 
-  console.log(state.event)
+
   return (
     <div className="Dashboard">
+      <NavBar />
       <div className="Events">
-        {state.event.map((event, index)=> (
-          <EventDetails 
-          key={index}
-          // artist={state.artistName}
-          venue={event.venue.name}
-          address={event.venue.address}
-          date={event.datetime_local.split("T")[0]}
-          avgTicketPrice={event.stats.average_price}
-          url={event.url}
-          />
-        ))}
-
+        <h2>This is the Event Details!</h2>
+        <EventDetails event={state.event} />
       </div>
-        <MusicControls
+      <MusicControls
         player={currentPlayer}
         playing={state.playing}
         trackName={state.trackName}
@@ -42,14 +35,3 @@ export default function Dashboard(props) {
     </div>
   );
 }
-
-
-
-
-
-
-  
-  
-    
-
-  
