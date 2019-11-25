@@ -106,7 +106,7 @@ export default function useDashboardData() {
         const trackName = current_track.name;
         const albumName = current_track.album.name;
         const artistName = current_track.artists
-          .map(artist => artist.name)[0]
+          .map(artist => artist.name)[0];
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !state.paused;
         // extract information from previous, next tracks
