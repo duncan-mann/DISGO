@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import { getArtists, getSongs } from "../helpers/spotifyHelper";
-import { getPerformers } from "../helpers/seatGeekHelper";
+import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
 
@@ -10,12 +10,13 @@ export default function useDashboardData() {
     token: null,
     artists: {},
     events: {},
+    event: [],
     deviceId: null,
     position: 0,
     duration: 0,
-    trackName: 'Track Name',
-    albumName: 'Artist Name',
-    artistName: 'Album Name',
+    trackName: '',
+    albumName: '',
+    artistName: '',
     currentAlbumCover: null,
     prevAlbumCover: null,
     nextAlbumCover: null,
@@ -34,7 +35,8 @@ export default function useDashboardData() {
 
   useEffect(() => {
     if (state.token) {
-      getPerformers().then(events => {
+      getPerformers()
+        .then(events => {
         console.log("test", events);
         setState(prev => ({ ...prev, events }));
       });
@@ -60,6 +62,15 @@ export default function useDashboardData() {
     }
   }, [state.token, state.events, state.artists]);
 
+  useEffect(() => {
+    if (state.events && state.events !== {} && state.artistName) {
+      getEventDetails(state.events, state.artistName) 
+      .then(event => {
+        setState(prev => ({...prev, event}))
+      })
+    }
+  },[state.artistName]) 
+
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
     const script = document.createElement('script');
@@ -67,6 +78,7 @@ export default function useDashboardData() {
     script.src = "https://sdk.scdn.co/spotify-player.js";
     document.head.appendChild(script);
   }, []);
+
   useEffect(() => {
 
    // initialize Spotify Web Playback SDK
@@ -98,8 +110,7 @@ export default function useDashboardData() {
       const trackName = current_track.name;
       const albumName = current_track.album.name;
       const artistName = current_track.artists
-        .map(artist => artist.name)
-        .join(', ');
+        .map(artist => artist.name)[0]
       const currentAlbumCover = current_track.album.images[0].url;
       const playing = !state.paused;
       // extract information from previous, next tracks
@@ -164,12 +175,12 @@ export default function useDashboardData() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
-            // uris: [
-            //   "spotify:track:7a9UUo3zfID7Ik2fTQjRLi",
-            //   "spotify:track:0TwBtDAWpkpM3srywFVOV5",
-            //   "spotify:track:2b8fOow8UzyDFAE27YhOZM"
-            // ]
+            // context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
+            uris: [
+              "spotify:track:75qz22jgedx8v2M8iDsd8N",
+              "spotify:track:3ZXq1GzRdjcWpgcQwWuZvC",
+              "spotify:track:2b8fOow8UzyDFAE27YhOZM"
+            ]
           })
         });
       }
