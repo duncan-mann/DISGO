@@ -21,11 +21,11 @@ export default function MusicControls (props) {
       <div className='MusicControls'>
         <SkipPreviousIcon onClick={props.handlePrev} fontSize='large' aria-label='previous' color='primary' />
         {props.playing
-        ? <PauseIcon onClick={props.handleToggle} fontSize='large' aria-label='Playing' color='primary' />
-        : <PlayArrowIcon onClick={props.handleToggle} fontSize='large' aria-label='Paused' color='primary' />
+          ? <PauseIcon onClick={props.handleToggle} fontSize='large' aria-label='Playing' color='primary' />
+          : <PlayArrowIcon onClick={props.handleToggle} fontSize='large' aria-label='Paused' color='primary' />
         }
         <SkipNextIcon onClick={props.handleNext} fontSize='large' aria-label='next' color='primary' />
-        <RepeatIcon onClick={props.handleRepeat('context')} aria-label='repeat' color='secondary' />
+        <RepeatIcon onClick={props.handleRepeat} fontSize='large' aria-label='repeat' color='primary' />
       </div>
     </div>
   );

@@ -32,33 +32,33 @@ export default function useDashboardData() {
       }).catch((e) => console.log('error:', e))
   }, []);
 
-  // useEffect(() => {
-  //   if (state.token) {
-  //     getPerformers().then(events => {
-  //       console.log("test", events);
-  //       setState(prev => ({ ...prev, events }));
-  //     });
-  //   }
-  // }, [state.token]);
+  useEffect(() => {
+    if (state.token) {
+      getPerformers().then(events => {
+        console.log("test", events);
+        setState(prev => ({ ...prev, events }));
+      });
+    }
+  }, [state.token]);
 
-  // useEffect(() => {
-  //   if (state.token && state.events && state.events !== {}) {
-  //     getArtists(state.token, state.events)
-  //       .then(artists => {
-  //         setState(prev => ({ ...prev, artists }));
-  //     });
-  //   }
-  // }, [state.token, state.events]);
+  useEffect(() => {
+    if (state.token && state.events && state.events !== {}) {
+      getArtists(state.token, state.events)
+        .then(artists => {
+          setState(prev => ({ ...prev, artists }));
+      });
+    }
+  }, [state.token, state.events]);
 
 
-  // useEffect(() => {
-  //   if (state.token) {
-  //     getSongs(state.token, state.artists)
-  //       .then(songs => {
-  //         setState(prev => ({...prev, songs}))
-  //       })
-  //   }
-  // }, [state.token, state.events, state.artists]);
+  useEffect(() => {
+    if (state.token) {
+      getSongs(state.token, state.artists)
+        .then(songs => {
+          setState(prev => ({...prev, songs}))
+        })
+    }
+  }, [state.token, state.events, state.artists]);
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -176,12 +176,12 @@ export default function useDashboardData() {
   }, [state.deviceId]);
 
   // Repeat user playback
- const repeatPlayback = (input) => {
+ const repeatPlayback = () => {
     // 'input' can be either a track, context, or off
     // track will repeat the current track
     // context will repeat the current context
     // off will turn repeat off
-    fetch(`https://api.spotify.com/v1/me/player/repeat?state=${input}`, {
+    fetch(`https://api.spotify.com/v1/me/player/repeat?state=context`, {
       method: "PUT",
       headers: {
         authorization: `Bearer ${state.token}`,
