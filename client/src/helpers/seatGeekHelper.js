@@ -38,7 +38,7 @@ export const getEventDetails = (eventArr, currentArtist) => {
             .then(res => {
               // if (res.data.stats.average_price === null) {
               //   return;
-              // } 
+              // }
               artistEvent.push(res.data);
             });
         }
@@ -46,5 +46,4 @@ export const getEventDetails = (eventArr, currentArtist) => {
     }
     return Promise.resolve(artistEvent);
   }
-  
 };
