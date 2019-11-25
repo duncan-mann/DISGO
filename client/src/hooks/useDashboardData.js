@@ -115,7 +115,7 @@ export default function useDashboardData() {
       const playing = !state.paused;
       // extract information from previous, next tracks
       if (previous_tracks && previous_tracks.length > 0) {
-        const prevAlbumCover = previous_tracks[0].album.images[0].url;
+        const prevAlbumCover = previous_tracks[1].album.images[0].url;
         setState(prev => ({
           ...prev,
           prevAlbumCover
@@ -167,7 +167,9 @@ export default function useDashboardData() {
 
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId) {
+    if (state.token && state.deviceId && state.songs && state.songs.songs.length > 0) {
+      let allSongs = state.songs.songs
+      console.log("THIS IS THE SONGSS", allSongs)
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
           headers: {
@@ -176,15 +178,11 @@ export default function useDashboardData() {
           },
           body: JSON.stringify({
             // context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
-            uris: [
-              "spotify:track:75qz22jgedx8v2M8iDsd8N",
-              "spotify:track:3ZXq1GzRdjcWpgcQwWuZvC",
-              "spotify:track:2b8fOow8UzyDFAE27YhOZM"
-            ]
+            uris: allSongs
           })
         });
       }
-  }, [state.deviceId]);
+  }, [state.deviceId , state.songs]);
 
   // Repeat user playback
  const repeatPlayback = () => {
