@@ -26,7 +26,7 @@ export default function Dashboard(props) {
         handlePrev={handlePrev}
         handleNext={handleNext}
         handleToggle={handleToggle}
-        repeatPlayback={repeatPlayback}
+        handleRepeat={repeatPlayback}
       />
     </div>
   );

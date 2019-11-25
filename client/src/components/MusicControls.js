@@ -1,4 +1,6 @@
 import React from 'react';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import RepeatIcon from '@material-ui/icons/Repeat';
 
 export default function MusicControls (props) {
   return(
@@ -15,7 +17,9 @@ export default function MusicControls (props) {
       <p>
         <button onClick={props.handlePrev}>Previous</button>
         <button onClick={props.handleToggle}>{props.playing ? 'Pause' : 'Play'}</button>
-        <button onClick={props.handleNext}>Next</button>
+        <SkipNextIcon onClick={props.handleNext} fontSize='large' aria-label='next' color='primary'>Next</SkipNextIcon>
+        {/* <button onClick={props.handleNext}>Next</button> */}
+        <RepeatIcon onClick={props.handleRepeat('context')} aria-label='repeat' color='secondary' />
       </p>
     </div>
   );
