@@ -1,10 +1,15 @@
 import React from 'react';
 
+// import components
+
+// import material-ui components
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import RepeatIcon from '@material-ui/icons/Repeat';
+import RepeatOneIcon from '@material-ui/icons/RepeatOne';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 
 export default function MusicControls (props) {
   return(
@@ -25,7 +30,9 @@ export default function MusicControls (props) {
           : <PlayArrowIcon onClick={props.handleToggle} fontSize='large' aria-label='Paused' color='primary' />
         }
         <SkipNextIcon onClick={props.handleNext} fontSize='large' aria-label='next' color='primary' />
-        <RepeatIcon onClick={props.handleRepeat} fontSize='large' aria-label='repeat' color='primary' />
+        <RepeatIcon onClick={props.handleRepeat} fontSize='large' aria-label='repeat' color='secondary' />
+        <RepeatOneIcon fontSize='large' aria-label='repeatOne' color='secondary' />
+        <PlaylistAddIcon fontSize='large' aria-label='export-playlist' color='secondary'/>
       </div>
     </div>
   );
