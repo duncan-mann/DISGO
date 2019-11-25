@@ -1,4 +1,5 @@
 import axios from "axios";
+import { object } from "prop-types";
 
 export const getPerformers = () => {
   return axios
@@ -27,13 +28,19 @@ export const getEventDetails = (eventArr, currentArtist) => {
   if (eventArr !== {}) {
     let artistEvent = [];
     for (let artist in eventArr) {
-      if (artist === currentArtist) {
-        console.log("Check if artists match for getEventDetails ==>", artist, currentArtist)
+      if (currentArtist.length > 0 && currentArtist.includes(artist)) {
+        console.log("array of artists", currentArtist, "current artist", artist)
+      // console.log("SEATGEEK , SPOTIFY", artist, currentArtist)
+      // console.log("This is the current artist name from spotify", artist)
+      // console.log("Array of keys", Object.keys(currentArtist), "This is the artist =====>", artist)
+
+        // console.log("Check if artists match for getEventDetails ==>", artist, currentArtist)
         let events = eventArr[artist];
-        for (let event in events) {
+        // console.log("This is the event id for current artist",events)
+        for (let event of events) {
           axios
             .get(
-              `https://api.seatgeek.com/2/events/${events[event]}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
             )
             .then(res => {
               // if (res.data.stats.average_price === null) {
@@ -41,7 +48,7 @@ export const getEventDetails = (eventArr, currentArtist) => {
               // } 
               artistEvent.push(res.data);
             });
-        }
+        } 
       }
     }
     return Promise.resolve(artistEvent);

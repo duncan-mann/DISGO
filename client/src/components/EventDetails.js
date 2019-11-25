@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import EventDetailItems from './EventDetailItems'
 
 export default function EventDetails(props) {
-  const event = props.event.map((event, index)=> {
+
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    if(props.event) {
+      setEvents(props.event)
+    }
+  },[props.event])
+
+  console.log("THIS IS PROPS.EVENTS =========>", props.event)
+
+  const event = events.map((event, index)=> {
+    
+    console.log("THIS IS THE EVENT PROP", event)
     return (
       <EventDetailItems 
         key={index}

@@ -62,14 +62,18 @@ export default function useDashboardData() {
     }
   }, [state.token, state.events, state.artists]);
 
+  // fetch event details for all artists
   useEffect(() => {
-    if (state.events && state.events !== {} && state.artistName) {
+    if (state.events && state.events !== {} && state.artists !== {}) {
+      // console.log("This is the artist state", state.artists)
+      // console.log("This is the event state", state.events)
       getEventDetails(state.events, state.artistName) 
       .then(event => {
+        console.log("THIS IS THE ARTIST EVENT DETAILS", event)
         setState(prev => ({...prev, event}))
       })
     }
-  },[state.artistName]) 
+  },[state.artistName, state.currentPlayer]) 
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -80,7 +84,6 @@ export default function useDashboardData() {
   }, []);
 
   useEffect(() => {
-
    // initialize Spotify Web Playback SDK
     window.onSpotifyWebPlaybackSDKReady = () => {
     console.log('script loaded');
@@ -94,7 +97,7 @@ export default function useDashboardData() {
       }
     });
     // add player object to state
-    console.log(player);
+    // console.log(player);
     setPlayer(player);
 
     player.addListener('initialization_error', ({ msg }) => console.error(msg));
@@ -104,13 +107,16 @@ export default function useDashboardData() {
 
     // playback status updates
     player.addListener('player_state_changed', state => {
-      console.log(state);
+      // console.log("This is the state", state);
       // extract information from current track
       const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
       const trackName = current_track.name;
       const albumName = current_track.album.name;
+      let allArtist;
       const artistName = current_track.artists
-        .map(artist => artist.name)[0]
+      // console.log(artistName)
+        .map(artist => artist.name)
+        // console.log(artistName)
       const currentAlbumCover = current_track.album.images[0].url;
       const playing = !state.paused;
       // extract information from previous, next tracks

@@ -17,7 +17,7 @@ export default function Dashboard(props) {
       <NavBar />
       <div className="Events">
         <h2>This is the Event Details!</h2>
-        <EventDetails event={state.event} />
+        <EventDetails event={state && state.event} />
       </div>
       <MusicControls
         player={currentPlayer}
