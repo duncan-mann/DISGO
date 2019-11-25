@@ -104,13 +104,13 @@ export default function useDashboardData() {
 
     // playback status updates
     player.addListener('player_state_changed', state => {
-      console.log(state);
       // extract information from current track
       const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
       const trackName = current_track.name;
       const albumName = current_track.album.name;
       const artistName = current_track.artists
         .map(artist => artist.name)[0]
+
       const currentAlbumCover = current_track.album.images[0].url;
       const playing = !state.paused;
       // extract information from previous, next tracks

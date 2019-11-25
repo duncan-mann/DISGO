@@ -1,23 +1,28 @@
 import React from "react";
 import './Dashboard.css';
 
+
 // import custom hooks
 import useDashboardData from "../hooks/useDashboardData";
 // import components
 import NavBar from '../components/NavBar';
 import MusicControls from '../components/MusicControls';
 import EventDetails from "../components/EventDetails";
+
+
 export default function Dashboard(props) {
 
   const { state, currentPlayer, handleNext, handlePrev, handleToggle, repeatPlayback } = useDashboardData();
 
 
   return (
-    <div className="Dashboard">
+    <div>
       <NavBar />
       <div className="Events">
-        <h2>This is the Event Details!</h2>
-        <EventDetails event={state.event} />
+        <EventDetails 
+        event={state.event} 
+        artistName={state.artistName}
+        />
       </div>
       <MusicControls
         player={currentPlayer}
