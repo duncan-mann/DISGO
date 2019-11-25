@@ -7,6 +7,7 @@ import useDashboardData from "../hooks/useDashboardData";
 import NavBar from '../components/NavBar';
 import MusicControls from '../components/MusicControls';
 import EventDetails from "../components/EventDetails";
+import Filter from '../components/Filter';
 
 export default function Dashboard(props) {
 
@@ -19,6 +20,9 @@ export default function Dashboard(props) {
         <h2>This is the Event Details!</h2>
         <EventDetails event={state.event} />
       </div>
+      <Filter
+        songsByGenre={state.songs && state.songs.songs_by_genre}
+      />
       <MusicControls
         player={currentPlayer}
         playing={state.playing}

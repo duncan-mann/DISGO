@@ -85,7 +85,7 @@ export default function useDashboardData() {
       const Spotify = window.Spotify;
       const _token = state.token;
       const player = new Spotify.Player({
-        name: "Jim's Web Playback SDK Player",
+        name: "Discover App",
         getOAuthToken: callback => {
           callback(_token);
         }
