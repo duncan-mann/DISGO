@@ -96,16 +96,12 @@ export default function useDashboardData() {
     // add player object to state
     console.log(player);
     setPlayer(player);
-    // setState(prev => ({
-    //   ...prev,
-    //   currentPlayer: player
-    // }));
-    // error handling
+
     player.addListener('initialization_error', ({ msg }) => console.error(msg));
     player.addListener('authentication_error', ({ msg }) => console.error(msg));
     player.addListener('account_error', ({ msg }) => console.error(msg));
     player.addListener('playback_error', ({ msg }) => console.error(msg));
-    
+
     // playback status updates
     player.addListener('player_state_changed', state => {
       console.log(state);
@@ -189,11 +185,27 @@ export default function useDashboardData() {
         });
       }
   }, [state.deviceId]);
+
+  // Repeat user playback
+ const repeatPlayback = () => {
+    // 'input' can be either a track, context, or off
+    // track will repeat the current track
+    // context will repeat the current context
+    // off will turn repeat off
+    fetch(`https://api.spotify.com/v1/me/player/repeat?state=context`, {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${state.token}`,
+        "Content-Type": "application/json"
+      }
+    })
+ };
+
   // music player control functions
   const handlePrev = () => {currentPlayer.previousTrack()};
   const handleNext = () => {currentPlayer.nextTrack()};
   const handleToggle = () => {currentPlayer.togglePlay()};
 
-  return {state, currentPlayer, handlePrev, handleNext, handleToggle}
+  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback}
 }
 
