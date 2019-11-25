@@ -9,7 +9,7 @@ import MusicControls from '../components/MusicControls';
 
 export default function Dashboard(props) {
 
-  const { state, currentPlayer, handleNext, handlePrev, handleToggle } = useDashboardData();
+  const { state, currentPlayer, handleNext, handlePrev, handleToggle, repeatPlayback } = useDashboardData();
 
   return (
     <div className="Dashboard">
@@ -26,6 +26,7 @@ export default function Dashboard(props) {
         handlePrev={handlePrev}
         handleNext={handleNext}
         handleToggle={handleToggle}
+        repeatPlayback={repeatPlayback}
       />
     </div>
   );
