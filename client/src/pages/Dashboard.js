@@ -7,14 +7,19 @@ import useDashboardData from "../hooks/useDashboardData";
 // import components
 import NavBar from '../components/NavBar';
 import MusicControls from '../components/MusicControls';
-
+import EventDetails from "../components/EventDetails";
 export default function Dashboard(props) {
 
-  const { state, currentPlayer, handleNext, handlePrev, handleToggle } = useDashboardData();
+  const { state, currentPlayer, handleNext, handlePrev, handleToggle, repeatPlayback } = useDashboardData();
+
 
   return (
     <div className="Dashboard">
       <NavBar />
+      <div className="Events">
+        <h2>This is the Event Details!</h2>
+        <EventDetails event={state.event} />
+      </div>
       <MusicControls
         player={currentPlayer}
         playing={state.playing}
@@ -27,6 +32,7 @@ export default function Dashboard(props) {
         handlePrev={handlePrev}
         handleNext={handleNext}
         handleToggle={handleToggle}
+        handleRepeat={repeatPlayback}
       />
     </div>
   );
