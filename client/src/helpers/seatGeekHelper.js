@@ -3,7 +3,7 @@ import axios from "axios";
 export const getPerformers = () => {
   return axios
     .get(
-      `https://api.seatgeek.com/2/events?venue.city=toronto&datetime_utc.gte=2019-12-01T00:00:00&datetime_utc.lte=2020-01-09T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+      `https://api.seatgeek.com/2/events?venue.city=toronto&datetime_utc.gte=2019-12-01T00:00:00&datetime_utc.lte=2019-12-07T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
     )
     .then(res => {
       const allEvents = res.data.events;
@@ -24,16 +24,26 @@ export const getPerformers = () => {
 };
 
 export const getEventDetails = (eventArr, currentArtist) => {
+  let artistEvent = [];
   if (eventArr !== {}) {
-    let artistEvent = [];
+    // currentArtist = currentArtist.join(",").toLowerCase().split(", ")
+    // console.log("THIS IS THE ARTIST JOIN", currentArtist)
     for (let artist in eventArr) {
-      if (artist === currentArtist) {
-        console.log("Check if artists match for getEventDetails ==>", artist, currentArtist)
+      
+      if (currentArtist.length > 0 && currentArtist.includes(artist.toLowerCase())) {
+        // console.log("ARtIST NAME LOWERCASE!! ==>", artist.toLowerCase())
+        // console.log("array of artists", currentArtist, "current artist", artist)
+      // console.log("SEATGEEK , SPOTIFY", artist, currentArtist)
+      // console.log("This is the current artist name from spotify", artist)
+      // console.log("Array of keys", Object.keys(currentArtist), "This is the artist =====>", artist)
+
+        // console.log("Check if artists match for getEventDetails ==>", artist, currentArtist)
         let events = eventArr[artist];
-        for (let event in events) {
+        // console.log("This is the event id for current artist",events)
+        for (let event of events) {
           axios
             .get(
-              `https://api.seatgeek.com/2/events/${events[event]}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
             )
             .then(res => {
               // if (res.data.stats.average_price === null) {
@@ -41,9 +51,9 @@ export const getEventDetails = (eventArr, currentArtist) => {
               // } 
               artistEvent.push(res.data);
             });
-        }
+        } 
       }
-    }
+    } 
     return Promise.resolve(artistEvent);
   }
   
