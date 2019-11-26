@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import FilterListItem from './FilterListItem';
 import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
 
 const useStyles = makeStyles(theme => ({
   filterList: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
+  title: {
+  }
 }));
 
 export default function Filter(props) {
@@ -15,17 +15,22 @@ export default function Filter(props) {
   const [genres, setGenre] = useState([]);
 
   useEffect(() => {
-    if (props.songsByGenre) {
-      const array = Object.keys(props.songsByGenre);
-      setGenre(array);
+    if (props.songs) {
+      const genreArray = Object.keys(props.songs.songs_by_genre);
+      setGenre(genreArray);
     }
-  }, [props.songsByGenre])
+  }, [props.songs]);
+
+  const filterByGenre = (arr) => {
+    console.log(arr);
+  }
 
   const list = genres.map((genre, index) => {
     return (
         <FilterListItem
           key={index}
           genreName={genre}
+          handleFilter={filterByGenre}
         />
     );
   });

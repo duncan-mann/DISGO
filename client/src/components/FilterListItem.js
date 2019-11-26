@@ -16,7 +16,7 @@ export default function FilterListItem(props) {
   const classes = useStyles();
 
   return (
-    <span className='FilterListItem'>
+    <span onClick={() => props.handleFilter(props.genreName)} className='FilterListItem'>
       <Fab
         variant="extended"
         size="medium"

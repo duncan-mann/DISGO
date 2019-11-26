@@ -21,7 +21,7 @@ export default function Dashboard(props) {
         <EventDetails event={state.event} />
       </div>
       <FilterList
-        songsByGenre={state.songs && state.songs.songs_by_genre}
+        songs={state.songs}
       />
       <MusicControls
         player={currentPlayer}

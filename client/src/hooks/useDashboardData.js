@@ -88,7 +88,8 @@ export default function useDashboardData() {
         name: "Discover App",
         getOAuthToken: callback => {
           callback(_token);
-        }
+        },
+        volume: 0.5
       });
       // add player object to state
       setPlayer(player);
@@ -100,7 +101,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener('player_state_changed', state => {
-        // console.log(state);
+        console.log(state);
         // extract information from current track
         const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
         const trackName = current_track.name;
@@ -173,9 +174,8 @@ export default function useDashboardData() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            uris: allSongs,
-            volume: 0.2
-          })
+            uris: allSongs
+        })
         });
       }
   }, [state.deviceId , state.songs]);
