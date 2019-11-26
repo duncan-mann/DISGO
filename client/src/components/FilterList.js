@@ -12,17 +12,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function Filter(props) {
   const classes = useStyles();
+  const [genres, setGenres] = useState([]);
 
+  useEffect(() => {
+    if (props.songs && props.songs !== {}) {
+      setGenres(Object.keys(props.songs.songs_by_genre));
+    }
+  }, [props.songs])
 
   const filterByGenre = (arr) => {
     console.log(arr);
   }
 
-  // const genreArray = props.songsByGenre;
-  // console.log(genreArray);
-  console.log(props.songs)
-
-  const list = props.songs.songs_by_genre.map((genre, index) => {
+  const list = genres.map((genre, index) => {
     return (
         <FilterListItem
           key={index}

@@ -19,25 +19,15 @@ export default function Dashboard(props) {
     handleToggle,
     repeatPlayback } = useDashboardData();
 
-  //  const [genres, setGenre] = useState([]);
-
-  // wait until state.songs is set before passing down as prop
-  // useEffect(() => {
-  //   if (state.songs && ) {
-  //     const genreArray = Object.keys(props.songs.songs_by_genre);
-  //     setGenre(genreArray);
-  //   }
-  // }, [state.songs]);
-
   return (
-    <div className="Dashboard">
+    <div>
       <NavBar />
       <div className="Events">
         <h2>This is the Event Details!</h2>
-        <EventDetails event={state.event} />
+        <EventDetails currentEvent={state.currentEvent[state.currentTrackUri]} />
       </div>
       <FilterList
-        songsByGenre={state.songs && state.songs.songs_by_genre}
+        songs={state.songs}
       />
       <MusicControls
         player={currentPlayer}
