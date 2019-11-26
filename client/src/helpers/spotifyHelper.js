@@ -13,7 +13,7 @@ export const getArtists = async (token, events) => {
     }
 
     let artists = {}
-
+    
     for (let each of queryStrings) {
       let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist`, {
         type: 'GET',
@@ -32,10 +32,11 @@ export const getArtists = async (token, events) => {
 export const getSongs = async (token, artists) => {
 
   try {
-
-    let songs = []
-    let all_genres = {}
-    let songs_by_genre = {
+    
+    const artistSong = {}
+    const songs = []
+    const all_genres = {}
+    const songs_by_genre = {
       rock: [],
       country: [],
       punk: [],
@@ -61,6 +62,8 @@ export const getSongs = async (token, artists) => {
 
         if (res.data.tracks[0]) {
           songs.push(res.data.tracks[0].uri)
+          // fetching artist id and song uri
+          artistSong[artists[artist].id] = res.data.tracks[0].uri
         }
 
         let artists_genres = artists[artist].genres.join()
@@ -81,7 +84,7 @@ export const getSongs = async (token, artists) => {
       }
 
     }
-    return { songs, songs_by_genre, all_genres }
+    return { songs, songs_by_genre, all_genres, artistSong }
 
   } catch (error) {
     console.error(error)
