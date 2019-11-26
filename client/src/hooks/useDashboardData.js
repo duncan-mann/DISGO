@@ -104,6 +104,7 @@ export default function useDashboardData() {
 
     // playback status updates
     player.addListener('player_state_changed', state => {
+      console.log(state);
       // extract information from current track
       const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
       const trackName = current_track.name;

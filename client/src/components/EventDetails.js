@@ -5,14 +5,19 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
  event: {
-  'margin-top': '5%',
-   textAlign: 'center',
+  'padding-top': '5%',
    color: 'white',
+   'text-align': 'center'
  },
  artist: {
   color: 'white',
-  width: '70%',
+  width: '60%',
+  margin: '0 auto',
+  display: 'inline-block',
   'border-bottom': '1px solid white'
+},
+details: {
+  display: 'inline-block'
 }
 }))
 
@@ -35,9 +40,9 @@ export default function EventDetails(props) {
   return (
     <div className={classes.event}>
     <h1 className={classes.artist}>{props.artistName}</h1>
-    <ul>
+    <div className={classes.details}>
       {event}
-    </ul>
+    </div>
     </div>
     
   )

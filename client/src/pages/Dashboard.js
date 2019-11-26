@@ -8,22 +8,28 @@ import useDashboardData from "../hooks/useDashboardData";
 import NavBar from '../components/NavBar';
 import MusicControls from '../components/MusicControls';
 import EventDetails from "../components/EventDetails";
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles(theme => ({
+  background : {
+    'background' : `linear-gradient(#212121 50%, #121212 90%)`,
+  }
+}))
 
 export default function Dashboard(props) {
 
   const { state, currentPlayer, handleNext, handlePrev, handleToggle, repeatPlayback } = useDashboardData();
-
+  const classes = useStyles();
 
   return (
     <div>
       <NavBar />
-      <div className="Events">
+      <div className={classes.background}>
         <EventDetails 
         event={state.event} 
         artistName={state.artistName}
         />
-      </div>
       <MusicControls
         player={currentPlayer}
         playing={state.playing}
@@ -37,7 +43,8 @@ export default function Dashboard(props) {
         handleNext={handleNext}
         handleToggle={handleToggle}
         handleRepeat={repeatPlayback}
-      />
+        />
+        </div>
     </div>
   );
 }
