@@ -263,6 +263,33 @@ useEffect(() => {
   }
 }, [state.nextTrackUri])
 
+/// fetch event details for prev 2 tracks from current track 
+useEffect(() => {
+  if(state.previousTrackUri) {
+    for (let prevTrack of state.previousTrackUri) {
+      if(!state.currentEvent[prevTrack]) {
+        const temp = {...state.currentEvent};
+        const eventDetails = [];
+        for (let event of state.songEvent[prevTrack]) {
+          axios
+            .get(
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+            )
+            .then(res => {
+              eventDetails.push(res.data);
+            });
+          }
+          temp[prevTrack] = eventDetails;
+
+        setState(prev => ({
+          ...prev,
+          currentEvent: temp
+        }))
+      }
+    }
+  }
+}, [state.previousTrackUri])
+
   // Play specific songs on app (device) by default
   useEffect(() => {
     if (state.token && state.deviceId && state.songs && state.songs.songs.length > 0) {
