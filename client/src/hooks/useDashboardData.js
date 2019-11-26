@@ -55,8 +55,6 @@ export default function useDashboardData() {
     }
   }, [state.token, state.events]);
 
-
-
 // fetch artist id with event ids
   useEffect(() => {
     if(state.artists && state.artists !== {}) {
@@ -70,24 +68,36 @@ export default function useDashboardData() {
       setState(prev =>({ ...prev, artistEvent }))
       // console.log("This is the artist event", artistEvent)
     }
-  }, [state.artists])
+  }, [state.artists]) 
 
-
-
-
-
-
-
-
-
+  // fetch artist id and song url
   useEffect(() => {
     if (state.token) {
       getSongs(state.token, state.artists)
-        .then(songs => {
-          setState(prev => ({...prev, songs}))
+        .then(res => {
+          const { songs, songs_by_genre, all_genres, artistSong } = res
+          setState(prev => ({...prev, songs: {songs, songs_by_genre, all_genres }}))
+          setState(prev => ({... prev, artistSong}))
         })
     }
   }, [state.token, state.events, state.artists]);
+
+// fetch song id and event id
+useEffect(() => {
+  const songEvent = {}
+  if (state.artistEvent !== {} && state.artistSong !== {}) {
+    for (let artistId in state.artistSong) {
+      if(state.artistSong[artistId] && state.artistEvent[artistId]) {
+        const uri = state.artistSong[artistId]
+        songEvent[uri] = state.artistEvent[artistId]
+      }
+    }
+    setState(prev => ({...prev, songEvent}))
+  }
+
+
+},[state.artistEvent, state.artistSong]) 
+
 
   // fetch event details for all artists
   useEffect(() => {
