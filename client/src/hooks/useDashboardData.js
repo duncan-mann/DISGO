@@ -20,8 +20,10 @@ export default function useDashboardData() {
     albumName: '',
     artistName: '',
     currentAlbumCover: null,
-    prevAlbumCover: null,
-    nextAlbumCover: null,
+    prevAlbumCover1: null,
+    prevAlbumCover2: null,
+    nextAlbumCover1: null,
+    nextAlbumCover2: null,
     playing: false,
     currentEvent: {},
     currentTrackUri: ""
@@ -141,17 +143,22 @@ useEffect(() => {
       const playing = !playerState.paused;
       // extract information from previous, next tracks
       if (previous_tracks && previous_tracks.length > 0) {
-        const prevAlbumCover = previous_tracks[1].album.images[0].url;
+        const prevAlbumCover1 = previous_tracks[1].album.images[0].url 
+        const prevAlbumCover2 = previous_tracks[0].album.images[0].url 
         setState(prev => ({
           ...prev,
-          prevAlbumCover
+          prevAlbumCover1,
+          prevAlbumCover2
         }));
       }
       if (next_tracks && next_tracks.length > 0) {
-        const nextAlbumCover = next_tracks[0].album.images[0].url;
+        const nextAlbumCover1 = next_tracks[0].album.images[0].url
+        const nextAlbumCover2 = next_tracks[1].album.images[0].url
+
         setState(prev => ({
           ...prev,
-          nextAlbumCover
+          nextAlbumCover1,
+          nextAlbumCover2
         }));
       }
 
