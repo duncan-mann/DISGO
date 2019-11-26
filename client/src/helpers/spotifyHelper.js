@@ -13,7 +13,7 @@ export const getArtists = async (token, events) => {
     }
 
     let artists = {}
-
+    
     for (let each of queryStrings) {
       let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist`, {
         type: 'GET',

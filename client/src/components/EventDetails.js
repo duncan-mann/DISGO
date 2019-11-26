@@ -1,38 +1,51 @@
 import React, { useState, useEffect } from 'react'
 import EventDetailItems from './EventDetailItems'
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles(theme => ({
+  event: {
+  'margin-top': '5%',
+    textAlign: 'center',
+    color: 'white',
+  },
+  artist: {
+  color: 'white',
+  width: '70%',
+  'border-bottom': '1px solid white'
+}
+}))
 
 export default function EventDetails(props) {
-
+  const classes = useStyles();
   const [events, setEvents] = useState([])
 
   useEffect(() => {
-    if(props.event) {
-      setEvents(props.event)
+    if(props.currentEvent) {
+      setEvents(props.currentEvent)
     }
-  },[props.event])
+  },[props.currentEvent])
 
-  console.log("THIS IS PROPS.EVENTS =========>", props.event)
-
-  const event = events.map((event, index)=> {
-    
-    console.log("THIS IS THE EVENT PROP", event)
+  const list = events.map((e, index)=> {
     return (
       <EventDetailItems 
         key={index}
-        // artist={state.artistName}
-        venue={event.venue.name}
-        address={event.venue.address}
-        date={event.datetime_local.split("T")[0]}
-        avgTicketPrice={event.stats.average_price}
-        url={event.url}
+        venue={e.venue.name}
+        address={e.venue.address}
+        date={e.datetime_local.split("T")[0]}
+        avgTicketPrice={e.stats.average_price}
+        url={e.url}
       />
     )}
   )
 
   return (
-    <ul>
-      {event}
-    </ul>
+    <div className={classes.event}>
+      {/* <h1 className={classes.artist}>{props.artistName}</h1> */}
+      <ul>
+        {list}
+      </ul>
+    </div>
     
   )
 }

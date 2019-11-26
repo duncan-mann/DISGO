@@ -4,7 +4,7 @@ import { object } from "prop-types";
 export const getPerformers = () => {
   return axios
     .get(
-      `https://api.seatgeek.com/2/events?venue.city=toronto&datetime_utc.gte=2019-12-01T00:00:00&datetime_utc.lte=2020-01-09T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+      `https://api.seatgeek.com/2/events?venue.city=toronto&datetime_utc.gte=2019-12-01T00:00:00&datetime_utc.lte=2019-12-15T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
     )
     .then(res => {
       const allEvents = res.data.events;
@@ -25,11 +25,15 @@ export const getPerformers = () => {
 };
 
 export const getEventDetails = (eventArr, currentArtist) => {
+  let artistEvent = [];
   if (eventArr !== {}) {
-    let artistEvent = [];
+    // currentArtist = currentArtist.join(",").toLowerCase().split(", ")
+    // console.log("THIS IS THE ARTIST JOIN", currentArtist)
     for (let artist in eventArr) {
-      if (currentArtist.length > 0 && currentArtist.includes(artist)) {
-        console.log("array of artists", currentArtist, "current artist", artist)
+      
+      if (currentArtist.length > 0 && currentArtist.includes(artist.toLowerCase())) {
+        // console.log("ARtIST NAME LOWERCASE!! ==>", artist.toLowerCase())
+        // console.log("array of artists", currentArtist, "current artist", artist)
       // console.log("SEATGEEK , SPOTIFY", artist, currentArtist)
       // console.log("This is the current artist name from spotify", artist)
       // console.log("Array of keys", Object.keys(currentArtist), "This is the artist =====>", artist)
@@ -50,7 +54,7 @@ export const getEventDetails = (eventArr, currentArtist) => {
             });
         } 
       }
-    }
+    } 
     return Promise.resolve(artistEvent);
   }
   

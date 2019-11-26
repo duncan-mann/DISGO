@@ -1,18 +1,22 @@
 import React from 'react'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  event: {
+    textAlign: 'center',
+    color: 'white'
+  }
+}))
 
 export default function EventDetailItems(props) {
-  console.log("PROP OF VENUE! ===>", props.venue)
-  console.log("PROP OF VENUE! ===>", props.address)
-  console.log("PROP OF VENUE! ===>", props.date)
-  console.log("PROP OF VENUE! ===>", props.avgTicketPrice)
-  console.log("PROP OF VENUE! ===>", props.url)
+  const classes = useStyles();
   return (
-    <li>
-      <p>Venue: {props.venue}</p>
-      <p>Address: {props.address}</p>
-      <p>Date: {props.date}</p>
+    <div>
+      <p>Playing at {props.venue} </p>
+      <p>Address: {props.address} </p>
+      <p>Date: {props.date} </p>
       <p>Average Ticket Price: {props.avgTicketPrice ? `$${props.avgTicketPrice}` : "SOLD OUT!"}</p>
       <a href={props.url}>Purchase Ticket</a>
-    </li>
+    </div>
   )
 }

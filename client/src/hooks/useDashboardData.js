@@ -11,6 +11,9 @@ export default function useDashboardData() {
     artists: {},
     events: {},
     event: [],
+    artistEvent: {},
+    artistSong: {},
+    songEvent: {},
     deviceId: null,
     position: 0,
     duration: 0,
@@ -37,7 +40,7 @@ export default function useDashboardData() {
     if (state.token) {
       getPerformers()
         .then(events => {
-        console.log("test", events);
+        // console.log("test", events);
         setState(prev => ({ ...prev, events }));
       });
     }
@@ -53,6 +56,30 @@ export default function useDashboardData() {
   }, [state.token, state.events]);
 
 
+
+// fetch artist id with event ids
+  useEffect(() => {
+    if(state.artists && state.artists !== {}) {
+      const artistEvent = {}
+      Object.keys(state.artists).map(artist => {
+        if(state.artists[artist]){
+
+          artistEvent[state.artists[artist].id] = state.events[artist]
+        }
+      })
+      setState(prev =>({ ...prev, artistEvent }))
+      // console.log("This is the artist event", artistEvent)
+    }
+  }, [state.artists])
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     if (state.token) {
       getSongs(state.token, state.artists)
@@ -64,16 +91,16 @@ export default function useDashboardData() {
 
   // fetch event details for all artists
   useEffect(() => {
-    if (state.events && state.events !== {} && state.artists !== {}) {
-      // console.log("This is the artist state", state.artists)
-      // console.log("This is the event state", state.events)
-      getEventDetails(state.events, state.artistName) 
+    if (state.events && state.events !== {} && state.artistName && state.artistName.length > 0) {
+  
+      const lowerArtistNames = state.artistName.join(",").toLowerCase().split(",");
+
+      getEventDetails(state.events, lowerArtistNames)
       .then(event => {
-        console.log("THIS IS THE ARTIST EVENT DETAILS", event)
         setState(prev => ({...prev, event}))
       })
     }
-  },[state.artistName, state.currentPlayer]) 
+  },[state.events, currentPlayer, state.artistName]);
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -86,7 +113,7 @@ export default function useDashboardData() {
   useEffect(() => {
    // initialize Spotify Web Playback SDK
     window.onSpotifyWebPlaybackSDKReady = () => {
-    console.log('script loaded');
+    // console.log('script loaded');
 
     const Spotify = window.Spotify;
     const _token = state.token;
@@ -112,11 +139,9 @@ export default function useDashboardData() {
       const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
       const trackName = current_track.name;
       const albumName = current_track.album.name;
-      let allArtist;
       const artistName = current_track.artists
-      // console.log(artistName)
         .map(artist => artist.name)
-        // console.log(artistName)
+  
       const currentAlbumCover = current_track.album.images[0].url;
       const playing = !state.paused;
       // extract information from previous, next tracks
@@ -148,7 +173,7 @@ export default function useDashboardData() {
     });
     // Ready
     player.addListener('ready', ({ device_id }) => {
-      console.log('Ready with Device ID', device_id);
+      // console.log('Ready with Device ID', device_id);
       setState(prev => ({
         ...prev,
         deviceId: device_id
@@ -156,7 +181,7 @@ export default function useDashboardData() {
     });
     // Not Ready
     player.addListener('not_ready', ({ device_id }) => {
-      console.log('Device ID has gone offline', device_id);
+      // console.log('Device ID has gone offline', device_id);
       setState(prev => ({
         ...prev,
         deviceId: null
@@ -165,7 +190,7 @@ export default function useDashboardData() {
     // Connect to the player!
     player.connect().then(success => {
       if (success) {
-        console.log('The Web Playback SDK successfully connected to Spotify!');
+        // console.log('The Web Playback SDK successfully connected to Spotify!');
       }
     });
   };
@@ -175,7 +200,7 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.token && state.deviceId && state.songs && state.songs.songs.length > 0) {
       let allSongs = state.songs.songs
-      console.log("THIS IS THE SONGSS", allSongs)
+      // console.log("THIS IS THE SONGSS", allSongs)
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
           headers: {
@@ -210,6 +235,6 @@ export default function useDashboardData() {
   const handleNext = () => {currentPlayer.nextTrack()};
   const handleToggle = () => {currentPlayer.togglePlay()};
 
-  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback}
+  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback }
 }
 
