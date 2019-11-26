@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './Dashboard.css';
 
 // import custom hooks
@@ -11,7 +11,23 @@ import FilterList from '../components/FilterList';
 
 export default function Dashboard(props) {
 
-  const { state, currentPlayer, handleNext, handlePrev, handleToggle, repeatPlayback } = useDashboardData();
+  const {
+    state,
+    currentPlayer,
+    handleNext,
+    handlePrev,
+    handleToggle,
+    repeatPlayback } = useDashboardData();
+
+  //  const [genres, setGenre] = useState([]);
+
+  // wait until state.songs is set before passing down as prop
+  // useEffect(() => {
+  //   if (state.songs && ) {
+  //     const genreArray = Object.keys(props.songs.songs_by_genre);
+  //     setGenre(genreArray);
+  //   }
+  // }, [state.songs]);
 
   return (
     <div className="Dashboard">
@@ -21,7 +37,7 @@ export default function Dashboard(props) {
         <EventDetails event={state.event} />
       </div>
       <FilterList
-        songs={state.songs}
+        songsByGenre={state.songs && state.songs.songs_by_genre}
       />
       <MusicControls
         player={currentPlayer}

@@ -11,6 +11,7 @@ export default function useDashboardData() {
     artists: {},
     events: {},
     event: [],
+    songs: {},
     deviceId: null,
     position: 0,
     duration: 0,
