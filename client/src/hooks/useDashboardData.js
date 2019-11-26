@@ -23,7 +23,9 @@ export default function useDashboardData() {
     currentAlbumCover: null,
     prevAlbumCover: null,
     nextAlbumCover: null,
-    playing: false
+    playing: false,
+    currentEvent: {},
+    currentTrackUri: ""
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -60,13 +62,11 @@ export default function useDashboardData() {
     if(state.artists && state.artists !== {}) {
       const artistEvent = {}
       Object.keys(state.artists).map(artist => {
-        if(state.artists[artist]){
-
+        if(state.artists[artist]){ 
           artistEvent[state.artists[artist].id] = state.events[artist]
         }
       })
       setState(prev =>({ ...prev, artistEvent }))
-      // console.log("This is the artist event", artistEvent)
     }
   }, [state.artists]) 
 
@@ -95,22 +95,28 @@ useEffect(() => {
     setState(prev => ({...prev, songEvent}))
   }
 
-
 },[state.artistEvent, state.artistSong]) 
 
 
   // fetch event details for all artists
-  useEffect(() => {
-    if (state.events && state.events !== {} && state.artistName && state.artistName.length > 0) {
-  
-      const lowerArtistNames = state.artistName.join(",").toLowerCase().split(",");
+  // const songEventDetails = [];
+    
+  //   for (let artist in eventArr) {
+      
+  //     if (currentArtist.length > 0 && currentArtist.includes(artist.toLowerCase())) 
+  //       let events = eventArr[artist];
+  //       for (let event of events) {
+  //         axios
+  //           .get(
+  //             `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+  //           )
+  //           .then(res => {
+  //             artistEvent.push(res.data);
+  //           });
+  //       } 
+  //     }
+  //   } 
 
-      getEventDetails(state.events, lowerArtistNames)
-      .then(event => {
-        setState(prev => ({...prev, event}))
-      })
-    }
-  },[state.events, currentPlayer, state.artistName]);
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -143,17 +149,17 @@ useEffect(() => {
     player.addListener('playback_error', ({ msg }) => console.error(msg));
 
     // playback status updates
-    player.addListener('player_state_changed', state => {
-      // console.log("This is the state", state);
+    player.addListener('player_state_changed', playerState => {
+      console.log("This is the state", playerState);
       // extract information from current track
-      const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
+      const { current_track, next_tracks, previous_tracks, position, duration } = playerState.track_window;
       const trackName = current_track.name;
       const albumName = current_track.album.name;
       const artistName = current_track.artists
         .map(artist => artist.name)
   
       const currentAlbumCover = current_track.album.images[0].url;
-      const playing = !state.paused;
+      const playing = !playerState.paused;
       // extract information from previous, next tracks
       if (previous_tracks && previous_tracks.length > 0) {
         const prevAlbumCover = previous_tracks[1].album.images[0].url;
@@ -180,6 +186,13 @@ useEffect(() => {
         playing,
         currentAlbumCover
       }));
+
+      //////////////////////////////////////////////////
+      const currentTrackUri = current_track.uri
+      // console.log(currentTrackUri)
+      setState(prev => ({...prev, currentTrackUri}))
+
+
     });
     // Ready
     player.addListener('ready', ({ device_id }) => {
@@ -206,11 +219,33 @@ useEffect(() => {
   };
 },[state.token])
 
+// fetch song uri with current artist event details
+useEffect(() => {
+  if(state.currentTrackUri) {
+    if (!state.currentEvent[state.currentTrackUri]) {
+        const temp = {...state.currentEvent};
+        for (let event of state.songEvent[state.currentTrackUri]) {
+          axios
+            .get(
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+            )
+            .then(res => {
+              temp[state.currentTrackUri] = res.data;
+            });
+        }
+
+        setState(prev => ({
+          ...prev,
+          currentEvent: temp
+        }))
+    }
+  }
+}, [state.currentTrackUri])
+
   // Play specific songs on app (device) by default
   useEffect(() => {
     if (state.token && state.deviceId && state.songs && state.songs.songs.length > 0) {
       let allSongs = state.songs.songs
-      // console.log("THIS IS THE SONGSS", allSongs)
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
           headers: {

@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MusicControls (props) {
   const classes = useStyles();
-  console.log(props.artistName)
+  // console.log(props.artistName)
   return(
     <div className={classes.MusicControls}>
       <div >
