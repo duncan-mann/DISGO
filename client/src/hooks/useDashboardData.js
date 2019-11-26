@@ -61,7 +61,7 @@ export default function useDashboardData() {
     if(state.artists && state.artists !== {}) {
       const artistEvent = {}
       Object.keys(state.artists).map(artist => {
-        if(state.artists[artist]){ 
+        if(state.artists[artist]) {
           artistEvent[state.artists[artist].id] = state.events[artist]
         }
       })
