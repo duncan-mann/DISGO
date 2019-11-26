@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MusicControls (props) {
   const classes = useStyles();
-
+  // console.log(props.artistName)
   return(
     <div className={classes.MusicControls}>
       <div >
@@ -46,15 +46,15 @@ export default function MusicControls (props) {
         <img className={classes.nextAlbum} src={props.nextAlbumCover} />
       </div>
       <p className={classes.song}>{props.trackName}</p>
-      <p className={classes.songInfo}>{props.artistName}</p>
+      <p className={classes.songInfo}>{props.artistName && props.artistName.join(", ")}</p>
       <div className='MusicControls'>
-        <SkipPreviousIcon onClick={props.handlePrev} fontSize='large' aria-label='previous' color='white' />
+        <SkipPreviousIcon onClick={props.handlePrev} fontSize='large' aria-label='previous' color="secondary" />
         {props.playing
-          ? <PauseIcon onClick={props.handleToggle} fontSize='large' aria-label='Playing' color='white' />
-          : <PlayArrowIcon onClick={props.handleToggle} fontSize='large' aria-label='Paused' color='white' />
+          ? <PauseIcon onClick={props.handleToggle} fontSize='large' aria-label='Playing' color="secondary" />
+          : <PlayArrowIcon onClick={props.handleToggle} fontSize='large' aria-label='Paused' color='secondary' />
         }
-        <SkipNextIcon onClick={props.handleNext} fontSize='large' aria-label='next' color='white' />
-        <RepeatIcon onClick={props.handleRepeat} fontSize='large' aria-label='repeat' color='white' />
+        <SkipNextIcon onClick={props.handleNext} fontSize='large' aria-label='next' color='secondary' />
+        <RepeatIcon onClick={props.handleRepeat} fontSize='large' aria-label='repeat' color='secondary' />
       </div>
     </div>
   );

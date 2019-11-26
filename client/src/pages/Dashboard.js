@@ -14,15 +14,12 @@ export default function Dashboard(props) {
 
   const { state, currentPlayer, handleNext, handlePrev, handleToggle, repeatPlayback } = useDashboardData();
 
-
   return (
     <div>
       <NavBar />
       <div className="Events">
-        <EventDetails 
-        event={state.event} 
-        artistName={state.artistName}
-        />
+        <h2>This is the Event Details!</h2>
+        <EventDetails currentEvent={state.currentEvent[state.currentTrackUri]} />
       </div>
       <MusicControls
         player={currentPlayer}
