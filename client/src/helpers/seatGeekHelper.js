@@ -29,7 +29,7 @@ export const getEventDetails = (eventArr, currentArtist) => {
     // currentArtist = currentArtist.join(",").toLowerCase().split(", ")
     // console.log("THIS IS THE ARTIST JOIN", currentArtist)
     for (let artist in eventArr) {
-      
+
       if (currentArtist.length > 0 && currentArtist.includes(artist.toLowerCase())) {
         // console.log("ARtIST NAME LOWERCASE!! ==>", artist.toLowerCase())
         // console.log("array of artists", currentArtist, "current artist", artist)
@@ -48,13 +48,12 @@ export const getEventDetails = (eventArr, currentArtist) => {
             .then(res => {
               // if (res.data.stats.average_price === null) {
               //   return;
-              // } 
+              // }
               artistEvent.push(res.data);
             });
-        } 
+        }
       }
-    } 
+    }
     return Promise.resolve(artistEvent);
   }
-  
 };

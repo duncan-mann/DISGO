@@ -5,7 +5,7 @@ import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
 
-  const [state, setState] = useState({ 
+  const [state, setState] = useState({
     user: {},
     token: null,
     artists: {},
@@ -20,8 +20,10 @@ export default function useDashboardData() {
     albumName: '',
     artistName: '',
     currentAlbumCover: null,
-    prevAlbumCover: null,
-    nextAlbumCover: null,
+    prevAlbumCover1: null,
+    prevAlbumCover2: null,
+    nextAlbumCover1: null,
+    nextAlbumCover2: null,
     playing: false,
     currentEvent: {},
     currentTrackUri: ""
@@ -29,6 +31,7 @@ export default function useDashboardData() {
 
   const [currentPlayer, setPlayer] = useState(null);
 
+  // obtain access token using Spotify authentication process
   useEffect(() => {
     axios
       .get("/getUser")
@@ -36,22 +39,21 @@ export default function useDashboardData() {
         setState(state => ({...state, ...res.data}));
       }).catch((e) => console.log('error:', e))
   }, []);
-
+  // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
       getPerformers()
         .then(events => {
-        // console.log("test", events);
         setState(prev => ({ ...prev, events }));
       });
     }
   }, [state.token]);
-
+  // Spotify API call to fetch artist details
   useEffect(() => {
     if (state.token && state.events && state.events !== {}) {
       getArtists(state.token, state.events)
-        .then(artists => {
-          setState(prev => ({ ...prev, artists }));
+      .then(artists => {
+        setState(prev => ({ ...prev, artists }));
       });
     }
   }, [state.token, state.events]);
@@ -61,13 +63,13 @@ export default function useDashboardData() {
     if(state.artists && state.artists !== {}) {
       const artistEvent = {}
       Object.keys(state.artists).map(artist => {
-        if(state.artists[artist]){ 
+        if(state.artists[artist]) {
           artistEvent[state.artists[artist].id] = state.events[artist]
         }
       })
       setState(prev =>({ ...prev, artistEvent }))
     }
-  }, [state.artists]) 
+  }, [state.artists]);
 
   // fetch artist id and song url
   useEffect(() => {
@@ -94,7 +96,7 @@ useEffect(() => {
     setState(prev => ({...prev, songEvent}))
   }
 
-},[state.artistEvent, state.artistSong]) 
+},[state.artistEvent, state.artistSong])
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -103,7 +105,7 @@ useEffect(() => {
     script.src = "https://sdk.scdn.co/spotify-player.js";
     document.head.appendChild(script);
   }, []);
-
+  // initialize Spotify Web Playback SDK
   useEffect(() => {
    // initialize Spotify Web Playback SDK
     window.onSpotifyWebPlaybackSDKReady = () => {
@@ -112,10 +114,11 @@ useEffect(() => {
     const Spotify = window.Spotify;
     const _token = state.token;
     const player = new Spotify.Player({
-      name: "Jim's Web Playback SDK Player",
+      name: "Discover Web Playback SDK Player",
       getOAuthToken: callback => {
         callback(_token);
-      }
+      },
+      volume: 0.5
     });
     // add player object to state
     // console.log(player);
@@ -134,23 +137,28 @@ useEffect(() => {
       const trackName = current_track.name;
       const albumName = current_track.album.name;
       const artistName = current_track.artists
-        .map(artist => artist.name)
-  
+        .map(artist => artist.name);
+
       const currentAlbumCover = current_track.album.images[0].url;
       const playing = !playerState.paused;
       // extract information from previous, next tracks
       if (previous_tracks && previous_tracks.length > 0) {
-        const prevAlbumCover = previous_tracks[1].album.images[0].url;
+        const prevAlbumCover1 = previous_tracks[1].album.images[0].url 
+        const prevAlbumCover2 = previous_tracks[0].album.images[0].url 
         setState(prev => ({
           ...prev,
-          prevAlbumCover
+          prevAlbumCover1,
+          prevAlbumCover2
         }));
       }
       if (next_tracks && next_tracks.length > 0) {
-        const nextAlbumCover = next_tracks[0].album.images[0].url;
+        const nextAlbumCover1 = next_tracks[0].album.images[0].url
+        const nextAlbumCover2 = next_tracks[1].album.images[0].url
+
         setState(prev => ({
           ...prev,
-          nextAlbumCover
+          nextAlbumCover1,
+          nextAlbumCover2
         }));
       }
 
@@ -165,12 +173,9 @@ useEffect(() => {
         currentAlbumCover
       }));
 
-      //////////////////////////////////////////////////
-      const currentTrackUri = current_track.uri
-      // console.log(currentTrackUri)
-      setState(prev => ({...prev, currentTrackUri}))
-
-
+       //////////////////////////////////////////////////
+       const currentTrackUri = current_track.uri;
+       setState(prev => ({...prev, currentTrackUri}));
     });
     // Ready
     player.addListener('ready', ({ device_id }) => {
@@ -195,7 +200,7 @@ useEffect(() => {
       }
     });
   };
-},[state.token])
+},[state.token]);
 
 // fetch song uri with current artist event details
 useEffect(() => {
@@ -225,7 +230,8 @@ useEffect(() => {
   // Play specific songs on app (device) by default
   useEffect(() => {
     if (state.token && state.deviceId && state.songs && state.songs.songs.length > 0) {
-      let allSongs = state.songs.songs
+      const allSongs = state.songs.songs;
+
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
           headers: {
@@ -233,9 +239,8 @@ useEffect(() => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            // context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
             uris: allSongs
-          })
+        })
         });
       }
   }, [state.deviceId , state.songs]);

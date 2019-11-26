@@ -5,15 +5,22 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   event: {
-  'margin-top': '5%',
-    textAlign: 'center',
+    'padding-top': '5%',
     color: 'white',
+    'text-align': 'center',
+    'display': 'flex',
+    'flex-direction': 'column'
   },
   artist: {
-  color: 'white',
-  width: '70%',
-  'border-bottom': '1px solid white'
-}
+    color: 'white',
+    width: '60%',
+    margin: '0 auto',
+    display: 'inline-block',
+    'border-bottom': '1px solid white'
+  },
+  details: {
+    display: 'inline-block'
+  }
 }))
 
 export default function EventDetails(props) {
@@ -21,14 +28,14 @@ export default function EventDetails(props) {
   const [events, setEvents] = useState([])
 
   useEffect(() => {
-    if(props.currentEvent) {
+    if (props.currentEvent) {
       setEvents(props.currentEvent)
     }
-  },[props.currentEvent])
+  }, [props.currentEvent])
 
-  const list = events.map((e, index)=> {
+  const list = events.map((e, index) => {
     return (
-      <EventDetailItems 
+      <EventDetailItems
         key={index}
         venue={e.venue.name}
         address={e.venue.address}
@@ -36,16 +43,17 @@ export default function EventDetails(props) {
         avgTicketPrice={e.stats.average_price}
         url={e.url}
       />
-    )}
+    )
+  }
   )
 
   return (
     <div className={classes.event}>
-      {/* <h1 className={classes.artist}>{props.artistName}</h1> */}
-      <ul>
+      <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1>
+      <div className={classes.details}>
         {list}
-      </ul>
+      </div>
     </div>
-    
+
   )
 }
