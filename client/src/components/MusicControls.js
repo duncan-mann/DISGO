@@ -6,6 +6,7 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import RepeatIcon from '@material-ui/icons/Repeat';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 const useStyles = makeStyles(theme => ({
   MusicControls : {
     // 'background' : `linear-gradient(#212121 50%, #121212 90%)`,
@@ -38,12 +39,15 @@ const useStyles = makeStyles(theme => ({
 export default function MusicControls (props) {
   const classes = useStyles();
 
+
   return(
     <div className={classes.MusicControls}>
       <div >
-        <img className={classes.prevAlbum} src={props.prevAlbumCover} />
+        <img className={classes.prevAlbum} src={props.prevAlbumCover[1]} />
+        <img className={classes.prevAlbum} src={props.prevAlbumCover[0]} />
         <img src={props.currentAlbumCover} />
-        <img className={classes.nextAlbum} src={props.nextAlbumCover} />
+        <img className={classes.nextAlbum} src={props.nextAlbumCover[0]} />
+        <img className={classes.nextAlbum} src={props.nextAlbumCover[1]} />
       </div>
       <p className={classes.song}>{props.trackName}</p>
       <p className={classes.songInfo}>{props.artistName}</p>

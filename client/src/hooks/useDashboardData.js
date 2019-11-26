@@ -18,8 +18,10 @@ export default function useDashboardData() {
     albumName: '',
     artistName: '',
     currentAlbumCover: null,
-    prevAlbumCover: null,
-    nextAlbumCover: null,
+    prevAlbumCover1: null,
+    prevAlbumCover2: null,
+    nextAlbumCover1: null,
+    nextAlbumCover2: null,
     playing: false
   });
 
@@ -107,6 +109,7 @@ export default function useDashboardData() {
       console.log(state);
       // extract information from current track
       const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
+      console.log('next tracks', next_tracks)
       const trackName = current_track.name;
       const albumName = current_track.album.name;
       const artistName = current_track.artists
@@ -116,17 +119,22 @@ export default function useDashboardData() {
       const playing = !state.paused;
       // extract information from previous, next tracks
       if (previous_tracks && previous_tracks.length > 0) {
-        const prevAlbumCover = previous_tracks[1].album.images[0].url;
+        const prevAlbumCover1 = previous_tracks[1].album.images[0].url 
+        const prevAlbumCover2 = previous_tracks[0].album.images[0].url 
         setState(prev => ({
           ...prev,
-          prevAlbumCover
+          prevAlbumCover1,
+          prevAlbumCover2
         }));
       }
       if (next_tracks && next_tracks.length > 0) {
-        const nextAlbumCover = next_tracks[0].album.images[0].url;
+        const nextAlbumCover1 = next_tracks[0].album.images[0].url
+        const nextAlbumCover2 = next_tracks[1].album.images[0].url
+
         setState(prev => ({
           ...prev,
-          nextAlbumCover
+          nextAlbumCover1,
+          nextAlbumCover2
         }));
       }
 

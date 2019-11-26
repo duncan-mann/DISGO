@@ -21,7 +21,9 @@ export default function Dashboard(props) {
 
   const { state, currentPlayer, handleNext, handlePrev, handleToggle, repeatPlayback } = useDashboardData();
   const classes = useStyles();
-
+  const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2]
+  const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2]
+  
   return (
     <div>
       <NavBar />
@@ -36,8 +38,8 @@ export default function Dashboard(props) {
         trackName={state.trackName}
         albumName={state.albumName}
         currentAlbumCover={state.currentAlbumCover}
-        prevAlbumCover={state.prevAlbumCover}
-        nextAlbumCover={state.nextAlbumCover}
+        prevAlbumCover={prevAlbumCovers}
+        nextAlbumCover={nextAlbumCovers}
         artistName={state.artistName}
         handlePrev={handlePrev}
         handleNext={handleNext}
