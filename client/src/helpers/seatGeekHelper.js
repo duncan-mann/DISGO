@@ -1,5 +1,4 @@
 import axios from "axios";
-import { object } from "prop-types";
 
 export const getPerformers = () => {
   return axios

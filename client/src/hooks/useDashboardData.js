@@ -10,7 +10,6 @@ export default function useDashboardData() {
     token: null,
     artists: {},
     events: {},
-    event: [],
     artistEvent: {},
     artistSong: {},
     songEvent: {},
@@ -96,27 +95,6 @@ useEffect(() => {
   }
 
 },[state.artistEvent, state.artistSong]) 
-
-
-  // fetch event details for all artists
-  // const songEventDetails = [];
-    
-  //   for (let artist in eventArr) {
-      
-  //     if (currentArtist.length > 0 && currentArtist.includes(artist.toLowerCase())) 
-  //       let events = eventArr[artist];
-  //       for (let event of events) {
-  //         axios
-  //           .get(
-  //             `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
-  //           )
-  //           .then(res => {
-  //             artistEvent.push(res.data);
-  //           });
-  //       } 
-  //     }
-  //   } 
-
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -224,15 +202,17 @@ useEffect(() => {
   if(state.currentTrackUri) {
     if (!state.currentEvent[state.currentTrackUri]) {
         const temp = {...state.currentEvent};
+        const eventDetails = [];
         for (let event of state.songEvent[state.currentTrackUri]) {
           axios
             .get(
               `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
             )
             .then(res => {
-              temp[state.currentTrackUri] = res.data;
+              eventDetails.push(res.data);
             });
-        }
+          }
+          temp[state.currentTrackUri] = eventDetails;
 
         setState(prev => ({
           ...prev,
