@@ -8,8 +8,6 @@ const useStyles = makeStyles(theme => ({
  }
 }))
 
-
-
 export default function EventDetailItems(props) {
   const classes = useStyles();
 

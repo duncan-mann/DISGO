@@ -5,12 +5,14 @@ import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
 
-  const [state, setState] = useState({ 
+  const [state, setState] = useState({
     user: {},
     token: null,
     artists: {},
     events: {},
-    event: [],
+    artistEvent: {},
+    artistSong: {},
+    songEvent: {},
     deviceId: null,
     position: 0,
     duration: 0,
@@ -22,11 +24,14 @@ export default function useDashboardData() {
     prevAlbumCover2: null,
     nextAlbumCover1: null,
     nextAlbumCover2: null,
-    playing: false
+    playing: false,
+    currentEvent: {},
+    currentTrackUri: ""
   });
 
   const [currentPlayer, setPlayer] = useState(null);
 
+  // obtain access token using Spotify authentication process
   useEffect(() => {
     axios
       .get("/getUser")
@@ -34,44 +39,64 @@ export default function useDashboardData() {
         setState(state => ({...state, ...res.data}));
       }).catch((e) => console.log('error:', e))
   }, []);
-
+  // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
       getPerformers()
         .then(events => {
-        console.log("test", events);
         setState(prev => ({ ...prev, events }));
       });
     }
   }, [state.token]);
-
+  // Spotify API call to fetch artist details
   useEffect(() => {
     if (state.token && state.events && state.events !== {}) {
       getArtists(state.token, state.events)
-        .then(artists => {
-          setState(prev => ({ ...prev, artists }));
+      .then(artists => {
+        setState(prev => ({ ...prev, artists }));
       });
     }
   }, [state.token, state.events]);
 
+// fetch artist id with event ids
+  useEffect(() => {
+    if(state.artists && state.artists !== {}) {
+      const artistEvent = {}
+      Object.keys(state.artists).map(artist => {
+        if(state.artists[artist]) {
+          artistEvent[state.artists[artist].id] = state.events[artist]
+        }
+      })
+      setState(prev =>({ ...prev, artistEvent }))
+    }
+  }, [state.artists]);
 
+  // fetch artist id and song url
   useEffect(() => {
     if (state.token) {
       getSongs(state.token, state.artists)
-        .then(songs => {
-          setState(prev => ({...prev, songs}))
+        .then(res => {
+          const { songs, songs_by_genre, all_genres, artistSong } = res
+          setState(prev => ({...prev, songs: {songs, songs_by_genre, all_genres }}))
+          setState(prev => ({... prev, artistSong}))
         })
     }
   }, [state.token, state.events, state.artists]);
 
-  useEffect(() => {
-    if (state.events && state.events !== {} && state.artistName) {
-      getEventDetails(state.events, state.artistName) 
-      .then(event => {
-        setState(prev => ({...prev, event}))
-      })
+// fetch song id and event id
+useEffect(() => {
+  const songEvent = {}
+  if (state.artistEvent !== {} && state.artistSong !== {}) {
+    for (let artistId in state.artistSong) {
+      if(state.artistSong[artistId] && state.artistEvent[artistId]) {
+        const uri = state.artistSong[artistId]
+        songEvent[uri] = state.artistEvent[artistId]
+      }
     }
-  },[state.artistName]) 
+    setState(prev => ({...prev, songEvent}))
+  }
+
+},[state.artistEvent, state.artistSong])
 
   // On Mount, load Spotify Web Playback SDK script
   useEffect(() => {
@@ -80,23 +105,23 @@ export default function useDashboardData() {
     script.src = "https://sdk.scdn.co/spotify-player.js";
     document.head.appendChild(script);
   }, []);
-
+  // initialize Spotify Web Playback SDK
   useEffect(() => {
-
    // initialize Spotify Web Playback SDK
     window.onSpotifyWebPlaybackSDKReady = () => {
-    console.log('script loaded');
+    // console.log('script loaded');
 
     const Spotify = window.Spotify;
     const _token = state.token;
     const player = new Spotify.Player({
-      name: "Jim's Web Playback SDK Player",
+      name: "Discover Web Playback SDK Player",
       getOAuthToken: callback => {
         callback(_token);
-      }
+      },
+      volume: 0.5
     });
     // add player object to state
-    console.log(player);
+    // console.log(player);
     setPlayer(player);
 
     player.addListener('initialization_error', ({ msg }) => console.error(msg));
@@ -105,18 +130,17 @@ export default function useDashboardData() {
     player.addListener('playback_error', ({ msg }) => console.error(msg));
 
     // playback status updates
-    player.addListener('player_state_changed', state => {
-      console.log(state);
+    player.addListener('player_state_changed', playerState => {
+      console.log("This is the state", playerState);
       // extract information from current track
-      const { current_track, next_tracks, previous_tracks, position, duration } = state.track_window;
-      console.log('next tracks', next_tracks)
+      const { current_track, next_tracks, previous_tracks, position, duration } = playerState.track_window;
       const trackName = current_track.name;
       const albumName = current_track.album.name;
       const artistName = current_track.artists
-        .map(artist => artist.name)[0]
+        .map(artist => artist.name);
 
       const currentAlbumCover = current_track.album.images[0].url;
-      const playing = !state.paused;
+      const playing = !playerState.paused;
       // extract information from previous, next tracks
       if (previous_tracks && previous_tracks.length > 0) {
         const prevAlbumCover1 = previous_tracks[1].album.images[0].url 
@@ -148,10 +172,14 @@ export default function useDashboardData() {
         playing,
         currentAlbumCover
       }));
+
+       //////////////////////////////////////////////////
+       const currentTrackUri = current_track.uri;
+       setState(prev => ({...prev, currentTrackUri}));
     });
     // Ready
     player.addListener('ready', ({ device_id }) => {
-      console.log('Ready with Device ID', device_id);
+      // console.log('Ready with Device ID', device_id);
       setState(prev => ({
         ...prev,
         deviceId: device_id
@@ -159,7 +187,7 @@ export default function useDashboardData() {
     });
     // Not Ready
     player.addListener('not_ready', ({ device_id }) => {
-      console.log('Device ID has gone offline', device_id);
+      // console.log('Device ID has gone offline', device_id);
       setState(prev => ({
         ...prev,
         deviceId: null
@@ -168,17 +196,42 @@ export default function useDashboardData() {
     // Connect to the player!
     player.connect().then(success => {
       if (success) {
-        console.log('The Web Playback SDK successfully connected to Spotify!');
+        // console.log('The Web Playback SDK successfully connected to Spotify!');
       }
     });
   };
-},[state.token])
+},[state.token]);
+
+// fetch song uri with current artist event details
+useEffect(() => {
+  if(state.currentTrackUri) {
+    if (!state.currentEvent[state.currentTrackUri]) {
+        const temp = {...state.currentEvent};
+        const eventDetails = [];
+        for (let event of state.songEvent[state.currentTrackUri]) {
+          axios
+            .get(
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+            )
+            .then(res => {
+              eventDetails.push(res.data);
+            });
+          }
+          temp[state.currentTrackUri] = eventDetails;
+
+        setState(prev => ({
+          ...prev,
+          currentEvent: temp
+        }))
+    }
+  }
+}, [state.currentTrackUri])
 
   // Play specific songs on app (device) by default
   useEffect(() => {
     if (state.token && state.deviceId && state.songs && state.songs.songs.length > 0) {
-      let allSongs = state.songs.songs
-      console.log("THIS IS THE SONGSS", allSongs)
+      const allSongs = state.songs.songs;
+
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
           headers: {
@@ -186,9 +239,8 @@ export default function useDashboardData() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            // context_uri: 'spotify:playlist:37i9dQZF1DWUvHZA1zLcjW'
             uris: allSongs
-          })
+        })
         });
       }
   }, [state.deviceId , state.songs]);
@@ -213,6 +265,6 @@ export default function useDashboardData() {
   const handleNext = () => {currentPlayer.nextTrack()};
   const handleToggle = () => {currentPlayer.togglePlay()};
 
-  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback}
+  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback }
 }
 
