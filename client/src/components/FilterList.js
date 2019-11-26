@@ -3,15 +3,14 @@ import FilterListItem from './FilterListItem';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  filterList: {
+  root: {
     textAlign: 'center',
   },
-  title: {
-  }
 }));
 
 export default function Filter(props) {
   const classes = useStyles();
+
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
@@ -21,7 +20,7 @@ export default function Filter(props) {
   }, [props.songs])
 
   const filterByGenre = (arr) => {
-    console.log(arr);
+    console.log('Clicked on genre chip');
   }
 
   const list = genres.map((genre, index) => {
@@ -35,7 +34,7 @@ export default function Filter(props) {
   });
 
   return (
-    <div className={classes.filterList}>
+    <div className={classes.root}>
       <ul>
         {list}
         <FilterListItem

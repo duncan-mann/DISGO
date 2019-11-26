@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import './Dashboard.css';
 
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   background: {
     'background': `linear-gradient(#212121 50%, #121212 90%)`,
   }
-}))
+}));
 
 
 export default function Dashboard(props) {
@@ -30,8 +30,8 @@ export default function Dashboard(props) {
     repeatPlayback } = useDashboardData();
 
   const classes = useStyles();
-  const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2]
-  const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2]
+  const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
+  const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
   return (
     <div>
@@ -39,9 +39,8 @@ export default function Dashboard(props) {
       <NavBar />
         <EventDetails
           artistName={state.artistName}
-          currentEvent={state.currentEvent[state.currentTrackUri]} 
+          currentEvent={state.currentEvent[state.currentTrackUri]}
           />
-    
       <FilterList
         songs={state.songs}
       />

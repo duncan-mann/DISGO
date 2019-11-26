@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import { getArtists, getSongs } from "../helpers/spotifyHelper";
-import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
+import { getPerformers } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
 
@@ -64,10 +64,10 @@ export default function useDashboardData() {
       const artistEvent = {}
       Object.keys(state.artists).map(artist => {
         if(state.artists[artist]) {
-          artistEvent[state.artists[artist].id] = state.events[artist]
+          artistEvent[state.artists[artist].id] = state.events[artist];
         }
       })
-      setState(prev =>({ ...prev, artistEvent }))
+      setState(prev =>({ ...prev, artistEvent }));
     }
   }, [state.artists]);
 
@@ -78,7 +78,7 @@ export default function useDashboardData() {
         .then(res => {
           const { songs, songs_by_genre, all_genres, artistSong } = res
           setState(prev => ({...prev, songs: {songs, songs_by_genre, all_genres }}))
-          setState(prev => ({... prev, artistSong}))
+          setState(prev => ({...prev, artistSong}))
         })
     }
   }, [state.token, state.events, state.artists]);
@@ -118,7 +118,7 @@ useEffect(() => {
       getOAuthToken: callback => {
         callback(_token);
       },
-      volume: 0.5
+      volume: 0.1
     });
     // add player object to state
     // console.log(player);
@@ -131,7 +131,7 @@ useEffect(() => {
 
     // playback status updates
     player.addListener('player_state_changed', playerState => {
-      console.log("This is the state", playerState);
+      // console.log("This is the player state", playerState);
       // extract information from current track
       const { current_track, next_tracks, previous_tracks, position, duration } = playerState.track_window;
       const trackName = current_track.name;
@@ -143,8 +143,8 @@ useEffect(() => {
       const playing = !playerState.paused;
       // extract information from previous, next tracks
       if (previous_tracks && previous_tracks.length > 0) {
-        const prevAlbumCover1 = previous_tracks[1].album.images[0].url 
-        const prevAlbumCover2 = previous_tracks[0].album.images[0].url 
+        const prevAlbumCover1 = previous_tracks[1].album.images[0].url;
+        const prevAlbumCover2 = previous_tracks[0].album.images[0].url;
         setState(prev => ({
           ...prev,
           prevAlbumCover1,
@@ -206,7 +206,9 @@ useEffect(() => {
 useEffect(() => {
   if(state.currentTrackUri) {
     if (!state.currentEvent[state.currentTrackUri]) {
-        const temp = {...state.currentEvent};
+        const temp = {
+          ...state.currentEvent
+        };
         const eventDetails = [];
         for (let event of state.songEvent[state.currentTrackUri]) {
           axios
@@ -225,7 +227,7 @@ useEffect(() => {
         }))
     }
   }
-}, [state.currentTrackUri])
+}, [state.currentTrackUri]);
 
   // Play specific songs on app (device) by default
   useEffect(() => {
