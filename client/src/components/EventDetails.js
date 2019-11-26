@@ -46,6 +46,6 @@ export default function EventDetails(props) {
         {list}
       </ul>
     </div>
-    
+
   )
 }
