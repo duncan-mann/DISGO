@@ -30,7 +30,10 @@ export default function useDashboardData() {
     nextAlbumCover1: null,
     nextAlbumCover2: null,
     playing: false,
-    currentTrackUri: ""
+    currentEvent: {},
+    currentTrackUri: "",
+    // previousTrackUri: [],
+    nextTrackUri: ""
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -177,45 +180,51 @@ export default function useDashboardData() {
           }));
         }
 
-        setState(prev => ({
-          ...prev,
-          position,
-          duration,
-          trackName,
-          albumName,
-          artistName,
-          playing,
-          currentAlbumCover
-        }));
+      setState(prev => ({
+        ...prev,
+        position,
+        duration,
+        trackName,
+        albumName,
+        artistName,
+        playing,
+        currentAlbumCover
+      }));
 
-        //////////////////////////////////////////////////
+       //////////////////////////////////////////////////
         const currentTrackUri = current_track.uri;
-        setState(prev => ({ ...prev, currentTrackUri }));
-      });
-      // Ready
-      player.addListener("ready", ({ device_id }) => {
-        // console.log('Ready with Device ID', device_id);
-        setState(prev => ({
-          ...prev,
-          deviceId: device_id
-        }));
-      });
-      // Not Ready
-      player.addListener("not_ready", ({ device_id }) => {
-        // console.log('Device ID has gone offline', device_id);
-        setState(prev => ({
-          ...prev,
-          deviceId: null
-        }));
-      });
-      // Connect to the player!
-      player.connect().then(success => {
-        if (success) {
-          // console.log('The Web Playback SDK successfully connected to Spotify!');
-        }
-      });
-    };
-  }, [state.token]);
+        const nextTrackUri = [next_tracks[0].uri, next_tracks[1].uri]
+        const previousTrackUri = [previous_tracks[0].uri, previous_tracks[1].uri]
+        setState(prev => ({...prev, currentTrackUri}));
+        setState(prev => ({...prev, nextTrackUri}));
+        setState(prev => ({...prev, previousTrackUri}));
+        // console.log("previous tracks!", previousTrackUri)
+        // console.log("next tracks", nextTrackUri)
+    });
+    // Ready
+    player.addListener('ready', ({ device_id }) => {
+      // console.log('Ready with Device ID', device_id);
+      setState(prev => ({
+        ...prev,
+        deviceId: device_id
+      }));
+    });
+    // Not Ready
+    player.addListener('not_ready', ({ device_id }) => {
+      // console.log('Device ID has gone offline', device_id);
+      setState(prev => ({
+        ...prev,
+        deviceId: null
+      }));
+    });
+    // Connect to the player!
+    player.connect().then(success => {
+      if (success) {
+        // console.log('The Web Playback SDK successfully connected to Spotify!');
+      }
+    });
+  };
+}, [state.token]);
 
   // fetch song uri with current artist event details
   useEffect(() => {
@@ -243,6 +252,60 @@ export default function useDashboardData() {
       }
     }
   }, [state.currentTrackUri]);
+
+/// fetch event details for next 2 tracks from current track
+useEffect(() => {
+  if(state.nextTrackUri) {
+    for (let nextTrack of state.nextTrackUri) {
+      if(!state.currentEvent[nextTrack]) {
+        const temp = {...state.currentEvent};
+        const eventDetails = [];
+        for (let event of state.songEvent[nextTrack]) {
+          axios
+            .get(
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+            )
+            .then(res => {
+              eventDetails.push(res.data);
+            });
+          }
+          temp[nextTrack] = eventDetails;
+
+        setState(prev => ({
+          ...prev,
+          currentEvent: temp
+        }))
+      }
+    }
+  }
+}, [state.nextTrackUri])
+
+/// fetch event details for prev 2 tracks from current track 
+useEffect(() => {
+  if(state.previousTrackUri) {
+    for (let prevTrack of state.previousTrackUri) {
+      if(!state.currentEvent[prevTrack]) {
+        const temp = {...state.currentEvent};
+        const eventDetails = [];
+        for (let event of state.songEvent[prevTrack]) {
+          axios
+            .get(
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+            )
+            .then(res => {
+              eventDetails.push(res.data);
+            });
+          }
+          temp[prevTrack] = eventDetails;
+
+        setState(prev => ({
+          ...prev,
+          currentEvent: temp
+        }))
+      }
+    }
+  }
+}, [state.previousTrackUri])
 
   // Play specific songs on app (device) by default
   useEffect(() => {
