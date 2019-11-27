@@ -40,15 +40,15 @@ export default function useDashboardData() {
     nextAlbumCover2: null,
     playing: false,
     currentTrackUri: "",
-    nextTrackUri: "",
-    previousTrackUri: "",
+    nextTrackUri: [],
+    previousTrackUri: [],
     startDate: today,
     endDate: future,
     location: "Toronto"
   });
 
   const [currentPlayer, setPlayer] = useState(null);
-
+  // const [currentEvent, setCurrentEvent] = useState({});
 
   function setStartDate(date) {
     // console.log('Setting start date to:', date);
@@ -196,7 +196,15 @@ export default function useDashboardData() {
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
         // extract information from previous, next tracks
-        if (previous_tracks && previous_tracks.length > 0) {
+        if (previous_tracks && previous_tracks.length  === 1) {
+          const prevAlbumCover1 = previous_tracks[0].album.images[0].url;
+          const prevAlbumCover2 = null
+          setState(prev => ({
+            ...prev,
+            prevAlbumCover1,
+            prevAlbumCover2
+          }));
+        } else if (previous_tracks.length  > 1) {
           const prevAlbumCover1 = previous_tracks[1].album.images[0].url;
           const prevAlbumCover2 = previous_tracks[0].album.images[0].url;
           setState(prev => ({
@@ -204,7 +212,16 @@ export default function useDashboardData() {
             prevAlbumCover1,
             prevAlbumCover2
           }));
+        } else {
+          const prevAlbumCover1 = null
+          const prevAlbumCover2 = null
+          setState(prev => ({
+            ...prev,
+            prevAlbumCover1,
+            prevAlbumCover2
+          }));
         }
+
         if (next_tracks && next_tracks.length > 0) {
           const nextAlbumCover1 = next_tracks[0].album.images[0].url;
           const nextAlbumCover2 = next_tracks[1].album.images[0].url;
@@ -230,13 +247,19 @@ export default function useDashboardData() {
         //////////////////////////////////////////////////
         const currentTrackUri = current_track.uri;
         const nextTrackUri = [next_tracks[0].uri, next_tracks[1].uri];
-        const previousTrackUri = [
-          previous_tracks[0].uri,
-          previous_tracks[1].uri
-        ];
+        
+        if(previous_tracks.length  === 1) {
+          let previousTrackUri = [previous_tracks[0].uri];
+          setState(prev => ({ ...prev, previousTrackUri }));
+        } else if (previous_tracks.length > 1) {
+          let previousTrackUri = [previous_tracks[0].uri,previous_tracks[1].uri];
+          setState(prev => ({ ...prev, previousTrackUri }));
+        } else {
+          let previousTrackUri = []
+          setState(prev => ({ ...prev, previousTrackUri }));
+        }
         setState(prev => ({ ...prev, currentTrackUri }));
         setState(prev => ({ ...prev, nextTrackUri }));
-        setState(prev => ({ ...prev, previousTrackUri }));
         // console.log("previous tracks!", previousTrackUri)
         // console.log("next tracks", nextTrackUri)
       });
