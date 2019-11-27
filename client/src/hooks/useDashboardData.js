@@ -191,9 +191,25 @@ export default function useDashboardData() {
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
         // extract information from previous, next tracks
-        if (previous_tracks && previous_tracks.length > 0) {
+        if (previous_tracks && previous_tracks.length  === 1) {
+          const prevAlbumCover1 = previous_tracks[0].album.images[0].url;
+          const prevAlbumCover2 = null
+          setState(prev => ({
+            ...prev,
+            prevAlbumCover1,
+            prevAlbumCover2
+          }));
+        } else if (previous_tracks.length  > 1) {
           const prevAlbumCover1 = previous_tracks[1].album.images[0].url;
           const prevAlbumCover2 = previous_tracks[0].album.images[0].url;
+          setState(prev => ({
+            ...prev,
+            prevAlbumCover1,
+            prevAlbumCover2
+          }));
+        } else {
+          const prevAlbumCover1 = null
+          const prevAlbumCover2 = null
           setState(prev => ({
             ...prev,
             prevAlbumCover1,
