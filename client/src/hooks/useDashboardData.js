@@ -25,6 +25,7 @@ export default function useDashboardData() {
     currentEvent: {},
     // filtering
     currentGenre: [],
+    currentPlaylist: [],
     // Spotfiy Playback SDK
     deviceId: null,
     position: 0,
@@ -50,13 +51,13 @@ export default function useDashboardData() {
 
 
   function setStartDate(date) {
-    console.log('Setting start date')
-    setState(prev => ({...prev, startDate: date}))
+    // console.log('Setting start date to:', date);
+    setState(prev => ({...prev, startDate: date}));
 }
 
   function setEndDate(date) {
-    console.log('Setting end date')
-    setState(prev => ({...prev, endDate: date}))
+    // console.log('Setting end date to:', date);
+    setState(prev => ({...prev, endDate: date}));
 }
 
   function setLocation(loc) {
@@ -102,7 +103,7 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.artists && state.artists !== {}) {
       const artistEvent = {};
-      Object.keys(state.artists).map(artist => {
+      Object.keys(state.artists).forEach(artist => {
         if (state.artists[artist]) {
           artistEvent[state.artists[artist].id] = state.events[artist];
         }
@@ -116,17 +117,17 @@ export default function useDashboardData() {
     if (state.token) {
       getSongs(state.token, state.artists).then(res => {
         const { allSongs, songsByGenre, artistSong } = res;
-        // setState(prev => ({...prev, songs: {songs, songsByGenre, allGenre }}));
+
         setState(prev => ({
           ...prev,
           allSongs,
           songsByGenre,
           artistSong,
-          // currentGenre: Object.keys(songsByGenre)
         }));
+
       });
     }
-  }, [state.token, state.events, state.artists]);
+  }, [state.artists]);
 
   // fetch song id and event id
   useEffect(() => {
@@ -361,12 +362,18 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
       if (state.currentGenre.length === 0) {
-        console.log('playing this many tracks', state.allSongs.length);
-
         // start with all of the genres in the tracks list
+        setState(prev => ({
+          ...prev,
+          currentPlaylist: state.allSongs
+        }));
+
+        console.log(`playing ${state.allSongs.length} tracks`);
+
         playTracks(state.token, state.deviceId, state.allSongs);
 
       } else {
+        // play filtered tracks list
         const nonUniqueTracks = [];
 
         state.currentGenre.forEach(genre => {
@@ -376,9 +383,14 @@ export default function useDashboardData() {
         });
 
         const uniqueTracks = nonUniqueTracks.filter((item, index) => nonUniqueTracks.indexOf(item) === index);
-        console.log('playing this many tracks', uniqueTracks.length);
+        // add song uris of current playlist to state
+        setState(prev => ({
+          ...prev,
+          currentPlaylist: uniqueTracks
+        }));
 
-        // play filtered tracks list
+        console.log(`playing ${uniqueTracks.length} tracks`);
+
         playTracks(state.token, state.deviceId, uniqueTracks);
       }
     }

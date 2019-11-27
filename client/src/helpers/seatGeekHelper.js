@@ -1,7 +1,14 @@
 import axios from "axios";
 
+<<<<<<< HEAD
 export const getPerformers = (startDate, endDate, location) => {
   console.log('start', startDate, 'end', endDate, 'location', location)
+=======
+export const getPerformers = (startDate, endDate) => {
+
+  console.log(`time window: ${startDate} to ${endDate}`);
+
+>>>>>>> 6db49eeb1252e804534ca492d628bf5178d0eab7
   return axios
     .get(
       `https://api.seatgeek.com/2/events?venue.city=${location.split(' ').join('%20')}&datetime_utc.gte=${startDate}T00:00:00&datetime_utc.lte=${endDate}T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
