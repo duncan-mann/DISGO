@@ -36,7 +36,8 @@ export default function Dashboard(props) {
     setEndDate,
     setTimeFrame,
     setLocation,
-    filterByGenre } = useDashboardData();
+    filterByGenre,
+    addUserPlaylist } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
@@ -53,7 +54,8 @@ export default function Dashboard(props) {
           setTimeFrame={setTimeFrame}
           setLocation={setLocation}
           location={state.location}
-        />
+          addUserPlaylist={addUserPlaylist} 
+          />
       {state.fetch === 0 && state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] 
       && state.currentEvent[state.currentTrackUri].length > 0 ?
         <div>
