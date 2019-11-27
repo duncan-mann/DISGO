@@ -5,6 +5,13 @@ import { getPerformers, getEventDetails } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
 
+  let today = new Date()
+  let future = new Date()
+  future.setDate(today.getDate()+29)
+  future = future.toJSON().split('T')[0]
+  today = today.toJSON().split('T')[0]
+
+
   const [state, setState] = useState({
     user: {},
     token: null,
@@ -27,8 +34,8 @@ export default function useDashboardData() {
     playing: false,
     currentEvent: {},
     currentTrackUri: "",
-    startDate: null,
-    endDate: null,
+    startDate: today,
+    endDate: future,
     location: "Toronto"
   });
 
@@ -46,8 +53,8 @@ export default function useDashboardData() {
 }
 
   function setTimeFrame(startDate, endDate) {
-    console.log(startDate, endDate)
-    getPerformers(startDate, endDate)
+    console.log('start-date', startDate.$d.toJSON())
+    getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0])
     .then(events => {
       setState(prev => ({ ...prev, events }));
   })
@@ -64,7 +71,7 @@ export default function useDashboardData() {
   // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
-      getPerformers()
+      getPerformers(state.startDate, state.endDate)
         .then(events => {
         setState(prev => ({ ...prev, events }));
       });
