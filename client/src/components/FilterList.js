@@ -17,7 +17,7 @@ export default function Filter(props) {
         <FilterListItem
           key={index}
           genreName={genre}
-          selected={props.value[genre] ? true : false}
+          selected={props.value.includes(genre) ? true : false}
           filterByGenre={() => props.onChange(genre)}
         />
     );

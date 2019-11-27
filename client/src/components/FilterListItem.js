@@ -4,7 +4,7 @@ import Chip from "@material-ui/core/Chip";
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
 
 const useStyles = makeStyles(theme => ({
-  chip: {
+  genre_item: {
     color: 'white',
     borderColor: 'white',
     fontSize: 14,
@@ -13,6 +13,11 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: 'white !important',
       color: 'black'
     }
+  },
+  genre_item_selected: {
+    color: theme.palette.secondary,
+    fontSize: 14,
+    margin: theme.spacing(0.5),
   }
 }));
 
@@ -21,7 +26,7 @@ export default function FilterListItem(props) {
 
   return (
       <Chip
-        className={classes.chip}
+        className={props.selected ? classes.genre_item_selected : classes.genre_item}
         size="small"
         icon={<MusicNoteIcon />}
         label={props.genreName}
