@@ -48,7 +48,7 @@ export default function useDashboardData() {
   });
 
   const [currentPlayer, setPlayer] = useState(null);
-
+  // const [currentEvent, setCurrentEvent] = useState({});
 
   function setStartDate(date) {
     // console.log('Setting start date to:', date);
@@ -474,6 +474,6 @@ export default function useDashboardData() {
     filterByGenre,
     setStartDate,
     setEndDate,
-    setTimeFrame
+    setTimeFrame,
   };
 }
