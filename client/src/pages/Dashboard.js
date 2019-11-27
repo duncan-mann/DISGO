@@ -54,8 +54,8 @@ export default function Dashboard(props) {
           setTimeFrame={setTimeFrame}
           setLocation={setLocation}
           location={state.location}
-          addUserPlaylist={addUserPlaylist} />
-        />
+          addUserPlaylist={addUserPlaylist} 
+          />
       {state.fetch === 0 && state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] 
       && state.currentEvent[state.currentTrackUri].length > 0 ?
         <div>
