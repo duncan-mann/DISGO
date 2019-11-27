@@ -280,17 +280,36 @@ export default function useDashboardData() {
     });
   };
   // filter by genre helper function
-  const filterByGenre = str => {
-    console.log(`Clicked on ${str} chip`);
+  const filterByGenre = genreStr => {
     const tmp = [...state.currentGenre];
-    tmp.push(str);
 
-    console.log('currentGenre', tmp);
+    if (tmp.includes(genreStr)) {
+      // if the genre has been selected before, REMOVE it
+      console.log(`Removing ${genreStr}`);
 
-    setState(prev => ({
-      ...prev,
-      currentGenre: tmp
-    }));
+      const filteredArr = tmp.filter(genre => genre !== genreStr);
+
+      console.log('currentGenre', filteredArr);
+
+      setState(prev => ({
+        ...prev,
+        currentGenre: filteredArr
+      }));
+    } else {
+      // if the genre has NOT been selected before, ADD it
+      console.log(`Adding ${genreStr}`);
+
+      tmp.push(genreStr);
+
+      console.log('currentGenre', tmp);
+
+      setState(prev => ({
+        ...prev,
+        currentGenre: tmp
+      }));
+
+    }
+
   };
 
   // music player control functions
