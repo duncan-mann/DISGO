@@ -4,7 +4,11 @@ export const getPerformers = (startDate, endDate) => {
   console.log('start', startDate, 'end', endDate)
   return axios
     .get(
+<<<<<<< HEAD
       `https://api.seatgeek.com/2/events?venue.city=toronto&datetime_utc.gte=${startDate}T00:00:00&datetime_utc.lte=${endDate}T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+=======
+      `https://api.seatgeek.com/2/events?venue.city=toronto&datetime_utc.gte=2020-02-01T00:00:00&datetime_utc.lte=2020-03-01T23:59:59&taxonomies.name=concert&per_page=400&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+>>>>>>> master
     )
     .then(res => {
       const allEvents = res.data.events;
