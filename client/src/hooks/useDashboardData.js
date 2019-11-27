@@ -26,7 +26,9 @@ export default function useDashboardData() {
     nextAlbumCover2: null,
     playing: false,
     currentEvent: {},
-    currentTrackUri: ""
+    currentTrackUri: "",
+    // previousTrackUri: [],
+    nextTrackUri: ""
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -174,8 +176,14 @@ useEffect(() => {
       }));
 
        //////////////////////////////////////////////////
-       const currentTrackUri = current_track.uri;
-       setState(prev => ({...prev, currentTrackUri}));
+        const currentTrackUri = current_track.uri;
+        const nextTrackUri = [next_tracks[0].uri, next_tracks[1].uri]
+        const previousTrackUri = [previous_tracks[0].uri, previous_tracks[1].uri]
+        setState(prev => ({...prev, currentTrackUri}));
+        setState(prev => ({...prev, nextTrackUri}));
+        setState(prev => ({...prev, previousTrackUri}));
+        // console.log("previous tracks!", previousTrackUri)
+        // console.log("next tracks", nextTrackUri)
     });
     // Ready
     player.addListener('ready', ({ device_id }) => {
@@ -225,7 +233,62 @@ useEffect(() => {
         }))
     }
   }
+
 }, [state.currentTrackUri])
+
+/// fetch event details for next 2 tracks from current track 
+useEffect(() => {
+  if(state.nextTrackUri) {
+    for (let nextTrack of state.nextTrackUri) {
+      if(!state.currentEvent[nextTrack]) {
+        const temp = {...state.currentEvent};
+        const eventDetails = [];
+        for (let event of state.songEvent[nextTrack]) {
+          axios
+            .get(
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+            )
+            .then(res => {
+              eventDetails.push(res.data);
+            });
+          }
+          temp[nextTrack] = eventDetails;
+
+        setState(prev => ({
+          ...prev,
+          currentEvent: temp
+        }))
+      }
+    }
+  }
+}, [state.nextTrackUri])
+
+/// fetch event details for prev 2 tracks from current track 
+useEffect(() => {
+  if(state.previousTrackUri) {
+    for (let prevTrack of state.previousTrackUri) {
+      if(!state.currentEvent[prevTrack]) {
+        const temp = {...state.currentEvent};
+        const eventDetails = [];
+        for (let event of state.songEvent[prevTrack]) {
+          axios
+            .get(
+              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+            )
+            .then(res => {
+              eventDetails.push(res.data);
+            });
+          }
+          temp[prevTrack] = eventDetails;
+
+        setState(prev => ({
+          ...prev,
+          currentEvent: temp
+        }))
+      }
+    }
+  }
+}, [state.previousTrackUri])
 
   // Play specific songs on app (device) by default
   useEffect(() => {
