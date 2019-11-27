@@ -15,9 +15,15 @@ const useStyles = makeStyles(theme => ({
     }
   },
   genre_item_selected: {
-    color: theme.palette.secondary,
+    color: 'black',
+    borderColor: 'white',
+    backgroundColor: 'white !important',
     fontSize: 14,
     margin: theme.spacing(0.5),
+    '&:hover': {
+      backgroundColor: 'transparent !important',
+      color: 'white'
+    }
   }
 }));
 
