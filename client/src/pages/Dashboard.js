@@ -26,15 +26,24 @@ export default function Dashboard(props) {
     handlePrev,
     handleToggle,
     repeatPlayback,
+    setStartDate,
+    setEndDate,
+    setTimeFrame,
     filterByGenre } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
+
   return (
     <div>
       <div className={classes.background}>
-        <NavBar/>
+      <NavBar 
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+        startDate={state.startDate}
+        endDate={state.endDate}
+        setTimeFrame={setTimeFrame} />
         <EventDetails
           artistName={state.artistName}
           currentEvent={state.currentEvent[state.currentTrackUri]}
