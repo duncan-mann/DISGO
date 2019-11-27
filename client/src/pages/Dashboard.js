@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import './Dashboard.css';
-
 
 // import custom hooks
 import useDashboardData from "../hooks/useDashboardData";
@@ -11,15 +10,14 @@ import EventDetails from "../components/EventDetails";
 import FilterList from '../components/FilterList';
 import { makeStyles } from '@material-ui/core/styles';
 
-
 const useStyles = makeStyles(theme => ({
   background: {
     'background': `linear-gradient(#212121 50%, #121212 90%)`,
   }
-}))
-
+}));
 
 export default function Dashboard(props) {
+  const classes = useStyles();
 
   const {
     state,
@@ -30,11 +28,11 @@ export default function Dashboard(props) {
     repeatPlayback,
     setStartDate,
     setEndDate,
-    setTimeFrame } = useDashboardData();
+    setTimeFrame,
+    filterByGenre } = useDashboardData();
 
-  const classes = useStyles();
-  const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2]
-  const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2]
+  const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
+  const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
 
   return (
@@ -48,27 +46,29 @@ export default function Dashboard(props) {
         setTimeFrame={setTimeFrame} />
         <EventDetails
           artistName={state.artistName}
-          currentEvent={state.currentEvent[state.currentTrackUri]} 
-          />
-    
-      <FilterList
-        songs={state.songs}
-      />
-      <MusicControls
-        player={currentPlayer}
-        playing={state.playing}
-        trackName={state.trackName}
-        albumName={state.albumName}
-        currentAlbumCover={state.currentAlbumCover}
-        prevAlbumCover={prevAlbumCovers}
-        nextAlbumCover={nextAlbumCovers}
-        artistName={state.artistName}
-        handlePrev={handlePrev}
-        handleNext={handleNext}
-        handleToggle={handleToggle}
-        handleRepeat={repeatPlayback}
-      />
-    </div>
+          currentEvent={state.currentEvent[state.currentTrackUri]}
+        />
+        <FilterList
+          allSongs={state && state.allSongs}
+          songsByGenre={state && state.songsByGenre}
+          onChange={filterByGenre}
+          value={state && state.currentGenre}
+        />
+        <MusicControls
+          player={currentPlayer}
+          playing={state.playing}
+          trackName={state.trackName}
+          albumName={state.albumName}
+          currentAlbumCover={state.currentAlbumCover}
+          prevAlbumCover={prevAlbumCovers}
+          nextAlbumCover={nextAlbumCovers}
+          artistName={state.artistName}
+          handlePrev={handlePrev}
+          handleNext={handleNext}
+          handleToggle={handleToggle}
+          handleRepeat={repeatPlayback}
+        />
+      </div>
     </div >
   );
 }
