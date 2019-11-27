@@ -4,6 +4,14 @@ import { getArtists, getSongs } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
+
+  let today = new Date()
+  let future = new Date()
+  future.setDate(today.getDate()+29)
+  future = future.toJSON().split('T')[0]
+  today = today.toJSON().split('T')[0]
+
+
   const [state, setState] = useState({
     user: {},
     token: null,
@@ -31,11 +39,33 @@ export default function useDashboardData() {
     nextAlbumCover2: null,
     playing: false,
     currentTrackUri: "",
-    // previousTrackUri: [],
-    nextTrackUri: ""
+    nextTrackUri: "",
+    previousTrackUri: "",
+    startDate: today,
+    endDate: future,
+    location: "Toronto"
   });
 
   const [currentPlayer, setPlayer] = useState(null);
+
+
+  function setStartDate(date) {
+    console.log('Setting start date')
+    setState(prev => ({...prev, startDate: date}))
+}
+
+  function setEndDate(date) {
+    console.log('Setting end date')
+    setState(prev => ({...prev, endDate: date}))
+}
+
+  function setTimeFrame(startDate, endDate) {
+    console.log('start-date', startDate.$d.toJSON())
+    getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0])
+    .then(events => {
+      setState(prev => ({ ...prev, events }));
+  })
+}
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
@@ -49,7 +79,8 @@ export default function useDashboardData() {
   // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
-      getPerformers().then(events => {
+      getPerformers(state.startDate, state.endDate)
+        .then(events => {
         setState(prev => ({ ...prev, events }));
       });
     }
@@ -404,6 +435,9 @@ export default function useDashboardData() {
     handleNext,
     handleToggle,
     repeatPlayback,
-    filterByGenre
+    filterByGenre,
+    setStartDate, 
+    setEndDate, 
+    setTimeFrame 
   };
 }
