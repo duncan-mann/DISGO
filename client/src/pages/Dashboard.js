@@ -16,7 +16,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 export default function Dashboard(props) {
   const classes = useStyles();
 
@@ -31,9 +30,6 @@ export default function Dashboard(props) {
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
-  // extract songs and pass to FilterList component
-  // const songsByGenre = state.songsByGenre;
-
   return (
     <div>
       <div className={classes.background}>
@@ -43,8 +39,8 @@ export default function Dashboard(props) {
           currentEvent={state.currentEvent[state.currentTrackUri]}
         />
         <FilterList
-          allSongs={state.allSongs}
-          songsByGenre={state.songsByGenre}
+          allSongs={state && state.allSongs}
+          songsByGenre={state && state.songsByGenre}
         />
         <MusicControls
           player={currentPlayer}

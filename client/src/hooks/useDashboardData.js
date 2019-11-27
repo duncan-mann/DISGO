@@ -239,6 +239,7 @@ useEffect(() => {
   // Play specific songs on app (device) by default
   useEffect(() => {
     if (state.token && state.deviceId && state.allSongs) {
+
       const allSongs = state.allSongs;
 
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
