@@ -48,11 +48,11 @@ export default function MusicControls (props) {
     <div className={classes.MusicControls}>
 
       <div >
-        <img className={classes.prevAlbum} src={props.prevAlbumCover[1]} />
-        <img className={classes.prevAlbum} src={props.prevAlbumCover[0]} />
-        <img src={props.currentAlbumCover} />
-        <img className={classes.nextAlbum} src={props.nextAlbumCover[0]} />
-        <img className={classes.nextAlbum} src={props.nextAlbumCover[1]} />
+        <img className={classes.prevAlbum} src={props.prevAlbumCover[1]} alt=''/>
+        <img className={classes.prevAlbum} src={props.prevAlbumCover[0]} alt=''/>
+        <img src={props.currentAlbumCover} alt=''/>
+        <img className={classes.nextAlbum} src={props.nextAlbumCover[0]} alt=''/>
+        <img className={classes.nextAlbum} src={props.nextAlbumCover[1]} alt=''/>
       </div>
 
       <p className={classes.song}>{props.trackName}</p>

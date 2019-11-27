@@ -1,32 +1,45 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Chip from "@material-ui/core/Chip";
+import MusicNoteIcon from "@material-ui/icons/MusicNote";
 
 const useStyles = makeStyles(theme => ({
-  filterMargin: {
-    margin: theme.spacing(1),
+  genre_item: {
+    color: 'white',
+    borderColor: 'white',
+    fontSize: 14,
+    margin: theme.spacing(0.5),
+    '&:hover': {
+      backgroundColor: 'white !important',
+      color: 'black'
+    }
   },
-  filterIcon: {
-    marginRight: theme.spacing(1),
-  },
+  genre_item_selected: {
+    color: 'black',
+    borderColor: 'white',
+    backgroundColor: 'white !important',
+    fontSize: 14,
+    margin: theme.spacing(0.5),
+    '&:hover': {
+      backgroundColor: 'transparent !important',
+      color: 'white'
+    }
+  }
 }));
 
 export default function FilterListItem(props) {
   const classes = useStyles();
 
   return (
-    <span onClick={() => props.handleFilter(props.genreName)} className='FilterListItem'>
-      <Fab
-        variant="extended"
-        size="medium"
+      <Chip
+        className={props.selected ? classes.genre_item_selected : classes.genre_item}
+        size="small"
+        icon={<MusicNoteIcon />}
+        label={props.genreName}
+        onClick={props.filterByGenre}
+        clickable
         color='secondary'
-        aria-label="pick-genre"
-        className={classes.filterMargin}
-      >
-        <MusicNoteIcon className={classes.filterIcon} />
-        {props.genreName}
-      </Fab>
-    </span>
+        variant="outlined"
+      />
   );
 }
