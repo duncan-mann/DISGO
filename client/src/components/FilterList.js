@@ -1,46 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import FilterListItem from './FilterListItem';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  filterList: {
+  root: {
     textAlign: 'center',
   },
-  title: {
-  }
 }));
 
 export default function Filter(props) {
   const classes = useStyles();
-  const [genres, setGenres] = useState([]);
 
-  useEffect(() => {
-    if (props.songs && props.songs !== {}) {
-      setGenres(Object.keys(props.songs.songs_by_genre));
-    }
-  }, [props.songs])
-
-  const filterByGenre = (arr) => {
-    console.log(arr);
-  }
-
-  const list = genres.map((genre, index) => {
+  // map over keys of songsByGenres object to render genre chips
+  const list = Object.keys(props.songsByGenre).map((genre, index) => {
     return (
         <FilterListItem
           key={index}
           genreName={genre}
-          handleFilter={filterByGenre}
+          selected={props.value.includes(genre) ? true : false}
+          filterByGenre={() => props.onChange(genre)}
         />
     );
   });
 
   return (
-    <div className={classes.filterList}>
+    <div className={classes.root}>
       <ul>
         {list}
-        <FilterListItem
-          genreName='All'
-        />
+        <FilterListItem genreName='All'/>
       </ul>
     </div>
   );
