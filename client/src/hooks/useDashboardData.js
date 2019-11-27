@@ -357,7 +357,7 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
       if (state.currentGenre.length === 0) {
-        console.log('playing this many tracks', state.allSongs.length);
+        console.log(`playing ${state.allSongs.length} tracks`);
 
         // start with all of the genres in the tracks list
         playTracks(state.token, state.deviceId, state.allSongs);
@@ -372,7 +372,7 @@ export default function useDashboardData() {
         });
 
         const uniqueTracks = nonUniqueTracks.filter((item, index) => nonUniqueTracks.indexOf(item) === index);
-        console.log('playing this many tracks', uniqueTracks.length);
+        console.log(`playing ${uniqueTracks.length} tracks`);
 
         // play filtered tracks list
         playTracks(state.token, state.deviceId, uniqueTracks);
