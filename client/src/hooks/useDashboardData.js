@@ -30,7 +30,6 @@ export default function useDashboardData() {
     nextAlbumCover1: null,
     nextAlbumCover2: null,
     playing: false,
-    currentEvent: {},
     currentTrackUri: "",
     // previousTrackUri: [],
     nextTrackUri: ""
@@ -87,7 +86,8 @@ export default function useDashboardData() {
           ...prev,
           allSongs,
           songsByGenre,
-          artistSong
+          artistSong,
+          currentGenre: Object.keys(songsByGenre)
         }));
       });
     }
@@ -309,7 +309,10 @@ useEffect(() => {
 
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId && state.allSongs.length > 0) {
+    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre.length > 0) {
+      
+      console.log('currentGenre', state.currentGenre);
+      
       const allSongs = state.allSongs;
 
       fetch(
@@ -326,7 +329,7 @@ useEffect(() => {
         }
       );
     }
-  }, [state.deviceId, state.allSongs]);
+  }, [state.deviceId, state.allSongs, state.currentGenre]);
 
   // Repeat user playback
   const repeatPlayback = () => {
@@ -348,11 +351,7 @@ useEffect(() => {
 
     if (tmp.includes(genreStr)) {
       // if the genre has been selected before, REMOVE it
-      console.log(`Removing ${genreStr}`);
-
       const filteredArr = tmp.filter(genre => genre !== genreStr);
-
-      console.log('currentGenre', filteredArr);
 
       setState(prev => ({
         ...prev,
@@ -360,19 +359,13 @@ useEffect(() => {
       }));
     } else {
       // if the genre has NOT been selected before, ADD it
-      console.log(`Adding ${genreStr}`);
-
       tmp.push(genreStr);
-
-      console.log('currentGenre', tmp);
 
       setState(prev => ({
         ...prev,
         currentGenre: tmp
       }));
-
     }
-
   };
 
   // music player control functions
