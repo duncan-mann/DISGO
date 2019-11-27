@@ -37,7 +37,6 @@ export default function Dashboard(props) {
     setStartDate,
     setEndDate,
     setTimeFrame,
-    currentEvent
     setLocation,
     filterByGenre } = useDashboardData();
 
@@ -48,15 +47,17 @@ export default function Dashboard(props) {
   return (
     <div>
       <div className={classes.background}>
-      <NavBar 
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-        startDate={state.startDate}
-        endDate={state.endDate}
-        setTimeFrame={setTimeFrame}
-        setLocation={setLocation}
-        location={state.location} />
-      {state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] ?
+        <NavBar
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          startDate={state.startDate}
+          endDate={state.endDate}
+          setTimeFrame={setTimeFrame}
+          setLocation={setLocation}
+          location={state.location}
+        />
+      {state.fetch === 0 && state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] 
+      && state.currentEvent[state.currentTrackUri].length > 0 ?
         <div>
         <EventDetails
           artistName={state && state.artistName}
