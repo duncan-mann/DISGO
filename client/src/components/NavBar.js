@@ -47,6 +47,7 @@ export default function NavBar(props) {
             setEndDate={props.setEndDate}
             />
             <Button variant='contained' color='secondary' onClick={() => props.setTimeFrame(props.startDate, props.endDate, props.location)}>Set Date</Button>
+            <Button variant='contained' color='secondary' onClick={() => props.addUserPlaylist(`Shows in ${props.location}!`)}>Export Playlist</Button>
             <IconButton edge='end' aria-label='account of current user' aria-haspopup='true' color='inherit'>
               <AccountCircle />
             </IconButton>

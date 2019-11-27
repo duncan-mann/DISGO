@@ -35,6 +35,7 @@ export const getSongs = async (token, artists) => {
     const artistSong = {}
     const songs = []
     const all_genres = {}
+
     const songs_by_genre = {
       rock: [],
       country: [],
@@ -89,6 +90,44 @@ export const getSongs = async (token, artists) => {
     console.error(error)
   }
 
+}
+
+export const initPlaylist = async (token, user, playlistName) => {
+
+  try {
+
+   let res = await axios(`https://api.spotify.com/v1/users/${user.username}/playlists`, {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token },
+          data: {
+            name: playlistName, 
+            description: 'Testing adding a playlist to users Library',
+            public: 'false'
+          }
+        })
+
+        return res
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const addSongsToPlaylist = async (token, playlistId, songsArray) => {
+
+  try {
+
+    let res = await axios(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token },
+          data: {
+            uris: songsArray
+          }
+        })
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 
