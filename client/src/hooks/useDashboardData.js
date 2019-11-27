@@ -50,17 +50,18 @@ export default function useDashboardData() {
 
 
   function setStartDate(date) {
-    console.log('Setting start date')
-    setState(prev => ({...prev, startDate: date}))
+    // console.log('Setting start date to:', date);
+    setState(prev => ({...prev, startDate: date}));
 }
 
   function setEndDate(date) {
-    console.log('Setting end date')
-    setState(prev => ({...prev, endDate: date}))
+    // console.log('Setting end date to:', date);
+    setState(prev => ({...prev, endDate: date}));
 }
 
   function setTimeFrame(startDate, endDate) {
-    console.log('start-date', startDate.$d.toJSON())
+    // console.log(`new time window: ${startDate.$d.toJSON()} - ${endDate.$d.toJSON()}`);
+
     getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0])
     .then(events => {
       setState(prev => ({ ...prev, events }));
@@ -98,7 +99,7 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.artists && state.artists !== {}) {
       const artistEvent = {};
-      Object.keys(state.artists).map(artist => {
+      Object.keys(state.artists).forEach(artist => {
         if (state.artists[artist]) {
           artistEvent[state.artists[artist].id] = state.events[artist];
         }
@@ -122,7 +123,7 @@ export default function useDashboardData() {
         }));
       });
     }
-  }, [state.token, state.events, state.artists]);
+  }, [state.artists]);
 
   // fetch song id and event id
   useEffect(() => {
@@ -436,8 +437,8 @@ export default function useDashboardData() {
     handleToggle,
     repeatPlayback,
     filterByGenre,
-    setStartDate, 
-    setEndDate, 
-    setTimeFrame 
+    setStartDate,
+    setEndDate,
+    setTimeFrame
   };
 }
