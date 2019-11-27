@@ -1,6 +1,4 @@
 import React from "react";
-import './Dashboard.css';
-
 // import custom hooks
 import useDashboardData from "../hooks/useDashboardData";
 // import components
@@ -9,8 +7,16 @@ import MusicControls from '../components/MusicControls';
 import EventDetails from "../components/EventDetails";
 import FilterList from '../components/FilterList';
 import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles(theme => ({
+  loadingBar: {
+    marginTop: '500px',
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
   background: {
     'background': `linear-gradient(#212121 50%, #121212 90%)`,
   }
@@ -39,16 +45,20 @@ export default function Dashboard(props) {
   return (
     <div>
       <div className={classes.background}>
-      <NavBar 
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-        startDate={state.startDate}
-        endDate={state.endDate}
-        setTimeFrame={setTimeFrame}
-        setLocation={setLocation}
-        location={state.location} />
+        <NavBar
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          startDate={state.startDate}
+          endDate={state.endDate}
+          setTimeFrame={setTimeFrame}
+          setLocation={setLocation}
+          location={state.location}
+        />
+      {state.fetch === 0 && state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] 
+      && state.currentEvent[state.currentTrackUri].length > 0 ?
+        <div>
         <EventDetails
-          artistName={state.artistName}
+          artistName={state && state.artistName}
           currentEvent={state.currentEvent[state.currentTrackUri]}
         />
         <FilterList
@@ -71,6 +81,13 @@ export default function Dashboard(props) {
           handleToggle={handleToggle}
           handleRepeat={repeatPlayback}
         />
+        </div>
+        :
+        <div className={classes.loadingBar}>
+          <LinearProgress variant="query" />
+          <LinearProgress variant="query" color="secondary" />
+        </div>
+      }
       </div>
     </div >
   );

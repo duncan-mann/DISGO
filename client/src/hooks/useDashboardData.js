@@ -23,6 +23,7 @@ export default function useDashboardData() {
     allSongs: [],
     songsByGenre: {},
     currentEvent: {},
+    currentTrackUri: "",
     // filtering
     currentGenre: [],
     currentPlaylist: [],
@@ -39,16 +40,15 @@ export default function useDashboardData() {
     nextAlbumCover1: null,
     nextAlbumCover2: null,
     playing: false,
-    currentTrackUri: "",
-    nextTrackUri: "",
-    previousTrackUri: "",
+    nextTrackUri: [],
+    previousTrackUri: [],
     startDate: today,
     endDate: future,
-    location: "Toronto"
+    location: "Toronto",
+    fetch: 0
   });
 
   const [currentPlayer, setPlayer] = useState(null);
-
 
   function setStartDate(date) {
     // console.log('Setting start date to:', date);
@@ -62,9 +62,10 @@ export default function useDashboardData() {
 
   function setLocation(loc) {
     setState(prev => ({...prev, location: loc}))
-
   }
+
   function setTimeFrame(startDate, endDate, location) {
+    setState(prev => ({ ...prev, fetch: 1 }))
     getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0], location)
     .then(events => {
       setState(prev => ({ ...prev, events }));
@@ -186,8 +187,6 @@ export default function useDashboardData() {
           current_track,
           next_tracks,
           previous_tracks,
-          position,
-          duration
         } = playerState.track_window;
         const trackName = current_track.name;
         const albumName = current_track.album.name;
@@ -196,7 +195,15 @@ export default function useDashboardData() {
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
         // extract information from previous, next tracks
-        if (previous_tracks && previous_tracks.length > 0) {
+        if (previous_tracks && previous_tracks.length  === 1) {
+          const prevAlbumCover1 = previous_tracks[0].album.images[0].url;
+          const prevAlbumCover2 = null
+          setState(prev => ({
+            ...prev,
+            prevAlbumCover1,
+            prevAlbumCover2
+          }));
+        } else if (previous_tracks.length  > 1) {
           const prevAlbumCover1 = previous_tracks[1].album.images[0].url;
           const prevAlbumCover2 = previous_tracks[0].album.images[0].url;
           setState(prev => ({
@@ -204,7 +211,16 @@ export default function useDashboardData() {
             prevAlbumCover1,
             prevAlbumCover2
           }));
+        } else {
+          const prevAlbumCover1 = null
+          const prevAlbumCover2 = null
+          setState(prev => ({
+            ...prev,
+            prevAlbumCover1,
+            prevAlbumCover2
+          }));
         }
+
         if (next_tracks && next_tracks.length > 0) {
           const nextAlbumCover1 = next_tracks[0].album.images[0].url;
           const nextAlbumCover2 = next_tracks[1].album.images[0].url;
@@ -218,8 +234,6 @@ export default function useDashboardData() {
 
         setState(prev => ({
           ...prev,
-          position,
-          duration,
           trackName,
           albumName,
           artistName,
@@ -230,13 +244,19 @@ export default function useDashboardData() {
         //////////////////////////////////////////////////
         const currentTrackUri = current_track.uri;
         const nextTrackUri = [next_tracks[0].uri, next_tracks[1].uri];
-        const previousTrackUri = [
-          previous_tracks[0].uri,
-          previous_tracks[1].uri
-        ];
+        
+        if(previous_tracks.length  === 1) {
+          let previousTrackUri = [previous_tracks[0].uri];
+          setState(prev => ({ ...prev, previousTrackUri }));
+        } else if (previous_tracks.length > 1) {
+          let previousTrackUri = [previous_tracks[0].uri,previous_tracks[1].uri];
+          setState(prev => ({ ...prev, previousTrackUri }));
+        } else {
+          let previousTrackUri = []
+          setState(prev => ({ ...prev, previousTrackUri }));
+        }
         setState(prev => ({ ...prev, currentTrackUri }));
         setState(prev => ({ ...prev, nextTrackUri }));
-        setState(prev => ({ ...prev, previousTrackUri }));
         // console.log("previous tracks!", previousTrackUri)
         // console.log("next tracks", nextTrackUri)
       });
@@ -286,7 +306,8 @@ export default function useDashboardData() {
 
         setState(prev => ({
           ...prev,
-          currentEvent: temp
+          currentEvent: temp,
+          // fetch
         }));
       }
     }
@@ -341,6 +362,7 @@ export default function useDashboardData() {
             ...prev,
             currentEvent: temp
           }));
+
         }
       }
     }
@@ -356,7 +378,13 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
-    });
+    }).then(() => {
+      // const fetch = state.fetch > 0 ? 0 : 1;
+      setState(prev => ({
+        ...prev,
+        fetch: 0
+      }));
+    })
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
