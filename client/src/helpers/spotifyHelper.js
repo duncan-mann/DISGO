@@ -18,11 +18,13 @@ export const getArtists = async (token, events) => {
         type: 'GET',
         headers: { 'Authorization': 'Bearer ' + token }
       });
-      // replace '%20' with space
-      let split = each.split('%20');
-      artists[split.join(' ')] = res.data.artists.items[0];
+      // // replace '%20' with space
+      // let split = each.split('%20');
+      // artists[split.join(' ')] = res.data.artists.items[0];
       // // using the artist name returned from Spotify does not work with the rest of the code
       // if (res.data.artists.items[0]) {
+      //   console.log('seatgeek artist name =>', each);
+      //   console.log('spotify artist name =>', res.data.artists.items[0].name);
       //   artists[res.data.artists.items[0].name] = res.data.artists.items[0];
       // }
     }
