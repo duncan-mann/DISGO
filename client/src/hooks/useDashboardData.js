@@ -60,14 +60,17 @@ export default function useDashboardData() {
     setState(prev => ({...prev, endDate: date}));
 }
 
-  function setTimeFrame(startDate, endDate) {
-    // console.log(`new time window: ${startDate.$d.toJSON()} - ${endDate.$d.toJSON()}`);
+  function setLocation(loc) {
+    setState(prev => ({...prev, location: loc}))
 
-    getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0])
+  }
+  function setTimeFrame(startDate, endDate, location) {
+    getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0], location)
     .then(events => {
       setState(prev => ({ ...prev, events }));
   })
 }
+
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
@@ -81,7 +84,7 @@ export default function useDashboardData() {
   // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
-      getPerformers(state.startDate, state.endDate)
+      getPerformers(state.startDate, state.endDate, state.location)
         .then(events => {
         setState(prev => ({ ...prev, events }));
       });
@@ -449,8 +452,9 @@ export default function useDashboardData() {
     handleToggle,
     repeatPlayback,
     filterByGenre,
-    setStartDate,
-    setEndDate,
-    setTimeFrame
+    setStartDate, 
+    setEndDate, 
+    setTimeFrame,
+    setLocation
   };
 }
