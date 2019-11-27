@@ -25,15 +25,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function EventDetails(props) {
   const classes = useStyles();
-  const [events, setEvents] = useState([])
+  // const [events, setEvents] = useState([])
 
-  useEffect(() => {
-    if (props.currentEvent) {
-      setEvents(props.currentEvent)
-    }
-  }, [props.currentEvent])
+  // useEffect(() => {
+  //   if (props.currentEvent) {
+  //     setEvents(props.currentEvent)
+  //   }
+  // }, [props.currentEvent])
 
-  const list = events.map((e, index) => {
+  const list = props.currentEvent.map((e, index) => {
     return (
       <EventDetailItems
         key={index}
