@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 // create theme for entire project
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/dayjs';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,27 +30,29 @@ const theme = createMuiTheme({
 
 export default function App(props) {
 
-    const App = () => (
-      <div>
-        <Switch>
-          <Route exact path='/'>
-            <Login/>
-          </Route>
-          <Route path='/dashboard'>
-            <Dashboard/>
-          </Route>/>
+  const App = () => (
+    <div>
+      <Switch>
+        <Route exact path='/'>
+          <Login />
+        </Route>
+        <Route path='/dashboard'>
+          <Dashboard />
+        </Route>/>
         </Switch>
-      </div>
-    )
-    return (
+    </div>
+  )
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <App/>
+            <App />
           </Switch>
         </Router>
       </ThemeProvider>
-    );
-  }
+    </MuiPickersUtilsProvider>
+  );
+}
 
 

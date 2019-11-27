@@ -26,10 +26,32 @@ export default function useDashboardData() {
     nextAlbumCover2: null,
     playing: false,
     currentEvent: {},
-    currentTrackUri: ""
+    currentTrackUri: "",
+    startDate: null,
+    endDate: null,
+    location: "Toronto"
   });
 
   const [currentPlayer, setPlayer] = useState(null);
+
+
+  function setStartDate(date) {
+    console.log('Setting start date')
+    setState(prev => ({...prev, startDate: date}))
+}
+
+  function setEndDate(date) {
+    console.log('Setting end date')
+    setState(prev => ({...prev, endDate: date}))
+}
+
+  function setTimeFrame(startDate, endDate) {
+    console.log(startDate, endDate)
+    getPerformers(startDate, endDate)
+    .then(events => {
+      setState(prev => ({ ...prev, events }));
+  })
+}
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
@@ -265,6 +287,6 @@ useEffect(() => {
   const handleNext = () => {currentPlayer.nextTrack()};
   const handleToggle = () => {currentPlayer.togglePlay()};
 
-  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback }
+  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback, setStartDate, setEndDate, setTimeFrame }
 }
 

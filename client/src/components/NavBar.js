@@ -1,5 +1,6 @@
 import React from 'react';
 // import './NavBar.css';
+import DateSetter from './DateSetter'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NavBar() {
+export default function NavBar(props) {
   const classes = useStyles();
  
   return (
@@ -34,7 +35,13 @@ export default function NavBar() {
             <Typography variant='h6' className={classes.title}>
               Discover
             </Typography>
-            <Button variant='contained' color='secondary'>Login</Button>
+            <DateSetter
+            startDate={props.startDate}
+            setStartDate={props.setStartDate}
+            endDate={props.endDate}
+            setEndDate={props.setEndDate}
+            />
+            <Button variant='contained' color='secondary' onClick={() => props.setTimeFrame(props.startDate, props.endDate)}>Set Date</Button>
             <IconButton edge='end' aria-label='account of current user' aria-haspopup='true' color='inherit'>
               <AccountCircle />
             </IconButton>
