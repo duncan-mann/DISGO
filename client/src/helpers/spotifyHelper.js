@@ -1,30 +1,37 @@
 
-import axios from 'axios'
+import axios from 'axios';
 
 export const getArtists = async (token, events) => {
   try {
 
-    let queryStrings = []
+    let queryStrings = [];
 
     for (let artist in events) {
-      let split = artist.split(' ')
-      queryStrings.push(split.join('%20'))
+      let split = artist.split(' ');
+      queryStrings.push(split.join('%20'));
     }
 
-    let artists = {}
+    let artists = {};
 
     for (let each of queryStrings) {
-      let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist`, {
+      let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist&limit=1`, {
         type: 'GET',
         headers: { 'Authorization': 'Bearer ' + token }
-      })
-      let split = each.split('%20')
-      artists[split.join(' ')] = res.data.artists.items[0]
+      });
+      // // replace '%20' with space
+      // let split = each.split('%20');
+      // artists[split.join(' ')] = res.data.artists.items[0];
+      // // using the artist name returned from Spotify does not work with the rest of the code
+      // if (res.data.artists.items[0]) {
+      //   console.log('seatgeek artist name =>', each);
+      //   console.log('spotify artist name =>', res.data.artists.items[0].name);
+      //   artists[res.data.artists.items[0].name] = res.data.artists.items[0];
+      // }
     }
     return artists;
 
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
