@@ -17,9 +17,14 @@ export const getArtists = async (token, events) => {
       let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist&limit=1`, {
         type: 'GET',
         headers: { 'Authorization': 'Bearer ' + token }
-      })
+      });
+      // replace '%20' with space
       let split = each.split('%20');
       artists[split.join(' ')] = res.data.artists.items[0];
+      // // using the artist name returned from Spotify does not work with the rest of the code
+      // if (res.data.artists.items[0]) {
+      //   artists[res.data.artists.items[0].name] = res.data.artists.items[0];
+      // }
     }
     return artists;
 
