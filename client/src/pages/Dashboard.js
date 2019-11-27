@@ -1,6 +1,4 @@
 import React from "react";
-import './Dashboard.css';
-
 // import custom hooks
 import useDashboardData from "../hooks/useDashboardData";
 // import components
@@ -37,13 +35,12 @@ export default function Dashboard(props) {
     setStartDate,
     setEndDate,
     setTimeFrame,
-    currentEvent
     setLocation,
     filterByGenre } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
-  
+
 
   return (
     <div>
@@ -61,7 +58,7 @@ export default function Dashboard(props) {
         <EventDetails
           artistName={state && state.artistName}
           currentEvent={state.currentEvent[state.currentTrackUri]}
-        />  
+        />
         <FilterList
           allSongs={state && state.allSongs}
           songsByGenre={state && state.songsByGenre}
