@@ -21,6 +21,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
+  form: {
+    'color': 'white'
+  }
 }));
 
 export default function NavBar(props) {
