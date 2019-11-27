@@ -23,6 +23,7 @@ export default function useDashboardData() {
     allSongs: [],
     songsByGenre: {},
     currentEvent: {},
+    currentTrackUri: "",
     // filtering
     currentGenre: [],
     currentPlaylist: [],
@@ -39,16 +40,15 @@ export default function useDashboardData() {
     nextAlbumCover1: null,
     nextAlbumCover2: null,
     playing: false,
-    currentTrackUri: "",
     nextTrackUri: [],
     previousTrackUri: [],
     startDate: today,
     endDate: future,
-    location: "Toronto"
+    location: "Toronto",
+    fetch: 0
   });
 
   const [currentPlayer, setPlayer] = useState(null);
-  // const [currentEvent, setCurrentEvent] = useState({});
 
   function setStartDate(date) {
     // console.log('Setting start date to:', date);
@@ -62,9 +62,10 @@ export default function useDashboardData() {
 
   function setLocation(loc) {
     setState(prev => ({...prev, location: loc}))
-
   }
+
   function setTimeFrame(startDate, endDate, location) {
+    setState(prev => ({ ...prev, fetch: 1 }))
     getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0], location)
     .then(events => {
       setState(prev => ({ ...prev, events }));
@@ -186,8 +187,6 @@ export default function useDashboardData() {
           current_track,
           next_tracks,
           previous_tracks,
-          position,
-          duration
         } = playerState.track_window;
         const trackName = current_track.name;
         const albumName = current_track.album.name;
@@ -235,8 +234,6 @@ export default function useDashboardData() {
 
         setState(prev => ({
           ...prev,
-          position,
-          duration,
           trackName,
           albumName,
           artistName,
@@ -309,7 +306,8 @@ export default function useDashboardData() {
 
         setState(prev => ({
           ...prev,
-          currentEvent: temp
+          currentEvent: temp,
+          // fetch
         }));
       }
     }
@@ -364,6 +362,7 @@ export default function useDashboardData() {
             ...prev,
             currentEvent: temp
           }));
+
         }
       }
     }
@@ -379,7 +378,13 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
-    });
+    }).then(() => {
+      // const fetch = state.fetch > 0 ? 0 : 1;
+      setState(prev => ({
+        ...prev,
+        fetch: 0
+      }));
+    })
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
