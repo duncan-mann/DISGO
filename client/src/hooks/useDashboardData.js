@@ -247,7 +247,7 @@ export default function useDashboardData() {
         //////////////////////////////////////////////////
         const currentTrackUri = current_track.uri;
         const nextTrackUri = [next_tracks[0].uri, next_tracks[1].uri];
-        
+
         if(previous_tracks.length  === 1) {
           let previousTrackUri = [previous_tracks[0].uri];
           setState(prev => ({ ...prev, previousTrackUri }));
