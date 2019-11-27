@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 
 export default function DateSetter(props) {
