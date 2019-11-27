@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import './Dashboard.css';
 
 // import custom hooks
@@ -25,7 +25,8 @@ export default function Dashboard(props) {
     handleNext,
     handlePrev,
     handleToggle,
-    repeatPlayback } = useDashboardData();
+    repeatPlayback,
+    filterByGenre } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
@@ -41,6 +42,8 @@ export default function Dashboard(props) {
         <FilterList
           allSongs={state && state.allSongs}
           songsByGenre={state && state.songsByGenre}
+          onChange={filterByGenre}
+          value={state && state.currentGenre}
         />
         <MusicControls
           player={currentPlayer}

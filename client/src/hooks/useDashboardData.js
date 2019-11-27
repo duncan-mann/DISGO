@@ -15,6 +15,10 @@ export default function useDashboardData() {
     songEvent: {},
     allSongs: [],
     songsByGenre: {},
+    currentEvent: {},
+    // filtering
+    currentGenre: {},
+    // Spotfiy Playback SDK
     deviceId: null,
     position: 0,
     duration: 0,
@@ -27,7 +31,6 @@ export default function useDashboardData() {
     nextAlbumCover1: null,
     nextAlbumCover2: null,
     playing: false,
-    currentEvent: {},
     currentTrackUri: ""
   });
 
@@ -125,7 +128,7 @@ useEffect(() => {
       getOAuthToken: callback => {
         callback(_token);
       },
-      volume: 0.1
+      volume: 0.05
     });
     // add player object to state
     // console.log(player);
@@ -238,7 +241,7 @@ useEffect(() => {
 
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId && state.allSongs) {
+    if (state.token && state.deviceId && state.allSongs.length > 0) {
 
       const allSongs = state.allSongs;
 
@@ -270,11 +273,23 @@ useEffect(() => {
     })
  };
 
+ const filterByGenre = (arr) => {
+  console.log(`Clicked on ${arr} chip`);
+}
+
   // music player control functions
   const handlePrev = () => {currentPlayer.previousTrack()};
   const handleNext = () => {currentPlayer.nextTrack()};
   const handleToggle = () => {currentPlayer.togglePlay()};
 
-  return {state, currentPlayer, handlePrev, handleNext, handleToggle, repeatPlayback }
+  return {
+    state,
+    currentPlayer,
+    handlePrev,
+    handleNext,
+    handleToggle,
+    repeatPlayback,
+    filterByGenre
+  }
 }
 

@@ -25,7 +25,7 @@ export default function FilterListItem(props) {
         size="small"
         icon={<MusicNoteIcon />}
         label={props.genreName}
-        onClick={props.handleFilter}
+        onClick={props.filterByGenre}
         clickable
         color='secondary'
         variant="outlined"
