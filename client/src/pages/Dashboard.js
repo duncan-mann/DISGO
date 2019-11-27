@@ -37,8 +37,9 @@ export default function Dashboard(props) {
     setStartDate,
     setEndDate,
     setTimeFrame,
-    filterByGenre,
-    currentEvent } = useDashboardData();
+    currentEvent
+    setLocation,
+    filterByGenre } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
@@ -52,10 +53,11 @@ export default function Dashboard(props) {
         setEndDate={setEndDate}
         startDate={state.startDate}
         endDate={state.endDate}
-        setTimeFrame={setTimeFrame} />
-        {state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] ?
+        setTimeFrame={setTimeFrame}
+        setLocation={setLocation}
+        location={state.location} />
+      {state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] ?
         <div>
-
         <EventDetails
           artistName={state && state.artistName}
           currentEvent={state.currentEvent[state.currentTrackUri]}
