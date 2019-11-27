@@ -13,6 +13,8 @@ export default function useDashboardData() {
     artistEvent: {},
     artistSong: {},
     songEvent: {},
+    allSongs: [],
+    songsByGenre: {},
     deviceId: null,
     position: 0,
     duration: 0,
@@ -76,9 +78,14 @@ export default function useDashboardData() {
     if (state.token) {
       getSongs(state.token, state.artists)
         .then(res => {
-          const { songs, songs_by_genre, all_genres, artistSong } = res
-          setState(prev => ({...prev, songs: {songs, songs_by_genre, all_genres }}))
-          setState(prev => ({...prev, artistSong}))
+          const { allSongs, songsByGenre, artistSong } = res
+          // setState(prev => ({...prev, songs: {songs, songsByGenre, allGenre }}));
+          setState(prev => ({
+            ...prev,
+            allSongs,
+            songsByGenre,
+            artistSong
+          }));
         })
     }
   }, [state.token, state.events, state.artists]);
@@ -231,8 +238,8 @@ useEffect(() => {
 
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId && state.songs && state.songs.songs.length > 0) {
-      const allSongs = state.songs.songs;
+    if (state.token && state.deviceId && state.allSongs) {
+      const allSongs = state.allSongs;
 
       fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${state.deviceId}`, {
           method: "PUT",
@@ -242,10 +249,10 @@ useEffect(() => {
           },
           body: JSON.stringify({
             uris: allSongs
-        })
+          })
         });
       }
-  }, [state.deviceId , state.songs]);
+  }, [state.deviceId , state.allSongs]);
 
   // Repeat user playback
  const repeatPlayback = () => {

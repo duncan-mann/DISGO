@@ -1,7 +1,6 @@
 
 import axios from 'axios'
 
-
 export const getArtists = async (token, events) => {
   try {
 
@@ -13,7 +12,7 @@ export const getArtists = async (token, events) => {
     }
 
     let artists = {}
-    
+
     for (let each of queryStrings) {
       let res = await axios(`https://api.spotify.com/v1/search?q=${each}&type=artist`, {
         type: 'GET',
@@ -32,7 +31,7 @@ export const getArtists = async (token, events) => {
 export const getSongs = async (token, artists) => {
 
   try {
-    
+
     const artistSong = {}
     const songs = []
     const all_genres = {}
@@ -84,7 +83,7 @@ export const getSongs = async (token, artists) => {
       }
 
     }
-    return { songs, songs_by_genre, all_genres, artistSong }
+    return { allSongs: songs, songsByGenre: songs_by_genre, artistSong }
 
   } catch (error) {
     console.error(error)

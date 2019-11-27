@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
-// import Fab from '@material-ui/core/Fab';
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
 
 const useStyles = makeStyles(theme => ({
