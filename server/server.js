@@ -72,7 +72,7 @@ app.get(
       // function will not be called.
     }
   );
-  
+
   // GET /auth/spotify/callback
   //   Use passport.authenticate() as route middleware to authenticate the
   //   request. If authentication fails, the user will be redirected back to the
@@ -86,11 +86,11 @@ app.get(
       res.redirect('http://localhost:3000/dashboard');
     }
   );
-  
+
   app.get('/getUser', (req, res) => {
     res.json({ user: current_user, token: access_token});
   })
-  
+
   // Simple route middleware to ensure user is authenticated.
   //   Use this route middleware on any resource that needs to be protected.  If
   //   the request is authenticated (typically via a persistent login session),
@@ -102,4 +102,3 @@ app.get(
     }
     res.redirect('/login');
   }
-  
