@@ -12,7 +12,14 @@ const useStyles = makeStyles(theme => ({
     fontSize: 24,
     width: "30%",
     borderRadius: 25,
-    marginTop: "50px"
+    // marginTop: "50px",
+    position: 'absolute',
+    zIndex: 999,
+  },
+  backgroundVideo: {
+    height: '100%',
+    width: '100%',
+    opacity: 0.05,
   }
 }));
 
@@ -21,10 +28,6 @@ export default function Login(props) {
 
   return (
     <div className={classes.root}>
-      <video id="background-video" loop autoPlay height="100%" width="100%">
-        <source src={backgroundVideo} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
       <Grid
         container
         spacing={0}
@@ -42,6 +45,10 @@ export default function Login(props) {
         >
           Login
         </Button>
+        <video className={classes.backgroundVideo} loop autoPlay>
+            <source src={backgroundVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
       </Grid>
     </div>
   );
