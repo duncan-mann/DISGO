@@ -8,9 +8,6 @@ export default function useDashboardData() {
   let today = new Date()
   let future = new Date()
   future.setDate(today.getDate()+29)
-  future = future.toJSON().split('T')[0]
-  today = today.toJSON().split('T')[0]
-
 
   const [state, setState] = useState({
     user: {},
@@ -66,6 +63,7 @@ export default function useDashboardData() {
 
   function setTimeFrame(startDate, endDate, location) {
     setState(prev => ({ ...prev, fetch: 1 }))
+    console.log('Dates',startDate, endDate)
     getPerformers(startDate.toJSON().split('T')[0], endDate.toJSON().split('T')[0], location)
     .then(events => {
       setState(prev => ({ ...prev, events }));
@@ -93,7 +91,7 @@ export default function useDashboardData() {
   // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
-      getPerformers(state.startDate, state.endDate, state.location)
+      getPerformers(state.startDate.toJSON().split('T')[0], state.endDate.toJSON().split('T')[0], state.location)
         .then(events => {
         setState(prev => ({ ...prev, events }));
       });
