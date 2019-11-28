@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getArtists, getSongs } from "../helpers/spotifyHelper";
+import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
@@ -72,6 +72,14 @@ export default function useDashboardData() {
   })
 }
 
+  function addUserPlaylist(playlistName) {
+    initPlaylist(state.token, state.user, playlistName)
+      .then(response => {
+        addSongsToPlaylist(state.token, response.data.id, state.currentPlaylist)
+        console.log('Playlist id', response.data.id)
+      })
+
+  }
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
@@ -483,6 +491,7 @@ export default function useDashboardData() {
     setStartDate, 
     setEndDate, 
     setTimeFrame,
-    setLocation
+    setLocation,
+    addUserPlaylist
   };
 }
