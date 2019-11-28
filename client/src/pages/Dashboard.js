@@ -6,6 +6,7 @@ import NavBar from "../components/NavBar";
 import MusicControls from "../components/MusicControls";
 import EventDetails from "../components/EventDetails";
 import FilterList from "../components/FilterList";
+import MusicControlBar from "../components/MusicControlBar";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
@@ -19,7 +20,8 @@ const useStyles = makeStyles(theme => ({
   },
   background: {
     background: `linear-gradient(#212121 50%, #121212 90%)`
-  }
+  },
+  musicControlBar: {}
 }));
 
 export default function Dashboard(props) {
@@ -76,17 +78,12 @@ export default function Dashboard(props) {
               />
               <MusicControls
                 player={currentPlayer}
-                playing={state.playing}
                 trackName={state.trackName}
                 albumName={state.albumName}
                 currentAlbumCover={state.currentAlbumCover}
                 prevAlbumCover={prevAlbumCovers}
                 nextAlbumCover={nextAlbumCovers}
                 artistName={state.artistName}
-                handlePrev={handlePrev}
-                handleNext={handleNext}
-                handleToggle={handleToggle}
-                handleRepeat={repeatPlayback}
               />
             </div>
           </div>
@@ -97,6 +94,13 @@ export default function Dashboard(props) {
           </div>
         )}
       </div>
+      <MusicControlBar
+        playing={state.playing}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
+        handleToggle={handleToggle}
+        handleRepeat={repeatPlayback}
+      />
     </div>
   );
 }
