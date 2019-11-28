@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
-    color: "white"
+    color: "white",
+    flexGrow: 1,
   },
   barLeft: {
     float: "left"
