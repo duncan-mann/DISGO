@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import EventDetailItems from './EventDetailItems'
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -25,13 +25,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function EventDetails(props) {
   const classes = useStyles();
-  // const [events, setEvents] = useState([])
-
-  // useEffect(() => {
-  //   if (props.currentEvent) {
-  //     setEvents(props.currentEvent)
-  //   }
-  // }, [props.currentEvent])
 
   const list = props.currentEvent.map((e, index) => {
     return (
