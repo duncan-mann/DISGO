@@ -11,7 +11,6 @@ export default function useDashboardData() {
   future = future.toJSON().split('T')[0]
   today = today.toJSON().split('T')[0]
 
-
   const [state, setState] = useState({
     user: {},
     token: null,
@@ -414,7 +413,7 @@ export default function useDashboardData() {
 
         state.currentGenre.forEach(genre => {
           state.songsByGenre[genre].forEach(songUri => {
-            nonUniqueTracks.push(songUri);
+            nonUniqueTracks.unshift(songUri);
           })
         });
 
