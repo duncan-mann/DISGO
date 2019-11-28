@@ -4,7 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import ToysIcon from "@material-ui/icons/Toys";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
-import PauseIcon from "@material-ui/icons/Pause";
+import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import RepeatOneIcon from "@material-ui/icons/RepeatOne";
@@ -16,7 +16,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // flexGrow: 1,
   },
   musicControlBar: {
     top: "auto",
@@ -41,7 +40,8 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     width: "25%",
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignItems: 'center',
   },
   musicIcon: {
     "&:hover": {
@@ -67,86 +67,86 @@ export default function MusicControlBar(props) {
     <div className={classes.root}>
       <AppBar className={classes.musicControlBar} position="fixed">
         <Toolbar>
-          <div className={classes.barLeft}>
-            <ToysIcon className={classes.toysIcon} />
-          </div>
-          <div className={classes.barCenter}>
-            <ShuffleIcon
-              className={classes.musicIcon}
-              onClick={props.handleShuffle}
-              fontSize="default"
-              aria-label="shuffle"
-              color={props.shuffleMode ? "secondary" : "error"}
-            />
-            <SkipPreviousIcon
-              className={classes.musicIcon}
-              onClick={props.handlePrev}
-              fontSize="default"
-              aria-label="previous"
-              color="error"
-            />
-            {props.playing ? (
-              <PauseIcon
+            <div className={classes.barLeft}>
+              <ToysIcon className={classes.toysIcon} />
+            </div>
+            <div className={classes.barCenter}>
+              <ShuffleIcon
                 className={classes.musicIcon}
-                onClick={props.handleToggle}
+                onClick={props.handleShuffle}
                 fontSize="default"
-                aria-label="Playing"
+                aria-label="shuffle"
+                color={props.shuffleMode ? "secondary" : "error"}
+              />
+              <SkipPreviousIcon
+                className={classes.musicIcon}
+                onClick={props.handlePrev}
+                fontSize="default"
+                aria-label="previous"
                 color="error"
               />
-            ) : (
-              <PlayCircleOutlineIcon
+              {props.playing ? (
+                <PauseCircleOutlineIcon
+                  className={classes.musicIcon}
+                  onClick={props.handleToggle}
+                  fontSize="large"
+                  aria-label="Playing"
+                  color="error"
+                />
+              ) : (
+                <PlayCircleOutlineIcon
+                  className={classes.musicIcon}
+                  onClick={props.handleToggle}
+                  fontSize="large"
+                  aria-label="Paused"
+                  color="error"
+                />
+              )}
+              <SkipNextIcon
                 className={classes.musicIcon}
-                onClick={props.handleToggle}
+                onClick={props.handleNext}
                 fontSize="default"
-                aria-label="Paused"
+                aria-label="next"
                 color="error"
               />
-            )}
-            <SkipNextIcon
-              className={classes.musicIcon}
-              onClick={props.handleNext}
-              fontSize="default"
-              aria-label="next"
-              color="error"
-            />
-            {props.repeatMode === 1 ? (
-              <RepeatOneIcon
+              {props.repeatMode === 1 ? (
+                <RepeatOneIcon
+                  className={classes.musicIcon}
+                  onClick={() => props.handleRepeat(props.repeatMode)}
+                  fontSize="default"
+                  aria-label="repeat-one"
+                  color="secondary"
+                />
+              ) : (
+                <RepeatIcon
+                  className={classes.musicIcon}
+                  onClick={() => props.handleRepeat(props.repeatMode)}
+                  fontSize="default"
+                  aria-label="repeat"
+                  color={props.repeatMode === 0 ? "error" : "secondary"}
+                />
+              )}
+            </div>
+            <div className={classes.barRight}>
+              <PlaylistAddIcon
                 className={classes.musicIcon}
-                onClick={() => props.handleRepeat(props.repeatMode)}
                 fontSize="default"
-                aria-label="repeat-one"
-                color="secondary"
+                aria-label="export-playlist"
+                color="error"
               />
-            ) : (
-              <RepeatIcon
+              <VolumeUpIcon
                 className={classes.musicIcon}
-                onClick={() => props.handleRepeat(props.repeatMode)}
                 fontSize="default"
-                aria-label="repeat"
-                color={props.repeatMode === 0 ? "error" : "secondary"}
+                aria-label="volume-on"
+                color="error"
               />
-            )}
-          </div>
-          <div className={classes.barRight}>
-            <PlaylistAddIcon
-              className={classes.musicIcon}
-              fontSize="default"
-              aria-label="export-playlist"
-              color="error"
-            />
-            <VolumeUpIcon
-              className={classes.musicIcon}
-              fontSize="default"
-              aria-label="volume-on"
-              color="error"
-            />
-            <VolumeOffIcon
-              className={classes.musicIcon}
-              fontSize="default"
-              aria-label="volume-off"
-              color="error"
-            />
-          </div>
+              <VolumeOffIcon
+                className={classes.musicIcon}
+                fontSize="default"
+                aria-label="volume-off"
+                color="error"
+              />
+            </div>
         </Toolbar>
       </AppBar>
     </div>
