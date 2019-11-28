@@ -14,8 +14,9 @@ export default function EventDetailItems(props) {
   return (
     <div>
       <p>Playing at {props.venue} </p>
-      <p>Address: {props.address} Date: {props.date} Average Ticket Price: {props.avgTicketPrice ? `$${props.avgTicketPrice}` : "SOLD OUT!"}</p>
-      <a href={props.url}>Purchase Ticket</a>
+      <p>Address: {props.address} Date: {props.date} </p>
+      <p>{props.lowestPrice ? `Tickets Starting at: $${props.lowestPrice}`: "Sorry, tickets are currently sold out!"}</p>
+      <a href={props.url} target="_blank">Purchase Ticket</a>
     </div>
   )
 }

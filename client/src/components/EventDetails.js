@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import EventDetailItems from './EventDetailItems'
 import { makeStyles } from '@material-ui/core/styles';
+import { borderRadius } from '@material-ui/system';
 
 
 const useStyles = makeStyles(theme => ({
   event: {
     'padding-top': '5%',
     color: 'white',
-    'text-align': 'center',
+    // 'text-align': 'center',
     'display': 'flex',
-    'flex-direction': 'column'
+    // 'flex-direction': 'column'
+    "justifyContent": 'space-around'
   },
   artist: {
     color: 'white',
@@ -18,8 +20,11 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     'border-bottom': '1px solid white'
   },
-  details: {
-    display: 'inline-block'
+  details: {  
+    backgroundColor: "#393e46",
+    textAlign: "center",
+    padding: "10px",
+    borderRadius: "5px"
   }
 }))
 
@@ -40,16 +45,16 @@ export default function EventDetails(props) {
         venue={e.venue.name}
         address={e.venue.address}
         date={e.datetime_local.split("T")[0]}
-        avgTicketPrice={e.stats.average_price}
+        lowestPrice={e.stats.lowest_price}
         url={e.url}
       />
     )
   }
   )
-
+  
   return (
     <div className={classes.event}>
-      <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1>
+      {/* <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1> */}
       <div className={classes.details}>
         {list}
       </div>
