@@ -113,13 +113,7 @@ export default function MusicControlBar(props) {
               onClick={props.handleRepeat}
               fontSize="default"
               aria-label="repeat"
-              color="error"
-            />
-            <RepeatOneIcon
-              className={classes.musicIcon}
-              fontSize="default"
-              aria-label="repeatOne"
-              color="error"
+              color={props.repeatMode === 0 ? "error" : "secondary"}
             />
           </div>
           <div className={classes.barRight}>

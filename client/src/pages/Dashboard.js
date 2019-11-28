@@ -96,6 +96,7 @@ export default function Dashboard(props) {
       </div>
       <MusicControlBar
         playing={state.playing}
+        repeatMode={state.repeat_mode}
         handlePrev={handlePrev}
         handleNext={handleNext}
         handleToggle={handleToggle}

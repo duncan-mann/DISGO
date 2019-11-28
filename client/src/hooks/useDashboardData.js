@@ -17,6 +17,7 @@ export default function useDashboardData() {
 
   const [state, setState] = useState({
     onMount: true,
+    fetch: 0,
     user: {},
     token: null,
     artists: {},
@@ -33,8 +34,7 @@ export default function useDashboardData() {
     currentPlaylist: [],
     // Spotfiy Playback SDK
     deviceId: null,
-    position: 0,
-    duration: 0,
+    repeat_mode: 0,
     trackName: "",
     albumName: "",
     artistName: "",
@@ -49,7 +49,6 @@ export default function useDashboardData() {
     startDate: today,
     endDate: future,
     location: "Toronto",
-    fetch: 0
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -207,6 +206,8 @@ export default function useDashboardData() {
 
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
+        const repeat_mode = playerState.repeat_mode;
+
         // extract information from previous, next tracks
         if (previous_tracks && previous_tracks.length === 1) {
           const prevAlbumCover1 = previous_tracks[0].album.images[0].url;
@@ -253,7 +254,8 @@ export default function useDashboardData() {
           playing,
           currentAlbumCover,
           fetch: 0,
-          onMount: false
+          onMount: false,
+          repeat_mode,
         }));
 
         //////////////////////////////////////////////////
