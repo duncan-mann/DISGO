@@ -11,8 +11,6 @@ import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { makeStyles } from '@material-ui/core/styles';
 
-
-
 const useStyles = makeStyles(theme => ({
   MusicControls : {
     'background' : `linear-gradient(#212121 50%, #121212 90%)`,
