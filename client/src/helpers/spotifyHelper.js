@@ -41,7 +41,7 @@ export const getSongs = async (token, artists) => {
 
     const artistSong = {}
     const songs = []
-    const all_genres = {}
+    // const all_genres = {}
 
     const songs_by_genre = {
       rock: [],
@@ -80,18 +80,24 @@ export const getSongs = async (token, artists) => {
             songs_by_genre[genre].push(res.data.tracks[0].uri)
           }
         }
-
-        for (let genre of artists[artist].genres) {
-          if (!all_genres[genre]) {
-            all_genres[genre] = [res.data.tracks[0].uri]
-          } else {
-            all_genres[genre].push(res.data.tracks[0].uri)
-          }
-        }
+        // for (let genre of artists[artist].genres) {
+        //   if (!all_genres[genre]) {
+        //     all_genres[genre] = [res.data.tracks[0].uri]
+        //   } else {
+        //     all_genres[genre].push(res.data.tracks[0].uri)
+        //   }
+        // }
       }
-
     }
-    return { allSongs: songs, songsByGenre: songs_by_genre, artistSong }
+    // remove genres from songs_by_genre that do not have any songs
+    const songsByGenre = Object.keys(songs_by_genre).reduce((acc, cur) => {
+      if (songs_by_genre[cur].length > 0) {
+        acc[cur] = songs_by_genre[cur];
+      }
+      return acc;
+    }, {});
+
+    return { allSongs: songs, songsByGenre, artistSong }
 
   } catch (error) {
     console.error(error)
