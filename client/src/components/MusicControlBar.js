@@ -1,29 +1,30 @@
 import React from "react";
+import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ToysIcon from "@material-ui/icons/Toys";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
-import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
+import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import RepeatOneIcon from "@material-ui/icons/RepeatOne";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
-import VolumeOffIcon from "@material-ui/icons/VolumeOff";
+import VolumeDownIcon from "@material-ui/icons/VolumeDown";
+import Slider from "@material-ui/core/Slider";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-  },
+  root: {},
   musicControlBar: {
     top: "auto",
     bottom: 0,
     height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
-    color: "white",
-    flexGrow: 1,
+    color: "white"
+    // flexGrow: 1,
   },
   barLeft: {
     float: "left"
@@ -38,11 +39,12 @@ const useStyles = makeStyles(theme => ({
   },
   barCenter: {
     float: "none",
+    marginLeft: '39%',
     margin: "auto",
-    width: "25%",
+    width: "20%",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: 'center',
+    alignItems: "center"
   },
   musicIcon: {
     "&:hover": {
@@ -50,7 +52,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   barRight: {
-    float: "right"
+    float: "right",
+    width: 200,
   },
   "@keyframes icon-spin": {
     from: {
@@ -59,6 +62,9 @@ const useStyles = makeStyles(theme => ({
     to: {
       transform: "rotate(0deg)"
     }
+  },
+  volumeSlider: {
+    color: 'white',
   }
 }));
 export default function MusicControlBar(props) {
@@ -68,86 +74,97 @@ export default function MusicControlBar(props) {
     <div className={classes.root}>
       <AppBar className={classes.musicControlBar} position="fixed">
         <Toolbar>
-            <div className={classes.barLeft}>
-              <ToysIcon className={classes.toysIcon} />
-            </div>
-            <div className={classes.barCenter}>
-              <ShuffleIcon
+          <div className={classes.barLeft}>
+            <ToysIcon className={classes.toysIcon} />
+          </div>
+          <div className={classes.barCenter}>
+            <ShuffleIcon
+              className={classes.musicIcon}
+              onClick={props.handleShuffle}
+              fontSize="default"
+              aria-label="shuffle"
+              color={props.shuffleMode ? "secondary" : "error"}
+            />
+            <SkipPreviousIcon
+              className={classes.musicIcon}
+              onClick={props.handlePrev}
+              fontSize="default"
+              aria-label="previous"
+              color="error"
+            />
+            {props.playing ? (
+              <PauseCircleOutlineIcon
                 className={classes.musicIcon}
-                onClick={props.handleShuffle}
-                fontSize="default"
-                aria-label="shuffle"
-                color={props.shuffleMode ? "secondary" : "error"}
-              />
-              <SkipPreviousIcon
-                className={classes.musicIcon}
-                onClick={props.handlePrev}
-                fontSize="default"
-                aria-label="previous"
+                onClick={props.handleToggle}
+                fontSize="large"
+                aria-label="Playing"
                 color="error"
               />
-              {props.playing ? (
-                <PauseCircleOutlineIcon
+            ) : (
+              <PlayCircleOutlineIcon
+                className={classes.musicIcon}
+                onClick={props.handleToggle}
+                fontSize="large"
+                aria-label="Paused"
+                color="error"
+              />
+            )}
+            <SkipNextIcon
+              className={classes.musicIcon}
+              onClick={props.handleNext}
+              fontSize="default"
+              aria-label="next"
+              color="error"
+            />
+            {props.repeatMode === 1 ? (
+              <RepeatOneIcon
+                className={classes.musicIcon}
+                onClick={() => props.handleRepeat(props.repeatMode)}
+                fontSize="default"
+                aria-label="repeat-one"
+                color="secondary"
+              />
+            ) : (
+              <RepeatIcon
+                className={classes.musicIcon}
+                onClick={() => props.handleRepeat(props.repeatMode)}
+                fontSize="default"
+                aria-label="repeat"
+                color={props.repeatMode === 0 ? "error" : "secondary"}
+              />
+            )}
+          </div>
+          <div className={classes.barRight}>
+            <Grid container spacing={2}>
+              <Grid item>
+                <PlaylistAddIcon
                   className={classes.musicIcon}
-                  onClick={props.handleToggle}
-                  fontSize="large"
-                  aria-label="Playing"
+                  fontSize="default"
+                  aria-label="export-playlist"
                   color="error"
                 />
-              ) : (
-                <PlayCircleOutlineIcon
+              </Grid>
+              <Grid item>
+                <VolumeDownIcon
                   className={classes.musicIcon}
-                  onClick={props.handleToggle}
-                  fontSize="large"
-                  aria-label="Paused"
+                  fontSize="default"
+                  aria-label="volume-off"
                   color="error"
                 />
-              )}
-              <SkipNextIcon
-                className={classes.musicIcon}
-                onClick={props.handleNext}
-                fontSize="default"
-                aria-label="next"
-                color="error"
-              />
-              {props.repeatMode === 1 ? (
-                <RepeatOneIcon
+              </Grid>
+              <Grid item xs>
+                <Slider className={classes.volumeSlider}/>
+              </Grid>
+              <Grid item>
+                <VolumeUpIcon
                   className={classes.musicIcon}
-                  onClick={() => props.handleRepeat(props.repeatMode)}
                   fontSize="default"
-                  aria-label="repeat-one"
-                  color="secondary"
+                  aria-label="volume-on"
+                  color="error"
                 />
-              ) : (
-                <RepeatIcon
-                  className={classes.musicIcon}
-                  onClick={() => props.handleRepeat(props.repeatMode)}
-                  fontSize="default"
-                  aria-label="repeat"
-                  color={props.repeatMode === 0 ? "error" : "secondary"}
-                />
-              )}
-            </div>
-            <div className={classes.barRight}>
-              <PlaylistAddIcon
-                className={classes.musicIcon}
-                fontSize="default"
-                aria-label="export-playlist"
-                color="error"
-              />
-              <VolumeUpIcon
-                className={classes.musicIcon}
-                fontSize="default"
-                aria-label="volume-on"
-                color="error"
-              />
-              <VolumeOffIcon
-                className={classes.musicIcon}
-                fontSize="default"
-                aria-label="volume-off"
-                color="error"
-              />
-            </div>
+              </Grid>
+            </Grid>
+          </div>
         </Toolbar>
       </AppBar>
     </div>
