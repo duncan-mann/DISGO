@@ -35,6 +35,7 @@ export default function useDashboardData() {
     // Spotfiy Playback SDK
     deviceId: null,
     repeat_mode: 0,
+    shuffle: false,
     trackName: "",
     albumName: "",
     artistName: "",
@@ -193,7 +194,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        console.log("This is the player state", playerState);
+        // console.log("This is the player state", playerState.shuffle);
         // extract information from current track
         const {
           current_track,
@@ -207,6 +208,7 @@ export default function useDashboardData() {
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
         const repeat_mode = playerState.repeat_mode;
+        const shuffle = playerState.shuffle;
 
         // extract information from previous, next tracks
         if (previous_tracks && previous_tracks.length === 1) {
@@ -256,6 +258,7 @@ export default function useDashboardData() {
           fetch: 0,
           onMount: false,
           repeat_mode,
+          shuffle,
         }));
 
         //////////////////////////////////////////////////
@@ -451,7 +454,7 @@ export default function useDashboardData() {
   }, [state.deviceId, state.allSongs, state.currentGenre]);
 
   // Repeat user playback
-  const repeatPlayback = (repeat_mode) => {
+  const handleRepeat = (repeat_mode) => {
 
     let input = null;
     if (repeat_mode === 0) {
@@ -464,8 +467,6 @@ export default function useDashboardData() {
       input = 'off';
 
     }
-
-    console.log('input', input);
     // 'input' can be either a track, context, or off
     // track will repeat the current track
     // context will repeat the current context
@@ -500,6 +501,17 @@ export default function useDashboardData() {
       }));
     }
   };
+  // toggle shuffle for user's playback
+  const handleShuffle = () => {
+
+    fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${state.shuffle ? false : true}`, {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${state.token}`,
+        "Content-Type": "application/json"
+      }
+    });
+  }
 
   // music player control functions
   const handlePrev = () => {
@@ -531,7 +543,8 @@ export default function useDashboardData() {
     handlePrev,
     handleNext,
     handleToggle,
-    repeatPlayback,
+    handleRepeat,
+    handleShuffle,
     filterByGenre,
     setStartDate,
     setEndDate,

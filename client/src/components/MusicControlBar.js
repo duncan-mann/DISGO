@@ -73,9 +73,10 @@ export default function MusicControlBar(props) {
           <div className={classes.barCenter}>
             <ShuffleIcon
               className={classes.musicIcon}
+              onClick={props.handleShuffle}
               fontSize="default"
               aria-label="shuffle"
-              color="error"
+              color={props.shuffleMode ? "secondary" : "error"}
             />
             <SkipPreviousIcon
               className={classes.musicIcon}

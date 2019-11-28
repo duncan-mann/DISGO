@@ -33,7 +33,8 @@ export default function Dashboard(props) {
     handleNext,
     handlePrev,
     handleToggle,
-    repeatPlayback,
+    handleRepeat,
+    handleShuffle,
     setStartDate,
     setEndDate,
     setTimeFrame,
@@ -97,10 +98,12 @@ export default function Dashboard(props) {
       <MusicControlBar
         playing={state.playing}
         repeatMode={state.repeat_mode}
+        shuffleMode={state.shuffle}
         handlePrev={handlePrev}
         handleNext={handleNext}
         handleToggle={handleToggle}
-        handleRepeat={repeatPlayback}
+        handleRepeat={handleRepeat}
+        handleShuffle={handleShuffle}
       />
     </div>
   );
