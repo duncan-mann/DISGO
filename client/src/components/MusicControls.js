@@ -1,14 +1,4 @@
 import React from 'react';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-import RepeatIcon from '@material-ui/icons/Repeat';
-import RepeatOneIcon from '@material-ui/icons/RepeatOne';
-import ShuffleIcon from '@material-ui/icons/Shuffle';
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { makeStyles } from '@material-ui/core/styles';
 import { flexbox } from '@material-ui/system';
 import { useMediaQuery } from 'react-responsive';
@@ -115,23 +105,6 @@ export default function MusicControls(props) {
       
       <p className={classes.song}>{props.trackName}</p>
       <p className={classes.songInfo}>{props.artistName && props.artistName.join(", ")}</p>
-
-      <div className='MusicControls'>
-        <SkipPreviousIcon onClick={props.handlePrev} fontSize='large' aria-label='previous' color='error' />
-        {props.playing
-          ? <PauseIcon onClick={props.handleToggle} fontSize='large' aria-label='Playing' color='error' />
-          : <PlayArrowIcon onClick={props.handleToggle} fontSize='large' aria-label='Paused' color='error' />
-        }
-
-        <SkipNextIcon onClick={props.handleNext} fontSize='large' aria-label='next' color='error' />
-        <ShuffleIcon fontSize='large' aria-label='shuffle' color='error' />
-        <RepeatIcon onClick={props.handleRepeat} fontSize='large' aria-label='repeat' color='error' />
-        <RepeatOneIcon fontSize='large' aria-label='repeatOne' color='error' />
-        <PlaylistAddIcon fontSize='large' aria-label='export-playlist' color='error' />
-        <VolumeUpIcon fontSize='large' aria-label='volume-on' color='error' />
-        <VolumeOffIcon fontSize='large' aria-label='volume-off' color='error' />
-
-      </div>
     </div>
   );
 }
