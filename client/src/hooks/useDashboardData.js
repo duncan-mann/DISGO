@@ -34,7 +34,7 @@ export default function useDashboardData() {
     currentPlaylist: [],
     // Spotfiy Playback SDK
     deviceId: null,
-    repeat_mode: 0,
+    repeat_mode: null,
     trackName: "",
     albumName: "",
     artistName: "",
@@ -193,7 +193,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        // console.log("This is the player state", playerState);
+        console.log("This is the player state", playerState.repeat_mode);
         // extract information from current track
         const {
           current_track,
@@ -451,12 +451,27 @@ export default function useDashboardData() {
   }, [state.deviceId, state.allSongs, state.currentGenre]);
 
   // Repeat user playback
-  const repeatPlayback = () => {
+  const repeatPlayback = (repeat_mode) => {
+    console.log('repeat_mode', repeat_mode);
+
+    let input = null;
+    if (repeat_mode === 0) {
+      input = 'context';
+
+    } else if (repeat_mode === 1) {
+      input = 'track';
+
+    } else {
+      input = 'off';
+
+    }
+
+    console.log('input', input);
     // 'input' can be either a track, context, or off
     // track will repeat the current track
     // context will repeat the current context
     // off will turn repeat off
-    fetch(`https://api.spotify.com/v1/me/player/repeat?state=context`, {
+    fetch(`https://api.spotify.com/v1/me/player/repeat?state=${input}`, {
       method: "PUT",
       headers: {
         authorization: `Bearer ${state.token}`,

@@ -108,13 +108,23 @@ export default function MusicControlBar(props) {
               aria-label="next"
               color="error"
             />
-            <RepeatIcon
-              className={classes.musicIcon}
-              onClick={props.handleRepeat}
-              fontSize="default"
-              aria-label="repeat"
-              color={props.repeatMode === 0 ? "error" : "secondary"}
-            />
+            {props.repeatMode === 1 ? (
+              <RepeatOneIcon
+                className={classes.musicIcon}
+                onClick={() => props.handleRepeat(props.repeatMode)}
+                fontSize="default"
+                aria-label="repeat-one"
+                color="secondary"
+              />
+            ) : (
+              <RepeatIcon
+                className={classes.musicIcon}
+                onClick={() => props.handleRepeat(props.repeatMode)}
+                fontSize="default"
+                aria-label="repeat"
+                color={props.repeatMode === 0 ? "error" : "secondary"}
+              />
+            )}
           </div>
           <div className={classes.barRight}>
             <PlaylistAddIcon
