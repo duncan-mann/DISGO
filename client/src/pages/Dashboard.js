@@ -11,7 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles(theme => ({
   loadingBar: {
-    marginTop: '500px',
+    marginTop: '10px',
     width: '100%',
     '& > * + *': {
       marginTop: theme.spacing(2),
@@ -37,11 +37,12 @@ export default function Dashboard(props) {
     setTimeFrame,
     setLocation,
     filterByGenre,
-    addUserPlaylist } = useDashboardData();
+    addUserPlaylist,
+    getCurrentEventDetails
+   } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
-
 
   return (
       <div className={classes.background}>
@@ -56,13 +57,13 @@ export default function Dashboard(props) {
           addUserPlaylist={addUserPlaylist}
         />
         <div>
-        {state.fetch === 0 && state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] && state.currentEvent[state.currentTrackUri].length > 0
+        {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0
         ?
           <div>
             <div>
               <EventDetails
               artistName={state && state.artistName}
-              currentEvent={state.currentEvent[state.currentTrackUri]}
+              currentEvent={getCurrentEventDetails()}
               />
             </div>
             <div>
