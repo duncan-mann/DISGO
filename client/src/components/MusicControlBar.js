@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     top: "auto",
     bottom: 0,
     height: "10%",
-    background: `linear-gradient(#212121 50%, #121212 90%)`,
+    background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white"
   },
   barLeft: {
