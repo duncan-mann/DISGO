@@ -44,7 +44,6 @@ export default function Dashboard(props) {
 
 
   return (
-    <div>
       <div className={classes.background}>
         <NavBar
           setStartDate={setStartDate}
@@ -54,43 +53,48 @@ export default function Dashboard(props) {
           setTimeFrame={setTimeFrame}
           setLocation={setLocation}
           location={state.location}
-          addUserPlaylist={addUserPlaylist} 
-          />
-      {state.fetch === 0 && state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] 
-      && state.currentEvent[state.currentTrackUri].length > 0 ?
+          addUserPlaylist={addUserPlaylist}
+        />
         <div>
-        <EventDetails
-          artistName={state && state.artistName}
-          currentEvent={state.currentEvent[state.currentTrackUri]}
-        />
-        <FilterList
-          allSongs={state && state.allSongs}
-          songsByGenre={state && state.songsByGenre}
-          onChange={filterByGenre}
-          value={state && state.currentGenre}
-        />
-        <MusicControls
-          player={currentPlayer}
-          playing={state.playing}
-          trackName={state.trackName}
-          albumName={state.albumName}
-          currentAlbumCover={state.currentAlbumCover}
-          prevAlbumCover={prevAlbumCovers}
-          nextAlbumCover={nextAlbumCovers}
-          artistName={state.artistName}
-          handlePrev={handlePrev}
-          handleNext={handleNext}
-          handleToggle={handleToggle}
-          handleRepeat={repeatPlayback}
-        />
-        </div>
+        {state.fetch === 0 && state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] && state.currentEvent[state.currentTrackUri].length > 0
+        ?
+          <div>
+            <div>
+              <EventDetails
+              artistName={state && state.artistName}
+              currentEvent={state.currentEvent[state.currentTrackUri]}
+              />
+            </div>
+            <div>
+              <FilterList
+              allSongs={state && state.allSongs}
+              songsByGenre={state && state.songsByGenre}
+              onChange={filterByGenre}
+              value={state && state.currentGenre}
+              />
+              <MusicControls
+              player={currentPlayer}
+              playing={state.playing}
+              trackName={state.trackName}
+              albumName={state.albumName}
+              currentAlbumCover={state.currentAlbumCover}
+              prevAlbumCover={prevAlbumCovers}
+              nextAlbumCover={nextAlbumCovers}
+              artistName={state.artistName}
+              handlePrev={handlePrev}
+              handleNext={handleNext}
+              handleToggle={handleToggle}
+              handleRepeat={repeatPlayback}
+              />
+            </div>
+          </div>
         :
-        <div className={classes.loadingBar}>
-          <LinearProgress variant="query" />
-          <LinearProgress variant="query" color="secondary" />
+          <div className={classes.loadingBar}>
+            <LinearProgress variant="query" />
+            <LinearProgress variant="query" color="secondary" />
+          </div>
+        }
         </div>
-      }
       </div>
-    </div >
   );
 }
