@@ -1,15 +1,15 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
- event: {
-   textAlign: 'center',
-   color: 'white'
- }
-}))
+// const useStyles = makeStyles(theme => ({
+//  event: {
+//    textAlign: 'center',
+//    color: 'white'
+//  }
+// }))
 
 export default function EventDetailItems(props) {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <div>
