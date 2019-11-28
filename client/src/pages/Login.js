@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     // justifyContent: 'center',
   },
   loginButton: {
-    fontSize: 24,
+    fontSize: 18,
     width: "30%",
     borderRadius: 25,
     // marginTop: "50px",
