@@ -34,7 +34,7 @@ export default function useDashboardData() {
     currentPlaylist: [],
     // Spotfiy Playback SDK
     deviceId: null,
-    repeat_mode: null,
+    repeat_mode: 0,
     trackName: "",
     albumName: "",
     artistName: "",
@@ -193,7 +193,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        console.log("This is the player state", playerState.repeat_mode);
+        console.log("This is the player state", playerState);
         // extract information from current track
         const {
           current_track,
@@ -452,7 +452,6 @@ export default function useDashboardData() {
 
   // Repeat user playback
   const repeatPlayback = (repeat_mode) => {
-    console.log('repeat_mode', repeat_mode);
 
     let input = null;
     if (repeat_mode === 0) {
