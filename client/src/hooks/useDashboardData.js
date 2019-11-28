@@ -17,6 +17,7 @@ export default function useDashboardData() {
 
   const [state, setState] = useState({
     onMount: true,
+    fetch: 0,
     user: {},
     token: null,
     artists: {},
@@ -33,8 +34,7 @@ export default function useDashboardData() {
     currentPlaylist: [],
     // Spotfiy Playback SDK
     deviceId: null,
-    position: 0,
-    duration: 0,
+    repeat_mode: null,
     trackName: "",
     albumName: "",
     artistName: "",
@@ -49,7 +49,6 @@ export default function useDashboardData() {
     startDate: today,
     endDate: future,
     location: "Toronto",
-    fetch: 0
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -194,7 +193,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        // console.log("This is the player state", playerState);
+        console.log("This is the player state", playerState.repeat_mode);
         // extract information from current track
         const {
           current_track,
@@ -207,6 +206,8 @@ export default function useDashboardData() {
 
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
+        const repeat_mode = playerState.repeat_mode;
+
         // extract information from previous, next tracks
         if (previous_tracks && previous_tracks.length === 1) {
           const prevAlbumCover1 = previous_tracks[0].album.images[0].url;
@@ -253,7 +254,8 @@ export default function useDashboardData() {
           playing,
           currentAlbumCover,
           fetch: 0,
-          onMount: false
+          onMount: false,
+          repeat_mode,
         }));
 
         //////////////////////////////////////////////////
@@ -449,12 +451,27 @@ export default function useDashboardData() {
   }, [state.deviceId, state.allSongs, state.currentGenre]);
 
   // Repeat user playback
-  const repeatPlayback = () => {
+  const repeatPlayback = (repeat_mode) => {
+    console.log('repeat_mode', repeat_mode);
+
+    let input = null;
+    if (repeat_mode === 0) {
+      input = 'context';
+
+    } else if (repeat_mode === 1) {
+      input = 'track';
+
+    } else {
+      input = 'off';
+
+    }
+
+    console.log('input', input);
     // 'input' can be either a track, context, or off
     // track will repeat the current track
     // context will repeat the current context
     // off will turn repeat off
-    fetch(`https://api.spotify.com/v1/me/player/repeat?state=context`, {
+    fetch(`https://api.spotify.com/v1/me/player/repeat?state=${input}`, {
       method: "PUT",
       headers: {
         authorization: `Bearer ${state.token}`,
