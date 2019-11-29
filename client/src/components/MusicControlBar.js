@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ToysIcon from "@material-ui/icons/Toys";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
-import PauseIcon from "@material-ui/icons/Pause";
+import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import RepeatOneIcon from "@material-ui/icons/RepeatOne";
@@ -12,11 +13,12 @@ import ShuffleIcon from "@material-ui/icons/Shuffle";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
+import Slider from "@material-ui/core/Slider";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // flexGrow: 1,
+    // boxShadow: 2,
   },
   musicControlBar: {
     top: "auto",
@@ -24,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white"
+    // flexGrow: 1,
   },
   barLeft: {
     float: "left"
@@ -38,10 +41,12 @@ const useStyles = makeStyles(theme => ({
   },
   barCenter: {
     float: "none",
+    marginLeft: "39%",
     margin: "auto",
-    width: "25%",
+    width: "20%",
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   musicIcon: {
     "&:hover": {
@@ -49,7 +54,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   barRight: {
-    float: "right"
+    float: "right",
+    width: 200
   },
   "@keyframes icon-spin": {
     from: {
@@ -58,10 +64,37 @@ const useStyles = makeStyles(theme => ({
     to: {
       transform: "rotate(0deg)"
     }
+  },
+  volumeSlider: {
+    color: "white"
   }
 }));
 export default function MusicControlBar(props) {
   const classes = useStyles();
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (props.initialVolume) {
+      setValue(props.initialVolume * 100);
+    }
+  }, [props.initialVolume]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    props.setVolume(newValue / 100);
+  };
+  // mute volume
+  const muteVolume = () => {
+    if (value === 0) {
+      setValue(50);
+      props.setVolume(0.5);
+
+    } else {
+      setValue(0);
+      props.setVolume(0);
+    }
+
+  };
 
   return (
     <div className={classes.root}>
@@ -73,9 +106,10 @@ export default function MusicControlBar(props) {
           <div className={classes.barCenter}>
             <ShuffleIcon
               className={classes.musicIcon}
+              onClick={props.handleShuffle}
               fontSize="default"
               aria-label="shuffle"
-              color="error"
+              color={props.shuffleMode ? "secondary" : "error"}
             />
             <SkipPreviousIcon
               className={classes.musicIcon}
@@ -85,10 +119,10 @@ export default function MusicControlBar(props) {
               color="error"
             />
             {props.playing ? (
-              <PauseIcon
+              <PauseCircleOutlineIcon
                 className={classes.musicIcon}
                 onClick={props.handleToggle}
-                fontSize="default"
+                fontSize="large"
                 aria-label="Playing"
                 color="error"
               />
@@ -96,7 +130,7 @@ export default function MusicControlBar(props) {
               <PlayCircleOutlineIcon
                 className={classes.musicIcon}
                 onClick={props.handleToggle}
-                fontSize="default"
+                fontSize="large"
                 aria-label="Paused"
                 color="error"
               />
@@ -127,24 +161,42 @@ export default function MusicControlBar(props) {
             )}
           </div>
           <div className={classes.barRight}>
-            <PlaylistAddIcon
-              className={classes.musicIcon}
-              fontSize="default"
-              aria-label="export-playlist"
-              color="error"
-            />
-            <VolumeUpIcon
-              className={classes.musicIcon}
-              fontSize="default"
-              aria-label="volume-on"
-              color="error"
-            />
-            <VolumeOffIcon
-              className={classes.musicIcon}
-              fontSize="default"
-              aria-label="volume-off"
-              color="error"
-            />
+            <Grid container spacing={2}>
+              <Grid item>
+                <PlaylistAddIcon
+                  className={classes.musicIcon}
+                  fontSize="default"
+                  aria-label="export-playlist"
+                  color="error"
+                />
+              </Grid>
+              <Grid item>
+                {value === 0 ? (
+                  <VolumeOffIcon
+                    className={classes.musicIcon}
+                    onClick={() => muteVolume()}
+                    fontSize="default"
+                    aria-label="volume-on"
+                    color="error"
+                  />
+                ) : (
+                  <VolumeUpIcon
+                    className={classes.musicIcon}
+                    onClick={() => muteVolume()}
+                    fontSize="default"
+                    aria-label="volume-off"
+                    color="error"
+                  />
+                )}
+              </Grid>
+              <Grid item xs>
+                <Slider
+                  className={classes.volumeSlider}
+                  value={value}
+                  onChange={handleChange}
+                />
+              </Grid>
+            </Grid>
           </div>
         </Toolbar>
       </AppBar>

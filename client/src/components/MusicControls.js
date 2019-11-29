@@ -103,7 +103,7 @@ export default function MusicControls(props) {
           {albumsSmall}
         </div>
         }
-      
+
       <p className={classes.song}>{props.trackName}</p>
       <p className={classes.songInfo}>{props.artistName && props.artistName.join(", ")}</p>
     </div>
