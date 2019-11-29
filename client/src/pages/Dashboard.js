@@ -5,7 +5,7 @@ import useDashboardData from "../hooks/useDashboardData";
 import NavBar from "../components/NavBar";
 import SongDetails from "../components/SongDetails";
 import EventDetails from "../components/EventDetails";
-import FilterList from "../components/FilterList";
+import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -72,7 +72,7 @@ export default function Dashboard(props) {
               />
             </div>
             <div>
-              <FilterList
+              <GenreFilterList
                 allSongs={state && state.allSongs}
                 songsByGenre={state && state.songsByGenre}
                 onChange={filterByGenre}

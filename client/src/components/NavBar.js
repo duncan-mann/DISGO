@@ -1,5 +1,4 @@
 import React from "react";
-// import './NavBar.css';
 import DateSetter from "./DateSetter";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
