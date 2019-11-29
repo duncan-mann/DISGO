@@ -6,6 +6,9 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./eventDetails.css";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    // background: 'none',
+  },
   // event: {
   //   "padding-top": "5%",
   //   color: "white",
@@ -44,7 +47,7 @@ export default function EventDetails(props) {
   });
 
   return (
-    <div>
+    <div className={classes.root}>
     <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1>
     <Carousel className={classes.carousel}
       width={"25%"}
