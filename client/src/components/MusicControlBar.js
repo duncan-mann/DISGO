@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     // boxShadow: 2,
   },
   musicControlBar: {
-    top: "auto",
+    top: 'auto',
     bottom: 0,
     height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
