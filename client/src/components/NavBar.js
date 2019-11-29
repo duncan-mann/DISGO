@@ -44,7 +44,6 @@ export default function NavBar(props) {
           <Typography variant='h6' className={classes.title}>
             Discover
             </Typography>
-          <Box display="flex" justifyContent="flex-start">
             <TextField onChange={(event) => props.setLocation(event.target.value)} value={props.location} />
             <DateSetter
               startDate={props.startDate}
@@ -54,7 +53,6 @@ export default function NavBar(props) {
             />
             <Button  variant='contained' color='secondary' onClick={() => props.setTimeFrame(props.startDate, props.endDate, props.location)}>Set Date</Button>
             <Button  variant='contained' color='secondary' onClick={() => props.addUserPlaylist(`Shows in ${props.location}!`)}>Export Playlist</Button>
-          </Box>
           <IconButton edge='end' aria-label='account of current user' aria-haspopup='true' color='inherit'>
             <AccountCircle />
           </IconButton>
