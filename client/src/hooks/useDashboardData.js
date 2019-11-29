@@ -527,32 +527,9 @@ export default function useDashboardData() {
   };
   const setVolume = value => {
     currentPlayer.setVolume(value).then(() => {
-      console.log(`Volume updated to ${value * 100}%`);
+      // console.log(`Volume updated to ${value * 100}%`);
     });
   };
-  // // set initial volume
-  // useEffect(() => {
-  //   if (currentPlayer) {
-  //     currentPlayer.getVolume().then(volume => {
-  //       let volume_percentage = volume * 100;
-  //       setState(prev => ({
-  //         ...prev,
-  //         initialVolume: volume_percentage,
-  //       }));
-  //     });
-  //   }
-
-  // }, [currentPlayer]);
-  // const getVolume = async () => {
-  //   const volume = await currentPlayer.getVolume();
-  //   return volume;
-  //   // .then(volume => {
-  //   //   let volume_percentage = volume * 100;
-  //   //   console.log(`The volume of the player is ${volume_percentage}%`);
-
-  //   //   return volume_percentage;
-  //   // });
-  // };
   // return an array of event details for currently playing track
   const getCurrentEventDetails = () => {
     if (
