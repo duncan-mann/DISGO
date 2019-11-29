@@ -12,7 +12,7 @@ import RepeatOneIcon from "@material-ui/icons/RepeatOne";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
-import VolumeDownIcon from "@material-ui/icons/VolumeDown";
+import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import Slider from "@material-ui/core/Slider";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   barCenter: {
     float: "none",
-    marginLeft: '39%',
+    marginLeft: "39%",
     margin: "auto",
     width: "20%",
     display: "flex",
@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
   barRight: {
     float: "right",
-    width: 200,
+    width: 200
   },
   "@keyframes icon-spin": {
     from: {
@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   volumeSlider: {
-    color: 'white',
+    color: "white"
   }
 }));
 export default function MusicControlBar(props) {
@@ -82,6 +82,18 @@ export default function MusicControlBar(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     props.setVolume(newValue / 100);
+  };
+  // mute volume
+  const muteVolume = () => {
+    if (value === 0) {
+      setValue(50);
+      props.setVolume(0.5);
+
+    } else {
+      setValue(0);
+      props.setVolume(0);
+    }
+
   };
 
   return (
@@ -159,22 +171,29 @@ export default function MusicControlBar(props) {
                 />
               </Grid>
               <Grid item>
-                <VolumeDownIcon
-                  className={classes.musicIcon}
-                  fontSize="default"
-                  aria-label="volume-off"
-                  color="error"
-                />
+                {value === 0 ? (
+                  <VolumeOffIcon
+                    className={classes.musicIcon}
+                    onClick={() => muteVolume()}
+                    fontSize="default"
+                    aria-label="volume-on"
+                    color="error"
+                  />
+                ) : (
+                  <VolumeUpIcon
+                    className={classes.musicIcon}
+                    onClick={() => muteVolume()}
+                    fontSize="default"
+                    aria-label="volume-off"
+                    color="error"
+                  />
+                )}
               </Grid>
               <Grid item xs>
-                <Slider className={classes.volumeSlider} value={value} onChange={handleChange}/>
-              </Grid>
-              <Grid item>
-                <VolumeUpIcon
-                  className={classes.musicIcon}
-                  fontSize="default"
-                  aria-label="volume-on"
-                  color="error"
+                <Slider
+                  className={classes.volumeSlider}
+                  value={value}
+                  onChange={handleChange}
                 />
               </Grid>
             </Grid>
