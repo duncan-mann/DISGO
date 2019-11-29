@@ -11,6 +11,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    background: `linear-gradient(#212121 50%, #121212 90%)`
+  },
   loadingBar: {
     margin: "auto",
     width: "100%",
@@ -18,9 +21,6 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(2)
     },
     height: '80vh',
-  },
-  background: {
-    background: `linear-gradient(#212121 50%, #121212 90%)`
   },
   musicControlBar: {}
 }));
@@ -50,7 +50,7 @@ export default function Dashboard(props) {
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
   return (
-    <div className={classes.background}>
+    <div className={classes.root}>
       <NavBar
         setStartDate={setStartDate}
         setEndDate={setEndDate}
