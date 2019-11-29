@@ -15,11 +15,14 @@ const useStyles = makeStyles(theme => ({
     // marginTop: "50px",
     position: 'absolute',
     zIndex: 999,
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light
+    }
   },
   backgroundVideo: {
     height: '100%',
     width: '100%',
-    opacity: 0.05,
+    opacity: 0.1,
   }
 }));
 
