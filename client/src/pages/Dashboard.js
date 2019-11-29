@@ -35,6 +35,7 @@ export default function Dashboard(props) {
     handleToggle,
     handleRepeat,
     handleShuffle,
+    setVolume,
     setStartDate,
     setEndDate,
     setTimeFrame,
@@ -60,9 +61,7 @@ export default function Dashboard(props) {
         addUserPlaylist={addUserPlaylist}
       />
       <div>
-        {state.fetch === 0 &&
-        !state.onMount &&
-        getCurrentEventDetails().length > 0 ? (
+        {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
           <div>
             <div>
               <EventDetails
@@ -104,6 +103,8 @@ export default function Dashboard(props) {
         handleToggle={handleToggle}
         handleRepeat={handleRepeat}
         handleShuffle={handleShuffle}
+        initialVolume={state && state.initialVolume}
+        setVolume={setVolume}
       />
     </div>
   );

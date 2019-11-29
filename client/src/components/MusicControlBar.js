@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,7 +17,9 @@ import Slider from "@material-ui/core/Slider";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    // boxShadow: 2,
+  },
   musicControlBar: {
     top: "auto",
     bottom: 0,
@@ -69,6 +71,18 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function MusicControlBar(props) {
   const classes = useStyles();
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (props.initialVolume) {
+      setValue(props.initialVolume * 100);
+    }
+  }, [props.initialVolume]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    props.setVolume(newValue / 100);
+  };
 
   return (
     <div className={classes.root}>
@@ -153,7 +167,7 @@ export default function MusicControlBar(props) {
                 />
               </Grid>
               <Grid item xs>
-                <Slider className={classes.volumeSlider}/>
+                <Slider className={classes.volumeSlider} value={value} onChange={handleChange}/>
               </Grid>
               <Grid item>
                 <VolumeUpIcon

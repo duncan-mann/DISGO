@@ -9,14 +9,14 @@ import {
 import { getPerformers } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
-
-  let today = new Date()
-  let future = new Date()
-  future.setDate(today.getDate()+29)
+  let today = new Date();
+  let future = new Date();
+  future.setDate(today.getDate() + 29);
 
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
+    initialVolume: 0.5,
     user: {},
     token: null,
     artists: {},
@@ -48,7 +48,7 @@ export default function useDashboardData() {
     previousTrackUri: [],
     startDate: today,
     endDate: future,
-    location: "Toronto",
+    location: "Toronto"
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -97,8 +97,11 @@ export default function useDashboardData() {
   // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
-      getPerformers(state.startDate.toJSON().split('T')[0], state.endDate.toJSON().split('T')[0], state.location)
-        .then(events => {
+      getPerformers(
+        state.startDate.toJSON().split("T")[0],
+        state.endDate.toJSON().split("T")[0],
+        state.location
+      ).then(events => {
         setState(prev => ({ ...prev, events }));
       });
     }
@@ -156,12 +159,12 @@ export default function useDashboardData() {
   }, [state.artistEvent, state.artistSong]);
 
   // On Mount, load Spotify Web Playback SDK script
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = "https://sdk.scdn.co/spotify-player.js";
-    document.head.appendChild(script);
-  }, []);
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+  //   script.async = true;
+  //   script.src = "https://sdk.scdn.co/spotify-player.js";
+  //   document.head.appendChild(script);
+  // }, []);
   // initialize Spotify Web Playback SDK
   useEffect(() => {
     // initialize Spotify Web Playback SDK
@@ -175,7 +178,7 @@ export default function useDashboardData() {
         getOAuthToken: callback => {
           callback(_token);
         },
-        volume: 0.05
+        volume: state.initialVolume
       });
       // add player object to state
       // console.log(player);
@@ -256,7 +259,7 @@ export default function useDashboardData() {
           fetch: 0,
           onMount: false,
           repeat_mode,
-          shuffle,
+          shuffle
         }));
 
         //////////////////////////////////////////////////
@@ -304,6 +307,7 @@ export default function useDashboardData() {
         }
       });
     };
+
   }, [state.token]);
 
   // fetch song uri with current artist event details
@@ -353,7 +357,7 @@ export default function useDashboardData() {
 
           setState(prev => ({
             ...prev,
-            currentEvent: temp,
+            currentEvent: temp
             // fetch: 0,
             // onMount: false
           }));
@@ -401,7 +405,7 @@ export default function useDashboardData() {
       })
     }).then(() => {
       setState(prev => ({
-        ...prev,
+        ...prev
         // fetch: 0,
         // onMount: false
       }));
@@ -452,18 +456,14 @@ export default function useDashboardData() {
   }, [state.deviceId, state.allSongs, state.currentGenre]);
 
   // Repeat user playback
-  const handleRepeat = (repeat_mode) => {
-
+  const handleRepeat = repeat_mode => {
     let input = null;
     if (repeat_mode === 0) {
-      input = 'context';
-
+      input = "context";
     } else if (repeat_mode === 1) {
-      input = 'track';
-
+      input = "track";
     } else {
-      input = 'off';
-
+      input = "off";
     }
     // 'input' can be either a track, context, or off
     // track will repeat the current track
@@ -501,15 +501,19 @@ export default function useDashboardData() {
   };
   // toggle shuffle for user's playback
   const handleShuffle = () => {
-
-    fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${state.shuffle ? false : true}`, {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${state.token}`,
-        "Content-Type": "application/json"
+    fetch(
+      `https://api.spotify.com/v1/me/player/shuffle?state=${
+        state.shuffle ? false : true
+      }`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `Bearer ${state.token}`,
+          "Content-Type": "application/json"
+        }
       }
-    });
-  }
+    );
+  };
 
   // music player control functions
   const handlePrev = () => {
@@ -521,7 +525,34 @@ export default function useDashboardData() {
   const handleToggle = () => {
     currentPlayer.togglePlay();
   };
+  const setVolume = value => {
+    currentPlayer.setVolume(value).then(() => {
+      console.log(`Volume updated to ${value * 100}%`);
+    });
+  };
+  // // set initial volume
+  // useEffect(() => {
+  //   if (currentPlayer) {
+  //     currentPlayer.getVolume().then(volume => {
+  //       let volume_percentage = volume * 100;
+  //       setState(prev => ({
+  //         ...prev,
+  //         initialVolume: volume_percentage,
+  //       }));
+  //     });
+  //   }
 
+  // }, [currentPlayer]);
+  // const getVolume = async () => {
+  //   const volume = await currentPlayer.getVolume();
+  //   return volume;
+  //   // .then(volume => {
+  //   //   let volume_percentage = volume * 100;
+  //   //   console.log(`The volume of the player is ${volume_percentage}%`);
+
+  //   //   return volume_percentage;
+  //   // });
+  // };
   // return an array of event details for currently playing track
   const getCurrentEventDetails = () => {
     if (
@@ -543,6 +574,7 @@ export default function useDashboardData() {
     handleToggle,
     handleRepeat,
     handleShuffle,
+    setVolume,
     filterByGenre,
     setStartDate,
     setEndDate,
