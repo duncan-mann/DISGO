@@ -40,6 +40,7 @@ export default function useDashboardData() {
     trackName: "",
     albumName: "",
     artistName: "",
+    artistAlbum: "",
     currentAlbumCover: null,
     prevAlbumCover1: null,
     prevAlbumCover2: null,
@@ -198,6 +199,7 @@ export default function useDashboardData() {
       // playback status updates
       player.addListener("player_state_changed", playerState => {
         // console.log("This is the player state", playerState);
+
         // extract information from current track
         const {
           current_track,
@@ -207,6 +209,7 @@ export default function useDashboardData() {
         const trackName = current_track.name;
         const albumName = current_track.album.name;
         const artistName = current_track.artists.map(artist => artist.name);
+        const artistAlbum = current_track.album.uri.split(":")[2];
 
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
@@ -259,6 +262,7 @@ export default function useDashboardData() {
           trackName,
           albumName,
           artistName,
+          artistAlbum,
           playing,
           currentAlbumCover,
           fetch: 0,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 // import custom hooks
 import useDashboardData from "../hooks/useDashboardData";
 // import components
@@ -50,6 +50,14 @@ export default function Dashboard(props) {
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
+  const [isFlipped, setIsFlipped] = useState(false)
+  
+  const flipCard = (e) => {
+    e.preventDefault();
+    console.log("flipped was clicked!")
+    setIsFlipped(!isFlipped)
+  }
+
   return (
     <div className={classes.root}>
       <NavBar
@@ -78,7 +86,7 @@ export default function Dashboard(props) {
                 songsByGenre={state && state.songsByGenre}
                 onChange={filterByGenre}
                 value={state && state.currentGenre}
-              />
+              />              
               <SongDetails
                 player={currentPlayer}
                 trackName={state.trackName}
@@ -87,6 +95,10 @@ export default function Dashboard(props) {
                 prevAlbumCover={prevAlbumCovers}
                 nextAlbumCover={nextAlbumCovers}
                 artistName={state.artistName}
+                flipCard={flipCard}
+                isFlipped={isFlipped}
+                setIsFlipped={setIsFlipped}
+                artistAlbum={state.artistAlbum}
               />
             </div>
           </div>
@@ -96,6 +108,8 @@ export default function Dashboard(props) {
             <LinearProgress variant="query" color="secondary" />
           </div>
         )}
+        <div>
+        </div>
       </div>
       <MusicControlBar
         playing={state.playing}
