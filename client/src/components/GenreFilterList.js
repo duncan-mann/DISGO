@@ -28,7 +28,6 @@ export default function Filter(props) {
     <div className={classes.root}>
       <ul>
         {list}
-        <GenreFilterListItem genreName='All'/>
       </ul>
     </div>
   );
