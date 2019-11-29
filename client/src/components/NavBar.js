@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   textField: {
-    color: '#b3b3b3'
+    color: theme.palette.secondary.light
   }
 }));
 
@@ -80,7 +80,7 @@ export default function NavBar(props) {
         justify="center"
       >
           <TextField
-            color="secondary"
+
             className={classes.textField}
             onChange={event => props.setLocation(event.target.value)}
             value={props.location}
