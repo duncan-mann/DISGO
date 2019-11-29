@@ -16,7 +16,7 @@ export default function useDashboardData() {
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
-    initialVolume: 0.5,
+    initialVolume: 0.05,
     user: {},
     token: null,
     artists: {},
@@ -159,12 +159,12 @@ export default function useDashboardData() {
   }, [state.artistEvent, state.artistSong]);
 
   // On Mount, load Spotify Web Playback SDK script
-  // useEffect(() => {
-  //   const script = document.createElement("script");
-  //   script.async = true;
-  //   script.src = "https://sdk.scdn.co/spotify-player.js";
-  //   document.head.appendChild(script);
-  // }, []);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    document.head.appendChild(script);
+  }, []);
   // initialize Spotify Web Playback SDK
   useEffect(() => {
     // initialize Spotify Web Playback SDK

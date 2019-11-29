@@ -3,7 +3,7 @@ import React from "react";
 import useDashboardData from "../hooks/useDashboardData";
 // import components
 import NavBar from "../components/NavBar";
-import MusicControls from "../components/MusicControls";
+import SongDetails from "../components/SongDetails";
 import EventDetails from "../components/EventDetails";
 import FilterList from "../components/FilterList";
 import MusicControlBar from "../components/MusicControlBar";
@@ -12,11 +12,12 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles(theme => ({
   loadingBar: {
-    marginTop: "10px",
+    margin: "auto",
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2)
-    }
+    },
+    height: '80vh',
   },
   background: {
     background: `linear-gradient(#212121 50%, #121212 90%)`
@@ -76,7 +77,7 @@ export default function Dashboard(props) {
                 onChange={filterByGenre}
                 value={state && state.currentGenre}
               />
-              <MusicControls
+              <SongDetails
                 player={currentPlayer}
                 trackName={state.trackName}
                 albumName={state.albumName}
