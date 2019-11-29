@@ -3,23 +3,24 @@ import React from "react";
 import useDashboardData from "../hooks/useDashboardData";
 // import components
 import NavBar from "../components/NavBar";
-import MusicControls from "../components/MusicControls";
+import SongDetails from "../components/SongDetails";
 import EventDetails from "../components/EventDetails";
-import FilterList from "../components/FilterList";
+import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    background: `linear-gradient(#212121 50%, #121212 90%)`
+  },
   loadingBar: {
-    marginTop: "10px",
+    marginTop: '10px',
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2)
-    }
-  },
-  background: {
-    background: `linear-gradient(#212121 50%, #121212 90%)`
+    },
+    height: '84vh',
   },
   musicControlBar: {}
 }));
@@ -33,7 +34,9 @@ export default function Dashboard(props) {
     handleNext,
     handlePrev,
     handleToggle,
-    repeatPlayback,
+    handleRepeat,
+    handleShuffle,
+    setVolume,
     setStartDate,
     setEndDate,
     setTimeFrame,
@@ -47,7 +50,7 @@ export default function Dashboard(props) {
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
   return (
-    <div className={classes.background}>
+    <div className={classes.root}>
       <NavBar
         setStartDate={setStartDate}
         setEndDate={setEndDate}
@@ -57,11 +60,10 @@ export default function Dashboard(props) {
         setLocation={setLocation}
         location={state.location}
         addUserPlaylist={addUserPlaylist}
+        profilePicture={state && state.user && state.user.photos}
       />
       <div>
-        {state.fetch === 0 &&
-        !state.onMount &&
-        getCurrentEventDetails().length > 0 ? (
+        {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
           <div>
             <div>
               <EventDetails
@@ -70,13 +72,13 @@ export default function Dashboard(props) {
               />
             </div>
             <div>
-              <FilterList
+              <GenreFilterList
                 allSongs={state && state.allSongs}
                 songsByGenre={state && state.songsByGenre}
                 onChange={filterByGenre}
                 value={state && state.currentGenre}
               />
-              <MusicControls
+              <SongDetails
                 player={currentPlayer}
                 trackName={state.trackName}
                 albumName={state.albumName}
@@ -97,10 +99,14 @@ export default function Dashboard(props) {
       <MusicControlBar
         playing={state.playing}
         repeatMode={state.repeat_mode}
+        shuffleMode={state.shuffle}
         handlePrev={handlePrev}
         handleNext={handleNext}
         handleToggle={handleToggle}
-        handleRepeat={repeatPlayback}
+        handleRepeat={handleRepeat}
+        handleShuffle={handleShuffle}
+        initialVolume={state && state.initialVolume}
+        setVolume={setVolume}
       />
     </div>
   );

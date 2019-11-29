@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import './App.css';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 // create theme for entire project

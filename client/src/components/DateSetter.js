@@ -1,11 +1,14 @@
-import React from 'react';
-import {KeyboardDatePicker} from '@material-ui/pickers';
+import React from "react";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 export default function DateSetter(props) {
-    return (
-        <div>
-        <KeyboardDatePicker onChange={props.setStartDate} value={props.startDate}/>
-        <KeyboardDatePicker onChange={props.setEndDate} value={props.endDate}/>
-        </div>
-    )
+  return (
+    <div>
+      <KeyboardDatePicker
+        onChange={props.setStartDate}
+        value={props.startDate}
+      />
+      <KeyboardDatePicker onChange={props.setEndDate} value={props.endDate} />
+    </div>
+  );
 }

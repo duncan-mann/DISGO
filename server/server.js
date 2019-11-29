@@ -35,9 +35,9 @@ passport.use(
         callbackURL: 'http://localhost:8888/callback'
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
-        
+
         console.log('token expires in:', expires_in);
-        
+
         // asynchronous verification, for effect...
         access_token = accessToken;
         process.nextTick(function() {

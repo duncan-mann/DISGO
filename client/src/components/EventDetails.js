@@ -1,27 +1,33 @@
-import React from 'react'
-import EventDetailItems from './EventDetailItems'
-import { makeStyles } from '@material-ui/core/styles';
-
+import React from "react";
+import EventDetailItems from "./EventDetailItems";
+import { makeStyles } from "@material-ui/core/styles";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import "./eventDetails.css";
 
 const useStyles = makeStyles(theme => ({
-  event: {
-    'padding-top': '5%',
-    color: 'white',
-    'text-align': 'center',
-    'display': 'flex',
-    'flex-direction': 'column'
+  root: {
+    // background: 'none',
   },
+  // event: {
+  //   "padding-top": "5%",
+  //   color: "white",
+  //   backgroundColor: "#393e46",
+  //   padding: "10px",
+  //   borderRadius: "5px"
+  // },
   artist: {
-    color: 'white',
-    width: '60%',
-    margin: '0 auto',
-    display: 'inline-block',
-    'border-bottom': '1px solid white'
+    color: "white",
+    width: "60%",
+    margin: "auto",
+    borderBottom: "1px solid white",
+    textAlign: "center",
+    paddingTop: "3rem"
   },
-  details: {
-    display: 'inline-block'
-  }
-}))
+  carousel: {
+    display: "flex",
+    justifyContent: "center",
+}}));
 
 export default function EventDetails(props) {
   const classes = useStyles();
@@ -30,23 +36,27 @@ export default function EventDetails(props) {
     return (
       <EventDetailItems
         key={index}
+        artist={e.performers[0].name}
         venue={e.venue.name}
         address={e.venue.address}
         date={e.datetime_local.split("T")[0]}
-        avgTicketPrice={e.stats.average_price}
+        lowestPrice={e.stats.lowest_price}
         url={e.url}
       />
-    )
-  }
-  )
+    );
+  });
 
   return (
-    <div className={classes.event}>
-      <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1>
-      <div className={classes.details}>
-        {list}
-      </div>
+    <div className={classes.root}>
+    <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1>
+    <Carousel className={classes.carousel}
+      width={"25%"}
+      showThumbs={false}
+      showStatus={false}
+      showIndicators={false}
+    >
+      {list}
+    </Carousel>
     </div>
-
-  )
+  );
 }

@@ -9,14 +9,14 @@ import {
 import { getPerformers } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
-
-  let today = new Date()
-  let future = new Date()
-  future.setDate(today.getDate()+29)
+  let today = new Date();
+  let future = new Date();
+  future.setDate(today.getDate() + 29);
 
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
+    initialVolume: 0.05,
     user: {},
     token: null,
     artists: {},
@@ -33,7 +33,8 @@ export default function useDashboardData() {
     currentPlaylist: [],
     // Spotfiy Playback SDK
     deviceId: null,
-    repeat_mode: null,
+    repeat_mode: 0,
+    shuffle: false,
     trackName: "",
     albumName: "",
     artistName: "",
@@ -47,7 +48,7 @@ export default function useDashboardData() {
     previousTrackUri: [],
     startDate: today,
     endDate: future,
-    location: "Toronto",
+    location: "Toronto"
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -96,8 +97,11 @@ export default function useDashboardData() {
   // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
     if (state.token) {
-      getPerformers(state.startDate.toJSON().split('T')[0], state.endDate.toJSON().split('T')[0], state.location)
-        .then(events => {
+      getPerformers(
+        state.startDate.toJSON().split("T")[0],
+        state.endDate.toJSON().split("T")[0],
+        state.location
+      ).then(events => {
         setState(prev => ({ ...prev, events }));
       });
     }
@@ -174,7 +178,7 @@ export default function useDashboardData() {
         getOAuthToken: callback => {
           callback(_token);
         },
-        volume: 0.05
+        volume: state.initialVolume
       });
       // add player object to state
       // console.log(player);
@@ -191,7 +195,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        console.log("This is the player state", playerState.repeat_mode);
+        // console.log("This is the player state", playerState.shuffle);
         // extract information from current track
         const {
           current_track,
@@ -205,6 +209,7 @@ export default function useDashboardData() {
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
         const repeat_mode = playerState.repeat_mode;
+        const shuffle = playerState.shuffle;
 
         // extract information from previous, next tracks
         if (previous_tracks && previous_tracks.length === 1) {
@@ -254,6 +259,7 @@ export default function useDashboardData() {
           fetch: 0,
           onMount: false,
           repeat_mode,
+          shuffle
         }));
 
         //////////////////////////////////////////////////
@@ -301,6 +307,7 @@ export default function useDashboardData() {
         }
       });
     };
+
   }, [state.token]);
 
   // fetch song uri with current artist event details
@@ -350,7 +357,7 @@ export default function useDashboardData() {
 
           setState(prev => ({
             ...prev,
-            currentEvent: temp,
+            currentEvent: temp
             // fetch: 0,
             // onMount: false
           }));
@@ -396,22 +403,11 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
-    }).then(() => {
-      setState(prev => ({
-        ...prev,
-        // fetch: 0,
-        // onMount: false
-      }));
     });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (
-      state.token &&
-      state.deviceId &&
-      state.allSongs.length > 0 &&
-      state.currentGenre
-    ) {
+    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -449,22 +445,15 @@ export default function useDashboardData() {
   }, [state.deviceId, state.allSongs, state.currentGenre]);
 
   // Repeat user playback
-  const repeatPlayback = (repeat_mode) => {
-    console.log('repeat_mode', repeat_mode);
-
+  const handleRepeat = repeat_mode => {
     let input = null;
     if (repeat_mode === 0) {
       input = 'context';
-
     } else if (repeat_mode === 1) {
-      input = 'track';
-
+      input = "track";
     } else {
-      input = 'off';
-
+      input = "off";
     }
-
-    console.log('input', input);
     // 'input' can be either a track, context, or off
     // track will repeat the current track
     // context will repeat the current context
@@ -499,6 +488,21 @@ export default function useDashboardData() {
       }));
     }
   };
+  // toggle shuffle for user's playback
+  const handleShuffle = () => {
+    fetch(
+      `https://api.spotify.com/v1/me/player/shuffle?state=${
+        state.shuffle ? false : true
+      }`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `Bearer ${state.token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+  };
 
   // music player control functions
   const handlePrev = () => {
@@ -510,7 +514,11 @@ export default function useDashboardData() {
   const handleToggle = () => {
     currentPlayer.togglePlay();
   };
-
+  const setVolume = value => {
+    currentPlayer.setVolume(value).then(() => {
+      // console.log(`Volume updated to ${value * 100}%`);
+    });
+  };
   // return an array of event details for currently playing track
   const getCurrentEventDetails = () => {
     if (
@@ -530,7 +538,9 @@ export default function useDashboardData() {
     handlePrev,
     handleNext,
     handleToggle,
-    repeatPlayback,
+    handleRepeat,
+    handleShuffle,
+    setVolume,
     filterByGenre,
     setStartDate,
     setEndDate,
