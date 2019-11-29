@@ -142,7 +142,7 @@ export default function MusicControlBar(props) {
               aria-label="next"
               color="error"
             />
-            {props.repeatMode === 1 ? (
+            {props.repeatMode === 2 ? (
               <RepeatOneIcon
                 className={classes.musicIcon}
                 onClick={() => props.handleRepeat(props.repeatMode)}
