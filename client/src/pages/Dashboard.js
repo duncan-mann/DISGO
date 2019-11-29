@@ -15,12 +15,13 @@ const useStyles = makeStyles(theme => ({
     background: `linear-gradient(#212121 50%, #121212 90%)`
   },
   loadingBar: {
-    margin: "auto",
+    // margin: "auto",
+    marginTop: '10px',
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2)
     },
-    height: '80vh',
+    height: '84vh',
   },
   musicControlBar: {}
 }));

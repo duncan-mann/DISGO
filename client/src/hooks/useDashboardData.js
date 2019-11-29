@@ -90,6 +90,7 @@ export default function useDashboardData() {
     axios
       .get("/getUser")
       .then(async res => {
+        console.log(res.data);
         setState(state => ({ ...state, ...res.data }));
       })
       .catch(e => console.log("error:", e));
