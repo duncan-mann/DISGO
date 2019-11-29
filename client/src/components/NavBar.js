@@ -10,6 +10,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Avatar from '@material-ui/core/Avatar';
+import Grid from "@material-ui/core/Grid";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +24,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    // 'margin-right': 90
   },
   form: {
     color: "white"
@@ -30,6 +33,24 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 5,
     height: 5,
+  },
+  submitButton: {
+    'margin-left': '20px',
+    height: '30px',
+    width: '100px',
+    color: '#b3b3b3',
+    border: "1px solid #b3b3b3",
+    backgroundColor: 'rgba(0,0,0,0)',
+    padding: "0",
+    textAlign: "center",
+    borderRadius: "15px",
+    '&:hover': {
+      backgroundColor: theme.palette.primary,
+      color: 'white'
+    },
+  },
+  textField: {
+    color: '#b3b3b3'
   }
 }));
 
@@ -51,7 +72,16 @@ export default function NavBar(props) {
           <Typography variant="h6" className={classes.title}>
             Discover
           </Typography>
+          <Grid
+        container
+        spacing={2}
+        direction="row"
+        alignItems="center"
+        justify="center"
+      >
           <TextField
+            color="secondary"
+            className={classes.textField}
             onChange={event => props.setLocation(event.target.value)}
             value={props.location}
           />
@@ -62,32 +92,27 @@ export default function NavBar(props) {
             setEndDate={props.setEndDate}
           />
           <Button
+            className={classes.submitButton}
             variant="contained"
             color="secondary"
             onClick={() =>
               props.setTimeFrame(props.startDate, props.endDate, props.location)
             }
           >
-            Set Date
+            Submit
           </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => props.addUserPlaylist(`Shows in ${props.location}!`)}
-          >
-            Export Playlist
-          </Button>
+      </Grid>
           <IconButton
             edge="end"
             aria-label="account of current user"
             aria-haspopup="true"
             color="inherit"
-          >
+            >
             {props.profilePicture && props.profilePicture[0].length > 9 ? (
               <Avatar alt="profile-picture" src={props.profilePicture[0]} className={classes.Avatar} />
-            ) : (
-              <AccountCircle />
-            )}
+              ) : (
+                <AccountCircle />
+                )}
           </IconButton>
         </Toolbar>
       </AppBar>

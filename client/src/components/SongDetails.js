@@ -8,7 +8,6 @@ const useStyles = makeStyles(theme => ({
     // 'background': `linear-gradient(#212121 50%, #121212 90%)`,
     'color': 'white',
     'text-align': 'center',
-    'margin-bottom': '100px'
   },
   song: {
     'font-size': 20

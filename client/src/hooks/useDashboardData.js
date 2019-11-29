@@ -48,7 +48,9 @@ export default function useDashboardData() {
     previousTrackUri: [],
     startDate: today,
     endDate: future,
-    location: "Toronto"
+    location: "Toronto",
+    playlistNotification: false,
+    playlistTransition: undefined
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -78,11 +80,20 @@ export default function useDashboardData() {
     });
   }
 
-  function addUserPlaylist(playlistName) {
-    initPlaylist(state.token, state.user, playlistName).then(response => {
+  function addUserPlaylist() {
+    initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(response => {
       addSongsToPlaylist(state.token, response.data.id, state.currentPlaylist);
       console.log("Playlist id", response.data.id);
     });
+  }
+
+  const handleClick = (Transition) => {
+    setState(prev => ({...prev, playlistTransition: Transition}));
+    setState(prev => ({...prev, playlistNotification: true}))
+  }
+
+  const handleClose = () => {
+    setState(prev => ({...prev, playlistNotification: false}))
   }
 
   // obtain access token using Spotify authentication process
@@ -210,6 +221,7 @@ export default function useDashboardData() {
         const playing = !playerState.paused;
         const repeat_mode = playerState.repeat_mode;
         const shuffle = playerState.shuffle;
+        console.log(repeat_mode)
 
         // extract information from previous, next tracks
         if (previous_tracks && previous_tracks.length === 1) {
@@ -547,6 +559,8 @@ export default function useDashboardData() {
     setTimeFrame,
     setLocation,
     addUserPlaylist,
-    getCurrentEventDetails
+    getCurrentEventDetails,
+    handleClick,
+    handleClose
   };
 }
