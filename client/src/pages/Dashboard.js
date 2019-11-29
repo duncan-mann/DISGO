@@ -8,7 +8,6 @@ import EventDetails from "../components/EventDetails";
 import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
 import Snackbar from '@material-ui/core/Snackbar';
-import { green } from '@material-ui/core/colors';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";

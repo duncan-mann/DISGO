@@ -26,24 +26,24 @@ const useStyles = makeStyles(theme => ({
   musicControlBar: {
     top: "auto",
     bottom: 0,
-    height: "10%",
+    // height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,
-    paddingBottom: 10
+    paddingBottom: 5,
   },
   barLeft: {
     float: "left",
-    width: 200
+    width: 200,
   },
   barCenter: {
     float: "none",
     margin: "auto",
-    width: 400
+    width: 400,
   },
   barRight: {
     float: "right",
-    width: 200
+    width: 200,
   },
   toysIcon: {
     left: 0,
@@ -79,8 +79,8 @@ const useStyles = makeStyles(theme => ({
   positionSlider: {
     width: 320,
     color: theme.palette.primary.light,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   "@keyframes icon-spin": {
     from: {
