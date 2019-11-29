@@ -107,6 +107,8 @@ export default function Dashboard(props) {
         handleShuffle={handleShuffle}
         initialVolume={state && state.initialVolume}
         setVolume={setVolume}
+        position={state && state.position}
+        duration={state && state.duration}
       />
     </div>
   );

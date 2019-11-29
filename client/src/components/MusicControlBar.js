@@ -17,19 +17,18 @@ import Slider from "@material-ui/core/Slider";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-  },
+  root: {},
   musicControlBar: {
-    top: 'auto',
+    top: "auto",
     bottom: 0,
-    height: '8%',
+    height: "8%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white"
     // flexGrow: 1,
   },
   barLeft: {
     float: "left",
-    width: 200,
+    width: 200
   },
   toysIcon: {
     left: 0,
@@ -55,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   barRight: {
     float: "right",
-    width: 200,
+    width: 200
   },
   "@keyframes icon-spin": {
     from: {
@@ -66,36 +65,49 @@ const useStyles = makeStyles(theme => ({
     }
   },
   volumeSlider: {
-    color: "white",
+    color: "white"
     // width: 100,
-  }
+  },
+  positionSlider: {
+    color: 'white',
+   }
 }));
 export default function MusicControlBar(props) {
   const classes = useStyles();
-  const [value, setValue] = useState(0);
+  const [volume, setVolume] = useState(0);
+  const [position, setPosition] = useState(0);
 
+  // set initial volume value
   useEffect(() => {
     if (props.initialVolume) {
-      setValue(props.initialVolume * 100);
+      setVolume(props.initialVolume * 100);
     }
   }, [props.initialVolume]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleVolume = (event, newValue) => {
+    setVolume(newValue);
     props.setVolume(newValue / 100);
   };
   // mute volume
   const muteVolume = () => {
-    if (value === 0) {
-      setValue(50);
+    if (volume === 0) {
+      setVolume(50);
       props.setVolume(0.5);
-
     } else {
-      setValue(0);
+      setVolume(0);
       props.setVolume(0);
     }
-
   };
+  // set position of music
+  useEffect(() => {
+    if (props.position && props.duration) {
+      setPosition((props.position / props.duration) * 100);
+    }
+  }, [props.position]);
+
+  const handlePosition = (event, newValue) => {
+    // setPosition(position)
+  }
 
   return (
     <div className={classes.root}>
@@ -105,6 +117,11 @@ export default function MusicControlBar(props) {
             <ToysIcon className={classes.toysIcon} />
           </div>
           <div className={classes.barCenter}>
+            <Slider
+              className={classes.positionSlider}
+              value={position}
+              onChange={handlePosition}
+            />
             <ShuffleIcon
               className={classes.musicIcon}
               onClick={props.handleShuffle}
@@ -172,7 +189,7 @@ export default function MusicControlBar(props) {
                 />
               </Grid>
               <Grid item>
-                {value === 0 ? (
+                {volume === 0 ? (
                   <VolumeOffIcon
                     className={classes.musicIcon}
                     onClick={() => muteVolume()}
@@ -193,8 +210,8 @@ export default function MusicControlBar(props) {
               <Grid item xs>
                 <Slider
                   className={classes.volumeSlider}
-                  value={value}
-                  onChange={handleChange}
+                  value={volume}
+                  onChange={handleVolume}
                 />
               </Grid>
             </Grid>

@@ -16,7 +16,6 @@ export default function useDashboardData() {
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
-    initialVolume: 0.05,
     user: {},
     token: null,
     artists: {},
@@ -32,9 +31,12 @@ export default function useDashboardData() {
     currentGenre: [],
     currentPlaylist: [],
     // Spotfiy Playback SDK
+    initialVolume: 0.05,
     deviceId: null,
     repeat_mode: 0,
     shuffle: false,
+    position: null,
+    duration: null,
     trackName: "",
     albumName: "",
     artistName: "",
@@ -195,7 +197,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        // console.log("This is the player state", playerState.shuffle);
+        // console.log("This is the player state", playerState);
         // extract information from current track
         const {
           current_track,
@@ -210,6 +212,9 @@ export default function useDashboardData() {
         const playing = !playerState.paused;
         const repeat_mode = playerState.repeat_mode;
         const shuffle = playerState.shuffle;
+        // song position and duration
+        const position = playerState.position;
+        const duration = playerState.duration;
 
         // extract information from previous, next tracks
         if (previous_tracks && previous_tracks.length === 1) {
@@ -259,7 +264,9 @@ export default function useDashboardData() {
           fetch: 0,
           onMount: false,
           repeat_mode,
-          shuffle
+          shuffle,
+          position,
+          duration,
         }));
 
         //////////////////////////////////////////////////
