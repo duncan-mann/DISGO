@@ -7,8 +7,12 @@ import SongDetails from "../components/SongDetails";
 import EventDetails from "../components/EventDetails";
 import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
+import Snackbar from '@material-ui/core/Snackbar';
+import { green } from '@material-ui/core/colors';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +26,15 @@ const useStyles = makeStyles(theme => ({
     },
     height: '84vh',
   },
-  musicControlBar: {}
+  snackbar: {
+    'margin-bottom': '3%',
+    'margin-right': '12%',
+    'padding': 'auto'
+  },
+  notification: {
+    display: 'flex',
+    alignItems: 'center',
+  }
 }));
 
 export default function Dashboard(props) {
@@ -44,7 +56,9 @@ export default function Dashboard(props) {
     setLocation,
     filterByGenre,
     addUserPlaylist,
-    getCurrentEventDetails
+    getCurrentEventDetails,
+    handleClick,
+    handleClose
   } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
@@ -68,12 +82,27 @@ export default function Dashboard(props) {
         setTimeFrame={setTimeFrame}
         setLocation={setLocation}
         location={state.location}
-        addUserPlaylist={addUserPlaylist}
         profilePicture={state && state.user && state.user.photos}
       />
       <div>
         {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
           <div>
+            <Snackbar
+            className={classes.snackbar}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+              open={state.playlistNotification}
+              onClose={handleClose}
+              TransitionComponent={state.playlistTransition}
+              ContentProps={{
+                'aria-describedby': 'message-id',
+              }}
+              message={<span className={classes.notification}>
+                <CheckCircleIcon/>Playlist Added to Spotify!
+              </span>}
+            />
             <div>
               <EventDetails
                 artistName={state && state.artistName}
@@ -122,6 +151,9 @@ export default function Dashboard(props) {
         handleShuffle={handleShuffle}
         initialVolume={state && state.initialVolume}
         setVolume={setVolume}
+        addUserPlaylist={addUserPlaylist}
+        location={state.location}
+        handleClick={handleClick}
         position={state && state.position}
         duration={state && state.duration}
         setPosition={setPosition}

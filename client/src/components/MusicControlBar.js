@@ -14,7 +14,12 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import Slider from "@material-ui/core/Slider";
+import Slide from '@material-ui/core/Slide';
 import { makeStyles } from "@material-ui/core/styles";
+
+function TransitionLeft(props) {
+  return <Slide {...props} direction="right" />;
+}
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -244,7 +249,12 @@ export default function MusicControlBar(props) {
             <Grid container spacing={2}>
               <Grid item>
                 <PlaylistAddIcon
+
                   className={classes.musicIcon}
+                  onClick={() => {
+                    props.addUserPlaylist()
+                    props.handleClick(TransitionLeft)
+                  }}
                   fontSize="default"
                   aria-label="export-playlist"
                   color="error"
