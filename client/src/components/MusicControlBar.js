@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
   barLeft: {
     float: "left",
-    width: '25%',
+    width: 200,
   },
   toysIcon: {
     left: 0,
@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
   barRight: {
     float: "right",
-    width: '25%',
+    width: 200,
   },
   "@keyframes icon-spin": {
     from: {
@@ -66,7 +66,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   volumeSlider: {
-    color: "white"
+    color: "white",
+    // width: 100,
   }
 }));
 export default function MusicControlBar(props) {
