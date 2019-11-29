@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 // import custom hooks
 import useDashboardData from "../hooks/useDashboardData";
 // import components
@@ -9,7 +9,6 @@ import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import SpotifyWidget from "../components/SpotifyWidget";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,6 +49,14 @@ export default function Dashboard(props) {
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
+  const [isFlipped, setIsFlipped] = useState(false)
+  
+  const flipCard = (e) => {
+    e.preventDefault();
+    console.log("flipped was clicked!")
+    setIsFlipped(!isFlipped)
+  }
+
   return (
     <div className={classes.root}>
       <NavBar
@@ -78,7 +85,7 @@ export default function Dashboard(props) {
                 songsByGenre={state && state.songsByGenre}
                 onChange={filterByGenre}
                 value={state && state.currentGenre}
-              />
+              />              
               <SongDetails
                 player={currentPlayer}
                 trackName={state.trackName}
@@ -87,9 +94,12 @@ export default function Dashboard(props) {
                 prevAlbumCover={prevAlbumCovers}
                 nextAlbumCover={nextAlbumCovers}
                 artistName={state.artistName}
+                flipCard={flipCard}
+                isFlipped={isFlipped}
+                setIsFlipped={setIsFlipped}
+                artistAlbum={state.artistAlbum}
               />
             </div>
-            <SpotifyWidget artistAlbum={state.artistAlbum}/>
           </div>
         ) : (
           <div className={classes.loadingBar}>
