@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ToysIcon from "@material-ui/icons/Toys";
@@ -64,11 +63,19 @@ const useStyles = makeStyles(theme => ({
     color: "white"
     // width: 100,
   },
-  positionSlider: {
+  positionSliderTime: {
+    fontSize: 10,
     color: theme.palette.primary.light,
-    width: 350,
-    paddingTop: 10,
-    paddingBottom: 5
+    width: 25,
+    paddingRight: 10,
+    paddingLeft: 10,
+    // display: 'block',
+  },
+  positionSlider: {
+    width: 320,
+    color: theme.palette.primary.light,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   "@keyframes icon-spin": {
     from: {
@@ -83,6 +90,8 @@ export default function MusicControlBar(props) {
   const classes = useStyles();
   const [volume, setVolume] = useState(0);
   const [position, setPosition] = useState(0);
+  // setInterval(setPosition(position + 1000), 1000);
+
   /////////////////////////
   // change music volume //
   /////////////////////////
@@ -110,20 +119,32 @@ export default function MusicControlBar(props) {
   // set position of music //
   ///////////////////////////
   useEffect(() => {
-    if (props.position && props.duration) {
+    if (props.duration) {
       setPosition((props.position / props.duration) * 100);
     }
-  }, [props.position, props.duration]);
+  }, [props.duration]);
+  // start position timer when the position is set
 
   const handlePosition = (event, newPosition) => {
     // newPosition is the new position as percentage
     setPosition(newPosition);
     props.setPosition(((newPosition / 100) * props.duration) / 1000);
   };
-  // const convertTime => duration => {
-  //   // receive duration in milliseconds
-  //   const seconds = (duration / 1000).
-  // }
+  const convertTime = time => {
+    // receive duration in milliseconds
+    const seconds = ((time % (60 * 1000)) / 1000);
+    const minutes = (time - (seconds * 1000)) / (60 * 1000);
+    // format seconds
+    let seconds_format = null;
+    if (seconds.toFixed(0).toString().length === 1) {
+      seconds_format = `0${seconds.toFixed(0)}`;
+    } else {
+      seconds_format = `${seconds.toFixed(0)}`;
+    }
+
+    return `${minutes === 0 ? 0 : minutes}:${seconds_format}`;
+  }
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.musicControlBar} position="fixed">
@@ -196,13 +217,26 @@ export default function MusicControlBar(props) {
                   />
                 )}
               </Grid>
-              <Grid item>
+              <Grid item >
+                <span className={classes.positionSliderTime}>
+                  {position === 0 ? (
+                    '0:00'
+                  ) : (
+                    convertTime(props.position)
+                  )}
+                </span>
                 <Slider
                   className={classes.positionSlider}
                   value={position}
                   onChange={handlePosition}
                 />
-               {props.duration / 3600}
+                <span className={classes.positionSliderTime}>
+                  {!props.duration ? (
+                    '0:00'
+                  ) : (
+                    convertTime(props.duration)
+                  )}
+                </span>
               </Grid>
             </Grid>
           </div>
