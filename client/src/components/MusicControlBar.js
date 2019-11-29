@@ -21,14 +21,24 @@ const useStyles = makeStyles(theme => ({
   musicControlBar: {
     top: "auto",
     bottom: 0,
-    height: "8%",
+    height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
-    color: "white"
-    // flexGrow: 1,
+    color: "white",
+    paddingTop: 5,
+    paddingBottom: 10,
   },
   barLeft: {
     float: "left",
     width: 200
+  },
+  barCenter: {
+    float: "none",
+    margin: "auto",
+    width: 400,
+  },
+  barRight: {
+    float: "right",
+    width: 200,
   },
   toysIcon: {
     left: 0,
@@ -38,23 +48,26 @@ const useStyles = makeStyles(theme => ({
     animationTimingFunction: "linear",
     animationIterationCount: "infinite"
   },
-  barCenter: {
-    float: "none",
-    // marginLeft: "39%",
-    margin: "auto",
-    width: "20%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
   musicIcon: {
     "&:hover": {
       color: theme.palette.secondary.light
     }
   },
-  barRight: {
-    float: "right",
-    width: 200
+  mediaButtons: {
+    width: 200,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  volumeSlider: {
+    color: "white"
+    // width: 100,
+  },
+  positionSlider: {
+    color: theme.palette.primary.light,
+    width: 400,
+    paddingTop: 10,
+    paddingBottom: 5,
   },
   "@keyframes icon-spin": {
     from: {
@@ -64,13 +77,6 @@ const useStyles = makeStyles(theme => ({
       transform: "rotate(0deg)"
     }
   },
-  volumeSlider: {
-    color: "white"
-    // width: 100,
-  },
-  positionSlider: {
-    color: 'white',
-   }
 }));
 export default function MusicControlBar(props) {
   const classes = useStyles();
@@ -107,7 +113,7 @@ export default function MusicControlBar(props) {
 
   const handlePosition = (event, newValue) => {
     // setPosition(position)
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -117,66 +123,78 @@ export default function MusicControlBar(props) {
             <ToysIcon className={classes.toysIcon} />
           </div>
           <div className={classes.barCenter}>
-            <Slider
-              className={classes.positionSlider}
-              value={position}
-              onChange={handlePosition}
-            />
-            <ShuffleIcon
-              className={classes.musicIcon}
-              onClick={props.handleShuffle}
-              fontSize="default"
-              aria-label="shuffle"
-              color={props.shuffleMode ? "secondary" : "error"}
-            />
-            <SkipPreviousIcon
-              className={classes.musicIcon}
-              onClick={props.handlePrev}
-              fontSize="default"
-              aria-label="previous"
-              color="error"
-            />
-            {props.playing ? (
-              <PauseCircleOutlineIcon
-                className={classes.musicIcon}
-                onClick={props.handleToggle}
-                fontSize="large"
-                aria-label="Playing"
-                color="error"
-              />
-            ) : (
-              <PlayCircleOutlineIcon
-                className={classes.musicIcon}
-                onClick={props.handleToggle}
-                fontSize="large"
-                aria-label="Paused"
-                color="error"
-              />
-            )}
-            <SkipNextIcon
-              className={classes.musicIcon}
-              onClick={props.handleNext}
-              fontSize="default"
-              aria-label="next"
-              color="error"
-            />
-            {props.repeatMode === 2 ? (
-              <RepeatOneIcon
-                className={classes.musicIcon}
-                onClick={() => props.handleRepeat(props.repeatMode)}
-                fontSize="default"
-                aria-label="repeat-one"
-                color="secondary"
-              />
-            ) : (
-              <RepeatIcon
-                className={classes.musicIcon}
-                onClick={() => props.handleRepeat(props.repeatMode)}
-                fontSize="default"
-                aria-label="repeat"
-                color={props.repeatMode === 0 ? "error" : "secondary"}
-              />
-            )}
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justify="center"
+            >
+              <Grid item className={classes.mediaButtons}>
+                <ShuffleIcon
+                  className={classes.musicIcon}
+                  onClick={props.handleShuffle}
+                  fontSize="default"
+                  aria-label="shuffle"
+                  color={props.shuffleMode ? "secondary" : "error"}
+                />
+                <SkipPreviousIcon
+                  className={classes.musicIcon}
+                  onClick={props.handlePrev}
+                  fontSize="default"
+                  aria-label="previous"
+                  color="error"
+                />
+                {props.playing ? (
+                  <PauseCircleOutlineIcon
+                    className={classes.musicIcon}
+                    onClick={props.handleToggle}
+                    fontSize="large"
+                    aria-label="Playing"
+                    color="error"
+                  />
+                ) : (
+                  <PlayCircleOutlineIcon
+                    className={classes.musicIcon}
+                    onClick={props.handleToggle}
+                    fontSize="large"
+                    aria-label="Paused"
+                    color="error"
+                  />
+                )}
+                <SkipNextIcon
+                  className={classes.musicIcon}
+                  onClick={props.handleNext}
+                  fontSize="default"
+                  aria-label="next"
+                  color="error"
+                />
+                {props.repeatMode === 2 ? (
+                  <RepeatOneIcon
+                    className={classes.musicIcon}
+                    onClick={() => props.handleRepeat(props.repeatMode)}
+                    fontSize="default"
+                    aria-label="repeat-one"
+                    color="secondary"
+                  />
+                ) : (
+                  <RepeatIcon
+                    className={classes.musicIcon}
+                    onClick={() => props.handleRepeat(props.repeatMode)}
+                    fontSize="default"
+                    aria-label="repeat"
+                    color={props.repeatMode === 0 ? "error" : "secondary"}
+                  />
+                )}
+              </Grid>
+              <Grid item>
+                <Slider
+                  className={classes.positionSlider}
+                  value={position}
+                  onChange={handlePosition}
+                />
+              </Grid>
+            </Grid>
           </div>
           <div className={classes.barRight}>
             <Grid container spacing={2}>
