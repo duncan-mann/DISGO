@@ -37,6 +37,7 @@ export default function Dashboard(props) {
     handleRepeat,
     handleShuffle,
     setVolume,
+    setPosition,
     setStartDate,
     setEndDate,
     setTimeFrame,
@@ -107,6 +108,9 @@ export default function Dashboard(props) {
         handleShuffle={handleShuffle}
         initialVolume={state && state.initialVolume}
         setVolume={setVolume}
+        position={state && state.position}
+        duration={state && state.duration}
+        setPosition={setPosition}
       />
     </div>
   );
