@@ -2,6 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { flexbox } from '@material-ui/system';
 import { useMediaQuery } from 'react-responsive';
+import ReactCardFlip from 'react-card-flip';
+import SpotifyWidget from "../components/SpotifyWidget";
+import "./songDetails.css"
 
 const useStyles = makeStyles(theme => ({
   MusicControls: {
@@ -67,9 +70,26 @@ export default function MusicControls(props) {
   const smallScreen = useMediaQuery({ maxWidth: 699});
 
 
-  let allAlbums = [<img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='1' />]
-  let albumsMed = [<img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='2' />]
-  let albumsSmall = [<img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='3' />]
+  let allAlbums = [
+    <ReactCardFlip isFlipped={props.isFlipped}>              
+      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='1' onClick={props.flipCard}/>
+      <SpotifyWidget artistAlbum={props.artistAlbum}  flipCard={props.flipCard}/>
+    </ReactCardFlip>
+  ]
+
+  let albumsMed = [
+    <ReactCardFlip isFlipped={props.isFlipped}>              
+      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='2' onClick={props.flipCard}/>
+      <SpotifyWidget artistAlbum={props.artistAlbum}  flipCard={props.flipCard}/>
+    </ReactCardFlip>
+]
+
+  let albumsSmall = [
+    <ReactCardFlip isFlipped={props.isFlipped}>    
+      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='3' onClick={props.flipCard}/>          
+      <SpotifyWidget artistAlbum={props.artistAlbum}  flipCard={props.flipCard}/>
+    </ReactCardFlip>
+]
 
   if (props.prevAlbumCover[0]) {
     allAlbums.unshift(<img className={classes.prevAlbum} src={props.prevAlbumCover[0]} alt='' key='4'/>)
@@ -84,8 +104,7 @@ export default function MusicControls(props) {
   }
 
   return (
-    <div className={classes.MusicControls}>
-
+    <div className={classes.MusicControls} onClick={props.flipCard}>
       {bigScreen &&
         <div >
           {allAlbums}
@@ -104,7 +123,7 @@ export default function MusicControls(props) {
         </div>
         }
 
-      <p className={classes.song}>{props.trackName}</p>
+      <p className={classes.song}>{props.trackName} </p>
       <p className={classes.songInfo}>{props.artistName && props.artistName.join(", ")}</p>
     </div>
   );
