@@ -28,7 +28,8 @@ const useStyles = makeStyles(theme => ({
     // flexGrow: 1,
   },
   barLeft: {
-    float: "left"
+    float: "left",
+    width: '25%',
   },
   toysIcon: {
     left: 0,
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   barCenter: {
     float: "none",
-    marginLeft: "39%",
+    // marginLeft: "39%",
     margin: "auto",
     width: "20%",
     display: "flex",
@@ -54,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
   barRight: {
     float: "right",
-    width: 200
+    width: '25%',
   },
   "@keyframes icon-spin": {
     from: {

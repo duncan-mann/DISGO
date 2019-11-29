@@ -403,22 +403,11 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
-    }).then(() => {
-      setState(prev => ({
-        ...prev
-        // fetch: 0,
-        // onMount: false
-      }));
     });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (
-      state.token &&
-      state.deviceId &&
-      state.allSongs.length > 0 &&
-      state.currentGenre
-    ) {
+    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -459,7 +448,7 @@ export default function useDashboardData() {
   const handleRepeat = repeat_mode => {
     let input = null;
     if (repeat_mode === 0) {
-      input = "context";
+      input = 'context';
     } else if (repeat_mode === 1) {
       input = "track";
     } else {
