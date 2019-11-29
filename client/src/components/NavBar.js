@@ -107,8 +107,8 @@ export default function NavBar(props) {
             aria-label="account of current user"
             aria-haspopup="true"
             color="inherit"
-            >
-            {props.profilePicture && props.profilePicture[0].length > 9 ? (
+          >
+            {props.profilePicture && props.profilePicture.length > 0 ? (
               <Avatar alt="profile-picture" src={props.profilePicture[0]} className={classes.Avatar} />
               ) : (
                 <AccountCircle />
