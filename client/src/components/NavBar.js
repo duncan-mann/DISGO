@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +27,10 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     color: "white"
+  },
+  avatar: {
+    width: 5,
+    height: 5,
   }
 }));
 
@@ -79,7 +84,11 @@ export default function NavBar(props) {
             aria-haspopup="true"
             color="inherit"
           >
-            <AccountCircle />
+            {props.profilePicture && props.profilePicture[0].length > 9 ? (
+              <Avatar alt="profile-picture" src={props.profilePicture[0]} className={classes.Avatar} />
+            ) : (
+              <AccountCircle />
+            )}
           </IconButton>
         </Toolbar>
       </AppBar>

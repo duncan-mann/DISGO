@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
     background: `linear-gradient(#212121 50%, #121212 90%)`
   },
   loadingBar: {
-    // margin: "auto",
     marginTop: '10px',
     width: "100%",
     "& > * + *": {
@@ -61,6 +60,7 @@ export default function Dashboard(props) {
         setLocation={setLocation}
         location={state.location}
         addUserPlaylist={addUserPlaylist}
+        profilePicture={state && state.user && state.user.photos}
       />
       <div>
         {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
