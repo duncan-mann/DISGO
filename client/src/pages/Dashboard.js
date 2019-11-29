@@ -33,7 +33,9 @@ export default function Dashboard(props) {
     handleNext,
     handlePrev,
     handleToggle,
-    repeatPlayback,
+    handleRepeat,
+    handleShuffle,
+    setVolume,
     setStartDate,
     setEndDate,
     setTimeFrame,
@@ -59,9 +61,7 @@ export default function Dashboard(props) {
         addUserPlaylist={addUserPlaylist}
       />
       <div>
-        {state.fetch === 0 &&
-        !state.onMount &&
-        getCurrentEventDetails().length > 0 ? (
+        {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
           <div>
             <div>
               <EventDetails
@@ -97,10 +97,14 @@ export default function Dashboard(props) {
       <MusicControlBar
         playing={state.playing}
         repeatMode={state.repeat_mode}
+        shuffleMode={state.shuffle}
         handlePrev={handlePrev}
         handleNext={handleNext}
         handleToggle={handleToggle}
-        handleRepeat={repeatPlayback}
+        handleRepeat={handleRepeat}
+        handleShuffle={handleShuffle}
+        initialVolume={state && state.initialVolume}
+        setVolume={setVolume}
       />
     </div>
   );
