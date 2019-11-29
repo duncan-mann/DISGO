@@ -18,12 +18,11 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // boxShadow: 2,
   },
   musicControlBar: {
     top: 'auto',
     bottom: 0,
-    height: "10%",
+    height: '8%',
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white"
     // flexGrow: 1,
