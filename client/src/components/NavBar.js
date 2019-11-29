@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles(theme => ({
@@ -23,6 +24,10 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     'color': 'white'
+  },
+  parent: {
+    display: 'flex',
+    justifyContent: 'flex-start'
   }
 }));
 
@@ -31,29 +36,31 @@ export default function NavBar(props) {
 
   return (
     <div className={classes.root}>
-        <AppBar position='static'>
-          <Toolbar>
-            <IconButton edge='start' className={classes.menuButton} color='inherit' aria-label='menu'>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant='h6' className={classes.title}>
-              Discover
+      <AppBar position='static'>
+        <Toolbar>
+          <IconButton edge='start' className={classes.menuButton} color='inherit' aria-label='menu'>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant='h6' className={classes.title}>
+            Discover
             </Typography>
-            <TextField onChange={(event) => props.setLocation(event.target.value)} value={props.location}/>
+          <Box display="flex" justifyContent="flex-start">
+            <TextField onChange={(event) => props.setLocation(event.target.value)} value={props.location} />
             <DateSetter
-            startDate={props.startDate}
-            setStartDate={props.setStartDate}
-            endDate={props.endDate}
-            setEndDate={props.setEndDate}
+              startDate={props.startDate}
+              setStartDate={props.setStartDate}
+              endDate={props.endDate}
+              setEndDate={props.setEndDate}
             />
-            <Button variant='contained' color='secondary' onClick={() => props.setTimeFrame(props.startDate, props.endDate, props.location)}>Set Date</Button>
-            <Button variant='contained' color='secondary' onClick={() => props.addUserPlaylist(`Shows in ${props.location}!`)}>Export Playlist</Button>
-            <IconButton edge='end' aria-label='account of current user' aria-haspopup='true' color='inherit'>
-              <AccountCircle />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      </div>
+            <Button  variant='contained' color='secondary' onClick={() => props.setTimeFrame(props.startDate, props.endDate, props.location)}>Set Date</Button>
+            <Button  variant='contained' color='secondary' onClick={() => props.addUserPlaylist(`Shows in ${props.location}!`)}>Export Playlist</Button>
+          </Box>
+          <IconButton edge='end' aria-label='account of current user' aria-haspopup='true' color='inherit'>
+            <AccountCircle />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+    </div>
   )
 }
 
