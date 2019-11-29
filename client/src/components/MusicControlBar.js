@@ -18,18 +18,18 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // boxShadow: 2,
   },
   musicControlBar: {
-    top: "auto",
+    top: 'auto',
     bottom: 0,
-    height: "10%",
+    height: '8%',
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white"
     // flexGrow: 1,
   },
   barLeft: {
-    float: "left"
+    float: "left",
+    width: '25%',
   },
   toysIcon: {
     left: 0,
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   barCenter: {
     float: "none",
-    marginLeft: "39%",
+    // marginLeft: "39%",
     margin: "auto",
     width: "20%",
     display: "flex",
@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
   barRight: {
     float: "right",
-    width: 200
+    width: '25%',
   },
   "@keyframes icon-spin": {
     from: {

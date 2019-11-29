@@ -1,16 +1,20 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import backgroundVideo from "../../public/docs/background-video.mp4";
+// import backgroundVideo from "../../public/docs/background-video.mp4";
+import backgroundVideo from "../../public/docs/video3.mp4";
 import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
+    // background: 'black',
     // justifyContent: 'center',
+    // backgroundColor: '#111',
+    // marginTop: '5%',
   },
   loginButton: {
     fontSize: 18,
-    width: "30%",
+    width: "20%",
     borderRadius: 25,
     // marginTop: "50px",
     position: 'absolute',

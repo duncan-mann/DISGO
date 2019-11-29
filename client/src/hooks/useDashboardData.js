@@ -16,7 +16,7 @@ export default function useDashboardData() {
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
-    initialVolume: 0.5,
+    initialVolume: 0.05,
     user: {},
     token: null,
     artists: {},
@@ -159,12 +159,12 @@ export default function useDashboardData() {
   }, [state.artistEvent, state.artistSong]);
 
   // On Mount, load Spotify Web Playback SDK script
-  // useEffect(() => {
-  //   const script = document.createElement("script");
-  //   script.async = true;
-  //   script.src = "https://sdk.scdn.co/spotify-player.js";
-  //   document.head.appendChild(script);
-  // }, []);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    document.head.appendChild(script);
+  }, []);
   // initialize Spotify Web Playback SDK
   useEffect(() => {
     // initialize Spotify Web Playback SDK
@@ -403,22 +403,11 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
-    }).then(() => {
-      setState(prev => ({
-        ...prev
-        // fetch: 0,
-        // onMount: false
-      }));
     });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (
-      state.token &&
-      state.deviceId &&
-      state.allSongs.length > 0 &&
-      state.currentGenre
-    ) {
+    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -459,7 +448,7 @@ export default function useDashboardData() {
   const handleRepeat = repeat_mode => {
     let input = null;
     if (repeat_mode === 0) {
-      input = "context";
+      input = 'context';
     } else if (repeat_mode === 1) {
       input = "track";
     } else {
@@ -527,32 +516,9 @@ export default function useDashboardData() {
   };
   const setVolume = value => {
     currentPlayer.setVolume(value).then(() => {
-      console.log(`Volume updated to ${value * 100}%`);
+      // console.log(`Volume updated to ${value * 100}%`);
     });
   };
-  // // set initial volume
-  // useEffect(() => {
-  //   if (currentPlayer) {
-  //     currentPlayer.getVolume().then(volume => {
-  //       let volume_percentage = volume * 100;
-  //       setState(prev => ({
-  //         ...prev,
-  //         initialVolume: volume_percentage,
-  //       }));
-  //     });
-  //   }
-
-  // }, [currentPlayer]);
-  // const getVolume = async () => {
-  //   const volume = await currentPlayer.getVolume();
-  //   return volume;
-  //   // .then(volume => {
-  //   //   let volume_percentage = volume * 100;
-  //   //   console.log(`The volume of the player is ${volume_percentage}%`);
-
-  //   //   return volume_percentage;
-  //   // });
-  // };
   // return an array of event details for currently playing track
   const getCurrentEventDetails = () => {
     if (

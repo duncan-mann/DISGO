@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import EventDetailItems from "./EventDetailItems";
 import { makeStyles } from "@material-ui/core/styles";
 import { Carousel } from "react-responsive-carousel";
@@ -6,6 +6,9 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./eventDetails.css";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    // background: 'none',
+  },
   // event: {
   //   "padding-top": "5%",
   //   color: "white",
@@ -28,13 +31,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function EventDetails(props) {
   const classes = useStyles();
-  // const [events, setEvents] = useState([])
-
-  // useEffect(() => {
-  //   if (props.currentEvent) {
-  //     setEvents(props.currentEvent)
-  //   }
-  // }, [props.currentEvent])
 
   const list = props.currentEvent.map((e, index) => {
     return (
@@ -51,7 +47,7 @@ export default function EventDetails(props) {
   });
 
   return (
-    <div>
+    <div className={classes.root}>
     <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1>
     <Carousel className={classes.carousel}
       width={"25%"}
