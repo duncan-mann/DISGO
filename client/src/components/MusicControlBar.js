@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ToysIcon from "@material-ui/icons/Toys";
@@ -25,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,
-    paddingBottom: 10,
+    paddingBottom: 10
   },
   barLeft: {
     float: "left",
@@ -34,11 +35,11 @@ const useStyles = makeStyles(theme => ({
   barCenter: {
     float: "none",
     margin: "auto",
-    width: 400,
+    width: 400
   },
   barRight: {
     float: "right",
-    width: 200,
+    width: 200
   },
   toysIcon: {
     left: 0,
@@ -57,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     width: 200,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "center"
   },
   volumeSlider: {
     color: "white"
@@ -65,9 +66,9 @@ const useStyles = makeStyles(theme => ({
   },
   positionSlider: {
     color: theme.palette.primary.light,
-    width: 400,
+    width: 350,
     paddingTop: 10,
-    paddingBottom: 5,
+    paddingBottom: 5
   },
   "@keyframes icon-spin": {
     from: {
@@ -76,23 +77,24 @@ const useStyles = makeStyles(theme => ({
     to: {
       transform: "rotate(0deg)"
     }
-  },
+  }
 }));
 export default function MusicControlBar(props) {
   const classes = useStyles();
   const [volume, setVolume] = useState(0);
   const [position, setPosition] = useState(0);
-
-  // set initial volume value
+  /////////////////////////
+  // change music volume //
+  /////////////////////////
   useEffect(() => {
     if (props.initialVolume) {
       setVolume(props.initialVolume * 100);
     }
   }, [props.initialVolume]);
 
-  const handleVolume = (event, newValue) => {
-    setVolume(newValue);
-    props.setVolume(newValue / 100);
+  const handleVolume = (event, newVolume) => {
+    setVolume(newVolume);
+    props.setVolume(newVolume / 100);
   };
   // mute volume
   const muteVolume = () => {
@@ -104,17 +106,24 @@ export default function MusicControlBar(props) {
       props.setVolume(0);
     }
   };
-  // set position of music
+  ///////////////////////////
+  // set position of music //
+  ///////////////////////////
   useEffect(() => {
     if (props.position && props.duration) {
       setPosition((props.position / props.duration) * 100);
     }
-  }, [props.position]);
+  }, [props.position, props.duration]);
 
-  const handlePosition = (event, newValue) => {
-    // setPosition(position)
+  const handlePosition = (event, newPosition) => {
+    // newPosition is the new position as percentage
+    setPosition(newPosition);
+    props.setPosition(((newPosition / 100) * props.duration) / 1000);
   };
-
+  // const convertTime => duration => {
+  //   // receive duration in milliseconds
+  //   const seconds = (duration / 1000).
+  // }
   return (
     <div className={classes.root}>
       <AppBar className={classes.musicControlBar} position="fixed">
@@ -193,6 +202,7 @@ export default function MusicControlBar(props) {
                   value={position}
                   onChange={handlePosition}
                 />
+               {props.duration / 3600}
               </Grid>
             </Grid>
           </div>

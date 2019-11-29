@@ -526,6 +526,12 @@ export default function useDashboardData() {
       // console.log(`Volume updated to ${value * 100}%`);
     });
   };
+  // set position in the song to play
+  const setPosition = value => {
+    currentPlayer.seek(value * 1000).then(() => {
+      console.log(`Changed to ${value} sec into the track`);
+    });
+  }
   // return an array of event details for currently playing track
   const getCurrentEventDetails = () => {
     if (
@@ -548,6 +554,7 @@ export default function useDashboardData() {
     handleRepeat,
     handleShuffle,
     setVolume,
+    setPosition,
     filterByGenre,
     setStartDate,
     setEndDate,
