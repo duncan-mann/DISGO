@@ -172,7 +172,7 @@ export default function MusicControlBar(props) {
 
                   className={classes.musicIcon}
                   onClick={() => {
-                    // props.addUserPlaylist()
+                    props.addUserPlaylist()
                     props.handleClick(TransitionLeft)
                   }}
                   fontSize="default"
