@@ -83,7 +83,7 @@ export default function NavBar(props) {
             aria-haspopup="true"
             color="inherit"
           >
-            {props.profilePicture && props.profilePicture[0].length > 9 ? (
+            {props.profilePicture && props.profilePicture[0].length > 0 ? (
               <Avatar alt="profile-picture" src={props.profilePicture[0]} className={classes.Avatar} />
             ) : (
               <AccountCircle />

@@ -89,6 +89,7 @@ export default function Dashboard(props) {
                 artistName={state.artistName}
               />
             </div>
+            <SpotifyWidget artistAlbum={state.artistAlbum}/>
           </div>
         ) : (
           <div className={classes.loadingBar}>
@@ -96,6 +97,8 @@ export default function Dashboard(props) {
             <LinearProgress variant="query" color="secondary" />
           </div>
         )}
+        <div>
+        </div>
       </div>
       <MusicControlBar
         playing={state.playing}
@@ -109,7 +112,6 @@ export default function Dashboard(props) {
         initialVolume={state && state.initialVolume}
         setVolume={setVolume}
       />
-      <SpotifyWidget />
     </div>
   );
 }

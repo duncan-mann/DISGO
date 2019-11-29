@@ -1,16 +1,16 @@
 import React from 'react'
 
-export default function SpotifyWidget() {
+export default function SpotifyWidget(props) {
+  const src = `https://open.spotify.com/embed/album/${props.artistAlbum}`
+  console.log(src)
   return (
-    <div>
       <iframe 
-        src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" 
+        src={src}
         width="300" 
-        height="380" 
+        height="300" 
         frameBorder="0" 
         allowtransparency="true" 
-        allow="encrypted-media">
-      </iframe>
-    </div>
+        allow="encrypted-media"
+      />
   )
 }
