@@ -9,6 +9,7 @@ import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import SpotifyWidget from "../components/SpotifyWidget";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -108,6 +109,7 @@ export default function Dashboard(props) {
         initialVolume={state && state.initialVolume}
         setVolume={setVolume}
       />
+      <SpotifyWidget />
     </div>
   );
 }
