@@ -74,11 +74,13 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 10,
     display: 'inline',
   },
+  songSeeker: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   positionSlider: {
     width: 400,
     color: theme.palette.primary.light,
-    paddingTop: 10,
-    paddingBottom: 10,
   },
   "@keyframes icon-spin": {
     from: {
@@ -220,7 +222,7 @@ export default function MusicControlBar(props) {
                   />
                 )}
               </Grid>
-              <Grid item >
+              <Grid item className={classes.songSeeker}>
                 <div className={classes.positionSliderTime}>
                   {position === 0 ? (
                     '0:00'
