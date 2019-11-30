@@ -94,7 +94,24 @@ export default function MusicControlBar(props) {
   const classes = useStyles();
   const [volume, setVolume] = useState(0);
   const [position, setPosition] = useState(0);
+  const [timer, setTimer] = useState(0);
   // setInterval(setPosition(position + 1000), 1000);
+
+  useEffect(() => {
+    if (props.playing) {
+      setPosition(position + 1000);
+    }
+    setTimeout(() => {
+      setTimer(timer + 1000);
+      // position += 1000
+    }, 1000);
+  }, [timer]);
+
+
+  useEffect(() => {
+    console.log('position: ', position);
+
+  }, [position])
 
   /////////////////////////
   // change music volume //
@@ -124,26 +141,28 @@ export default function MusicControlBar(props) {
   ///////////////////////////
   useEffect(() => {
     if (props.duration) {
-      setPosition((props.position / props.duration) * 100);
+      setPosition(props.position);
     }
-  }, [props.duration]);
+  }, [props.position]);
   // start position timer when the position is set
 
-  const handlePosition = (event, newPosition) => {
-    // newPosition is the new position as percentage
+  const handleSeek = (event, percentage) => {
+    // percentage is the new position as percentage
+    const newPosition = percentage / 100 * props.duration;
     setPosition(newPosition);
-    props.setPosition(((newPosition / 100) * props.duration) / 1000);
+    props.setPosition(newPosition);
   };
+
   const convertTime = time => {
     // receive duration in milliseconds
-    const seconds = (time % (60 * 1000)) / 1000;
-    const minutes = (time - seconds * 1000) / (60 * 1000);
+    const seconds = Math.floor((time % (60 * 1000)) / 1000);
+    const minutes = Math.floor((time - seconds * 1000) / (60 * 1000));
     // format seconds
     let seconds_format = null;
-    if (seconds.toFixed(0).toString().length === 1) {
-      seconds_format = `0${seconds.toFixed(0)}`;
+    if (seconds.toString().length === 1) {
+      seconds_format = `0${seconds}`;
     } else {
-      seconds_format = `${seconds.toFixed(0)}`;
+      seconds_format = `${seconds}`;
     }
 
     return `${minutes === 0 ? 0 : minutes}:${seconds_format}`;
@@ -223,12 +242,12 @@ export default function MusicControlBar(props) {
               </Grid>
               <Grid item className={classes.songController}>
                 <div className={classes.time}>
-                  {position === 0 ? "0:00" : convertTime(props.position)}
+                  {position === 0 ? "0:00" : convertTime(position)}
                 </div>
                   <Slider
                     className={classes.positionSlider}
-                    value={position}
-                    onChange={handlePosition}
+                    value={(position / props.duration) * 100 || 0}
+                    onChange={handleSeek}
                   />
                 <div className={classes.time}>
                   {!props.duration ? "0:00" : convertTime(props.duration)}

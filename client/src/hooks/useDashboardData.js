@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getArtists, getSongs, initPlaylist, addSongsToPlaylist} from "../helpers/spotifyHelper";
+import {
+  getArtists,
+  getSongs,
+  initPlaylist,
+  addSongsToPlaylist
+} from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
@@ -73,29 +78,38 @@ export default function useDashboardData() {
     // console.log(tmp)
     setState(prev => ({
       ...prev,
-      fetch: 1,
+      fetch: 1
       // currentGenre: [],
-     }));
-    getPerformers(startDate.toJSON().split("T")[0], endDate.toJSON().split("T")[0], location)
-    .then(events => {
+    }));
+    getPerformers(
+      startDate.toJSON().split("T")[0],
+      endDate.toJSON().split("T")[0],
+      location
+    ).then(events => {
       setState(prev => ({ ...prev, events }));
     });
   }
 
   function addUserPlaylist() {
-    initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(response => {
-      addSongsToPlaylist(state.token, response.data.id, state.currentPlaylist);
-    });
+    initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(
+      response => {
+        addSongsToPlaylist(
+          state.token,
+          response.data.id,
+          state.currentPlaylist
+        );
+      }
+    );
   }
 
-  const handleClick = (Transition) => {
-    setState(prev => ({...prev, playlistTransition: Transition}));
-    setState(prev => ({...prev, playlistNotification: true}));
-  }
+  const handleClick = Transition => {
+    setState(prev => ({ ...prev, playlistTransition: Transition }));
+    setState(prev => ({ ...prev, playlistNotification: true }));
+  };
 
   const handleClose = () => {
-    setState(prev => ({...prev, playlistNotification: false}))
-  }
+    setState(prev => ({ ...prev, playlistNotification: false }));
+  };
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
@@ -151,7 +165,7 @@ export default function useDashboardData() {
           allSongs,
           songsByGenre,
           artistSong,
-          currentGenre: [],
+          currentGenre: []
           // fetch: 0,
         }));
       });
@@ -208,7 +222,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        console.log('player state =>', playerState);
+        console.log("player state =>", playerState);
         // extract information from current track
         const {
           current_track,
@@ -279,7 +293,7 @@ export default function useDashboardData() {
           repeat_mode,
           shuffle,
           position,
-          duration,
+          duration
         }));
 
         //////////////////////////////////////////////////
@@ -301,7 +315,6 @@ export default function useDashboardData() {
         }
         setState(prev => ({ ...prev, currentTrackUri }));
         setState(prev => ({ ...prev, nextTrackUri }));
-
       });
       // Ready
       player.addListener("ready", ({ device_id }) => {
@@ -325,7 +338,6 @@ export default function useDashboardData() {
         }
       });
     };
-
   }, [state.token]);
 
   // fetch song uri with current artist event details
@@ -364,16 +376,19 @@ export default function useDashboardData() {
           const eventDetails = [];
 
           for (let event of state.songEvent[nextTrack]) {
-            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+            axios
+              .get(
+                `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+              )
+              .then(res => {
+                eventDetails.push(res.data);
+              });
           }
           temp[nextTrack] = eventDetails;
 
           setState(prev => ({
             ...prev,
-            currentEvent: temp,
+            currentEvent: temp
           }));
         }
       }
@@ -388,16 +403,19 @@ export default function useDashboardData() {
           const temp = { ...state.currentEvent };
           const eventDetails = [];
           for (let event of state.songEvent[prevTrack]) {
-            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+            axios
+              .get(
+                `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+              )
+              .then(res => {
+                eventDetails.push(res.data);
+              });
           }
           temp[prevTrack] = eventDetails;
 
           setState(prev => ({
             ...prev,
-            currentEvent: temp,
+            currentEvent: temp
           }));
         }
       }
@@ -414,18 +432,21 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
-    })
-    .then(() => {
+    }).then(() => {
       setState(prev => ({
         ...prev,
-        fetch: 0,
+        fetch: 0
       }));
     });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
-
+    if (
+      state.token &&
+      state.deviceId &&
+      state.allSongs.length > 0 &&
+      state.currentGenre
+    ) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -436,6 +457,7 @@ export default function useDashboardData() {
         console.log(`playing ${state.allSongs.length} tracks`);
 
         playTracks(state.token, state.deviceId, state.allSongs);
+
       } else {
         // play filtered tracks list
         const nonUniqueTracks = [];
@@ -466,7 +488,7 @@ export default function useDashboardData() {
   const handleRepeat = repeat_mode => {
     let input = null;
     if (repeat_mode === 0) {
-      input = 'context';
+      input = "context";
     } else if (repeat_mode === 1) {
       input = "track";
     } else {
@@ -539,10 +561,10 @@ export default function useDashboardData() {
   };
   // set position in the song to play
   const setPosition = value => {
-    currentPlayer.seek(value * 1000).then(() => {
-      console.log(`Changed to ${value} sec into the track`);
+    currentPlayer.seek(value).then(() => {
+      console.log(`Changed to ${Math.floor(value / 1000)} sec into the track`);
     });
-  }
+  };
   // return an array of event details for currently playing track
   const getCurrentEventDetails = () => {
     if (
