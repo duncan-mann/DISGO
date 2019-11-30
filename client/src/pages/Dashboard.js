@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 // import custom hooks
 import useDashboardData from "../hooks/useDashboardData";
 // import components
@@ -8,11 +8,9 @@ import EventDetails from "../components/EventDetails";
 import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
 import Snackbar from '@material-ui/core/Snackbar';
-import { green } from '@material-ui/core/colors';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,7 +47,7 @@ export default function Dashboard(props) {
     handleRepeat,
     handleShuffle,
     setVolume,
-    setPosition,
+    seekPosition,
     setStartDate,
     setEndDate,
     setTimeFrame,
@@ -64,12 +62,12 @@ export default function Dashboard(props) {
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
-  const [isFlipped, setIsFlipped] = useState(false)
-  
+  const [isFlipped, setIsFlipped] = useState(false);
+
   const flipCard = (e) => {
     e.preventDefault();
-    console.log("flipped was clicked!")
-    setIsFlipped(!isFlipped)
+    // console.log("flipped was clicked!")
+    setIsFlipped(!isFlipped);
   }
 
   return (
@@ -115,7 +113,7 @@ export default function Dashboard(props) {
                 songsByGenre={state && state.songsByGenre}
                 onChange={filterByGenre}
                 value={state && state.currentGenre}
-              />              
+              />
               <SongDetails
                 player={currentPlayer}
                 trackName={state.trackName}
@@ -156,7 +154,7 @@ export default function Dashboard(props) {
         handleClick={handleClick}
         position={state && state.position}
         duration={state && state.duration}
-        setPosition={setPosition}
+        seekPosition={seekPosition}
       />
     </div>
   );

@@ -6,10 +6,10 @@ export default function SpotifyWidget(props) {
       <span onClick={props.flipCard}>
         <iframe
           src={src}
-          width="300" 
-          height="300" 
-          frameBorder="0" 
-          allowtransparency="true" 
+          width="300"
+          height="300"
+          frameBorder="0"
+          allowtransparency="true"
           allow="encrypted-media"
           />
       </span>
