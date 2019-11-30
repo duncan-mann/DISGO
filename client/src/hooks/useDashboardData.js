@@ -31,7 +31,7 @@ export default function useDashboardData() {
     currentGenre: [],
     currentPlaylist: [],
     // Spotfiy Playback SDK
-    initialVolume: 1,
+    initialVolume: 0.05,
     deviceId: null,
     repeat_mode: 0,
     shuffle: false,
@@ -75,7 +75,7 @@ export default function useDashboardData() {
   function setTimeFrame(startDate, endDate, location) {
     // clear currentGenre state + switch fetch state to 1 (loading bar)
     // const tmp = [...state.currentGenre];
-    // console.log(tmp)
+    // console.log(tmp);
     setState(prev => ({
       ...prev,
       fetch: 1
@@ -222,7 +222,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        console.log("player state =>", playerState);
+        // console.log("player state =>", playerState);
         // extract information from current track
         const {
           current_track,
@@ -560,7 +560,7 @@ export default function useDashboardData() {
     });
   };
   // set position in the song to play
-  const setPosition = value => {
+  const seekPosition = value => {
     currentPlayer.seek(value).then(() => {
       console.log(`Changed to ${Math.floor(value / 1000)} sec into the track`);
     });
@@ -587,7 +587,7 @@ export default function useDashboardData() {
     handleRepeat,
     handleShuffle,
     setVolume,
-    setPosition,
+    seekPosition,
     filterByGenre,
     setStartDate,
     setEndDate,

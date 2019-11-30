@@ -93,9 +93,8 @@ const useStyles = makeStyles(theme => ({
 export default function MusicControlBar(props) {
   const classes = useStyles();
   const [volume, setVolume] = useState(0);
-  const [position, setPosition] = useState(0);
-  const [timer, setTimer] = useState(0);
-  // setInterval(setPosition(position + 1000), 1000);
+  const [position, setPosition] = useState(0); // position in milliseconds
+  const [timer, setTimer] = useState(0); //timer in milliseconds
 
   useEffect(() => {
     if (props.playing) {
@@ -103,15 +102,12 @@ export default function MusicControlBar(props) {
     }
     setTimeout(() => {
       setTimer(timer + 1000);
-      // position += 1000
     }, 1000);
   }, [timer]);
 
-
-  useEffect(() => {
-    console.log('position: ', position);
-
-  }, [position])
+  // useEffect(() => {
+  //   console.log('position: ', position);
+  // }, [position])
 
   /////////////////////////
   // change music volume //
@@ -150,7 +146,7 @@ export default function MusicControlBar(props) {
     // percentage is the new position as percentage
     const newPosition = percentage / 100 * props.duration;
     setPosition(newPosition);
-    props.setPosition(newPosition);
+    props.seekPosition(newPosition);
   };
 
   const convertTime = time => {
