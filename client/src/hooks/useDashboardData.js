@@ -152,6 +152,7 @@ export default function useDashboardData() {
           songsByGenre,
           artistSong,
           currentGenre: [],
+          // fetch: 0,
         }));
       });
     }
@@ -194,7 +195,6 @@ export default function useDashboardData() {
         volume: state.initialVolume
       });
       // add player object to state
-      // console.log(player);
       setPlayer(player);
 
       player.addListener("initialization_error", ({ msg }) =>
@@ -208,8 +208,6 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        // console.log("This is the player state", playerState);
-
         // extract information from current track
         const {
           current_track,
@@ -275,7 +273,7 @@ export default function useDashboardData() {
           artistAlbum,
           playing,
           currentAlbumCover,
-          fetch: 0,
+          // fetch: 0,
           onMount: false,
           repeat_mode,
           shuffle,
@@ -398,7 +396,7 @@ export default function useDashboardData() {
 
           setState(prev => ({
             ...prev,
-            currentEvent: temp
+            currentEvent: temp,
           }));
         }
       }
@@ -415,6 +413,12 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
+    })
+    .then(() => {
+      setState(prev => ({
+        ...prev,
+        fetch: 0,
+      }));
     });
   };
   // Play specific songs on app (device) by default
