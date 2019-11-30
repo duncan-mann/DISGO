@@ -31,7 +31,7 @@ export default function useDashboardData() {
     currentGenre: [],
     currentPlaylist: [],
     // Spotfiy Playback SDK
-    initialVolume: 0.1,
+    initialVolume: 1,
     deviceId: null,
     repeat_mode: 0,
     shuffle: false,
@@ -51,7 +51,7 @@ export default function useDashboardData() {
     previousTrackUri: [],
     startDate: today,
     endDate: future,
-    location: "New York",
+    location: "Toronto",
     playlistNotification: false,
     playlistTransition: undefined
   });
@@ -74,7 +74,7 @@ export default function useDashboardData() {
 
   function setTimeFrame(startDate, endDate, location) {
     // pause player for old playlist
-    currentPlayer.pause(() => console.log('Paused!'));
+    pauseTracks(currentPlayer);
 
     setState(prev => ({
       ...prev,
@@ -212,10 +212,10 @@ export default function useDashboardData() {
       setPlayer(player);
 
       player.addListener("initialization_error", ({ msg }) =>
-        console.error(msg)
+      console.error(msg)
       );
       player.addListener("authentication_error", ({ msg }) =>
-        console.error(msg)
+      console.error(msg)
       );
       player.addListener("account_error", ({ msg }) => console.error(msg));
       player.addListener("playback_error", ({ msg }) => console.error(msg));
@@ -427,7 +427,7 @@ export default function useDashboardData() {
     fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${deviceId}`, {
       method: "PUT",
       headers: {
-        authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -441,23 +441,19 @@ export default function useDashboardData() {
     });
   };
   // pause user's playback
-  const pauseTracks = (accessToken, deviceId) => {
-    fetch(`https://api.spotify.com/v1/me/player/pause/?device_id=${deviceId}`, {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
-      }
-    });
+  const pauseTracks = (player) => {
+    player.pause(() => console.log('Paused!'));
+    // fetch(`https://api.spotify.com/v1/me/player/pause`, {
+    //   method: "PUT",
+    //   headers: {
+    //     Authorization: `Bearer ${accessToken}`,
+    //     "Content-Type": "application/json"
+    //   }
+    // });
   }
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (
-      state.token &&
-      state.deviceId &&
-      state.allSongs.length > 0 &&
-      state.currentGenre
-    ) {
+    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -468,6 +464,7 @@ export default function useDashboardData() {
         console.log(`playing ${state.allSongs.length} tracks`);
 
         playTracks(state.token, state.deviceId, state.allSongs);
+        // pauseTracks(state.token);
 
       } else {
         // play filtered tracks list
@@ -479,9 +476,7 @@ export default function useDashboardData() {
           });
         });
 
-        const uniqueTracks = nonUniqueTracks.filter(
-          (item, index) => nonUniqueTracks.indexOf(item) === index
-        );
+        const uniqueTracks = nonUniqueTracks.filter((item, index) => nonUniqueTracks.indexOf(item) === index);
         // add song uris of current playlist to state
         setState(prev => ({
           ...prev,
@@ -491,6 +486,8 @@ export default function useDashboardData() {
         console.log(`playing ${uniqueTracks.length} tracks`);
 
         playTracks(state.token, state.deviceId, uniqueTracks);
+        // pauseTracks(state.token);
+
       }
     }
   }, [state.deviceId, state.allSongs, state.currentGenre]);
