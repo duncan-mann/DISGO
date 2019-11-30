@@ -14,7 +14,7 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import Slider from "@material-ui/core/Slider";
-import Slide from '@material-ui/core/Slide';
+import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 
 function TransitionLeft(props) {
@@ -30,20 +30,20 @@ const useStyles = makeStyles(theme => ({
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,
-    paddingBottom: 5,
+    paddingBottom: 5
   },
   barLeft: {
     float: "left",
-    width: 200,
+    width: 200
   },
   barCenter: {
     float: "none",
     margin: "auto",
-    width: 600,
+    width: 600
   },
   barRight: {
     float: "right",
-    width: 200,
+    width: 200
   },
   toysIcon: {
     left: 0,
@@ -67,20 +67,19 @@ const useStyles = makeStyles(theme => ({
   volumeSlider: {
     color: "white"
   },
-  positionSliderTime: {
-    fontSize: 10,
+  songController: {
     color: theme.palette.primary.light,
-    paddingRight: 10,
-    paddingLeft: 10,
-    display: 'inline',
-  },
-  songSeeker: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    fontSize: 10,
+    width: 400,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   positionSlider: {
-    width: 400,
     color: theme.palette.primary.light,
+  },
+  time: {
+    margin: 10,
   },
   "@keyframes icon-spin": {
     from: {
@@ -137,8 +136,8 @@ export default function MusicControlBar(props) {
   };
   const convertTime = time => {
     // receive duration in milliseconds
-    const seconds = ((time % (60 * 1000)) / 1000);
-    const minutes = (time - (seconds * 1000)) / (60 * 1000);
+    const seconds = (time % (60 * 1000)) / 1000;
+    const minutes = (time - seconds * 1000) / (60 * 1000);
     // format seconds
     let seconds_format = null;
     if (seconds.toFixed(0).toString().length === 1) {
@@ -148,7 +147,7 @@ export default function MusicControlBar(props) {
     }
 
     return `${minutes === 0 ? 0 : minutes}:${seconds_format}`;
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -222,25 +221,17 @@ export default function MusicControlBar(props) {
                   />
                 )}
               </Grid>
-              <Grid item className={classes.songSeeker}>
-                <div className={classes.positionSliderTime}>
-                  {position === 0 ? (
-                    '0:00'
-                  ) : (
-                    convertTime(props.position)
-                  )}
+              <Grid item className={classes.songController}>
+                <div className={classes.time}>
+                  {position === 0 ? "0:00" : convertTime(props.position)}
                 </div>
-                <Slider
-                  className={classes.positionSlider}
-                  value={position}
-                  onChange={handlePosition}
-                />
-                <div className={classes.positionSliderTime}>
-                  {!props.duration ? (
-                    '0:00'
-                  ) : (
-                    convertTime(props.duration)
-                  )}
+                  <Slider
+                    className={classes.positionSlider}
+                    value={position}
+                    onChange={handlePosition}
+                  />
+                <div className={classes.time}>
+                  {!props.duration ? "0:00" : convertTime(props.duration)}
                 </div>
               </Grid>
             </Grid>
@@ -251,8 +242,8 @@ export default function MusicControlBar(props) {
                 <PlaylistAddIcon
                   className={classes.musicIcon}
                   onClick={() => {
-                    props.addUserPlaylist()
-                    props.handleClick(TransitionLeft)
+                    props.addUserPlaylist();
+                    props.handleClick(TransitionLeft);
                   }}
                   fontSize="default"
                   aria-label="export-playlist"
