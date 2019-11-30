@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   barCenter: {
     float: "none",
     margin: "auto",
-    width: 400,
+    width: 600,
   },
   barRight: {
     float: "right",
@@ -66,18 +66,16 @@ const useStyles = makeStyles(theme => ({
   },
   volumeSlider: {
     color: "white"
-    // width: 100,
   },
   positionSliderTime: {
     fontSize: 10,
     color: theme.palette.primary.light,
-    width: 25,
     paddingRight: 10,
     paddingLeft: 10,
-    // display: 'block',
+    display: 'inline',
   },
   positionSlider: {
-    width: 320,
+    width: 400,
     color: theme.palette.primary.light,
     paddingTop: 10,
     paddingBottom: 10,
@@ -223,25 +221,25 @@ export default function MusicControlBar(props) {
                 )}
               </Grid>
               <Grid item >
-                <span className={classes.positionSliderTime}>
+                <div className={classes.positionSliderTime}>
                   {position === 0 ? (
                     '0:00'
                   ) : (
                     convertTime(props.position)
                   )}
-                </span>
+                </div>
                 <Slider
                   className={classes.positionSlider}
                   value={position}
                   onChange={handlePosition}
                 />
-                <span className={classes.positionSliderTime}>
+                <div className={classes.positionSliderTime}>
                   {!props.duration ? (
                     '0:00'
                   ) : (
                     convertTime(props.duration)
                   )}
-                </span>
+                </div>
               </Grid>
             </Grid>
           </div>
@@ -249,7 +247,6 @@ export default function MusicControlBar(props) {
             <Grid container spacing={2}>
               <Grid item>
                 <PlaylistAddIcon
-
                   className={classes.musicIcon}
                   onClick={() => {
                     props.addUserPlaylist()
