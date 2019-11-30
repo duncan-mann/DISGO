@@ -150,7 +150,7 @@ export default function useDashboardData() {
           artistEvent[state.artists[artist].id] = state.events[artist];
         }
       });
-      setState(prev => ({ ...prev, artistEvent }));
+      setState(prev => ({ ...prev, artistEvent}));
     }
   }, [state.artists]);
 
