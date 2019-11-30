@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  getArtists,
-  getSongs,
-  initPlaylist,
-  addSongsToPlaylist
-} from "../helpers/spotifyHelper";
+import { getArtists, getSongs, initPlaylist, addSongsToPlaylist} from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
 
 export default function useDashboardData() {
@@ -31,7 +26,7 @@ export default function useDashboardData() {
     currentGenre: [],
     currentPlaylist: [],
     // Spotfiy Playback SDK
-    initialVolume: 0.7,
+    initialVolume: 0.05,
     deviceId: null,
     repeat_mode: 0,
     shuffle: false,
@@ -51,7 +46,7 @@ export default function useDashboardData() {
     previousTrackUri: [],
     startDate: today,
     endDate: future,
-    location: "Toronto",
+    location: "New York",
     playlistNotification: false,
     playlistTransition: undefined
   });
@@ -73,12 +68,16 @@ export default function useDashboardData() {
   }
 
   function setTimeFrame(startDate, endDate, location) {
-    setState(prev => ({ ...prev, fetch: 1 }));
-    getPerformers(
-      startDate.toJSON().split("T")[0],
-      endDate.toJSON().split("T")[0],
-      location
-    ).then(events => {
+    // clear currentGenre state + switch fetch state to 1 (loading bar)
+    // const tmp = [...state.currentGenre];
+    // console.log(tmp)
+    setState(prev => ({
+      ...prev,
+      fetch: 1,
+      // currentGenre: [],
+     }));
+    getPerformers(startDate.toJSON().split("T")[0], endDate.toJSON().split("T")[0], location)
+    .then(events => {
       setState(prev => ({ ...prev, events }));
     });
   }
@@ -86,13 +85,12 @@ export default function useDashboardData() {
   function addUserPlaylist() {
     initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(response => {
       addSongsToPlaylist(state.token, response.data.id, state.currentPlaylist);
-      console.log("Playlist id", response.data.id);
     });
   }
 
   const handleClick = (Transition) => {
     setState(prev => ({...prev, playlistTransition: Transition}));
-    setState(prev => ({...prev, playlistNotification: true}))
+    setState(prev => ({...prev, playlistNotification: true}));
   }
 
   const handleClose = () => {
@@ -152,7 +150,8 @@ export default function useDashboardData() {
           ...prev,
           allSongs,
           songsByGenre,
-          artistSong
+          artistSong,
+          currentGenre: [],
         }));
       });
     }
@@ -303,12 +302,10 @@ export default function useDashboardData() {
         }
         setState(prev => ({ ...prev, currentTrackUri }));
         setState(prev => ({ ...prev, nextTrackUri }));
-        // console.log("previous tracks!", previousTrackUri)
-        // console.log("next tracks", nextTrackUri)
+
       });
       // Ready
       player.addListener("ready", ({ device_id }) => {
-        // console.log('Ready with Device ID', device_id);
         setState(prev => ({
           ...prev,
           deviceId: device_id
@@ -366,22 +363,18 @@ export default function useDashboardData() {
         if (!state.currentEvent[nextTrack]) {
           const temp = { ...state.currentEvent };
           const eventDetails = [];
+
           for (let event of state.songEvent[nextTrack]) {
-            axios
-              .get(
-                `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
-              )
-              .then(res => {
-                eventDetails.push(res.data);
-              });
+            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
+            .then(res => {
+              eventDetails.push(res.data);
+            });
           }
           temp[nextTrack] = eventDetails;
 
           setState(prev => ({
             ...prev,
-            currentEvent: temp
-            // fetch: 0,
-            // onMount: false
+            currentEvent: temp,
           }));
         }
       }
@@ -396,13 +389,10 @@ export default function useDashboardData() {
           const temp = { ...state.currentEvent };
           const eventDetails = [];
           for (let event of state.songEvent[prevTrack]) {
-            axios
-              .get(
-                `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
-              )
-              .then(res => {
-                eventDetails.push(res.data);
-              });
+            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
+            .then(res => {
+              eventDetails.push(res.data);
+            });
           }
           temp[prevTrack] = eventDetails;
 
@@ -430,6 +420,7 @@ export default function useDashboardData() {
   // Play specific songs on app (device) by default
   useEffect(() => {
     if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
+
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({

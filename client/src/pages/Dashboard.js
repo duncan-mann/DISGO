@@ -64,10 +64,10 @@ export default function Dashboard(props) {
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
   const [isFlipped, setIsFlipped] = useState(false)
-  
+
   const flipCard = (e) => {
     e.preventDefault();
-    console.log("flipped was clicked!")
+    // console.log("flipped was clicked!")
     setIsFlipped(!isFlipped)
   }
 
