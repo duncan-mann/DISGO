@@ -25,6 +25,18 @@ const theme = createMuiTheme({
       main: '#fff'
     }
   },
+  overrides: {
+    MuiInputBase: {
+      input: {
+        color: "#b3b3b3"
+      }
+    },
+    MuiInput: {
+      'underline:after' : {
+        'border-bottom':  "#b3b3b3"
+      }
+    }
+  }
 });
 
 export default function App(props) {
