@@ -70,54 +70,54 @@ export default function MusicControls(props) {
 
 
   let allAlbums = [
-    <ReactCardFlip isFlipped={props.isFlipped}>              
-      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='1' onClick={props.flipCard}/>
+    <ReactCardFlip isFlipped={props.isFlipped} key='1'>
+      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='2' onClick={props.flipCard}/>
       <SpotifyWidget artistAlbum={props.artistAlbum}  flipCard={props.flipCard}/>
     </ReactCardFlip>
   ]
 
   let albumsMed = [
-    <ReactCardFlip isFlipped={props.isFlipped}>              
-      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='2' onClick={props.flipCard}/>
+    <ReactCardFlip isFlipped={props.isFlipped} key='3'>
+      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='4' onClick={props.flipCard}/>
       <SpotifyWidget artistAlbum={props.artistAlbum}  flipCard={props.flipCard}/>
     </ReactCardFlip>
 ]
 
   let albumsSmall = [
-    <ReactCardFlip isFlipped={props.isFlipped}>    
-      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='3' onClick={props.flipCard}/>          
+    <ReactCardFlip isFlipped={props.isFlipped} key='5'>
+      <img className={classes.currentAlbum} src={props.currentAlbumCover} alt='' key='6' onClick={props.flipCard}/>
       <SpotifyWidget artistAlbum={props.artistAlbum}  flipCard={props.flipCard}/>
     </ReactCardFlip>
 ]
 
   if (props.prevAlbumCover[0]) {
-    allAlbums.unshift(<img className={classes.prevAlbum} src={props.prevAlbumCover[0]} alt='' key='4'/>)
-    allAlbums.push(<img className={classes.nextAlbum} src={props.nextAlbumCover[0]} alt='' key='5'/>)
-    albumsMed.unshift(<img className={classes.prevAlbum} src={props.prevAlbumCover[0]} alt='' key='6'/>)
-    albumsMed.push(<img className={classes.nextAlbum} src={props.nextAlbumCover[0]} alt='' key='7'/>)
+    allAlbums.unshift(<img className={classes.prevAlbum} src={props.prevAlbumCover[0]} alt='' key='7'/>)
+    allAlbums.push(<img className={classes.nextAlbum} src={props.nextAlbumCover[0]} alt='' key='8'/>)
+    albumsMed.unshift(<img className={classes.prevAlbum} src={props.prevAlbumCover[0]} alt='' key='9'/>)
+    albumsMed.push(<img className={classes.nextAlbum} src={props.nextAlbumCover[0]} alt='' key='10'/>)
   }
 
   if (props.prevAlbumCover[1]) {
-    allAlbums.unshift(<img className={classes.prevAlbum2} src={props.prevAlbumCover[1]} alt='' key='8'/>)
-    allAlbums.push(<img className={classes.nextAlbum2} src={props.nextAlbumCover[1]} alt='' key='9'/>)
+    allAlbums.unshift(<img className={classes.prevAlbum2} src={props.prevAlbumCover[1]} alt='' key='11'/>)
+    allAlbums.push(<img className={classes.nextAlbum2} src={props.nextAlbumCover[1]} alt='' key='12'/>)
   }
 
   return (
     <div className={classes.MusicControls} onClick={props.flipCard}>
       {bigScreen &&
-        <div >
+        <div>
           {allAlbums}
         </div>
         }
 
       {medScreen &&
-        <div >
+        <div>
           {albumsMed}
         </div>
         }
 
       {smallScreen &&
-        <div >
+        <div>
           {albumsSmall}
         </div>
         }

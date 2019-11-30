@@ -26,7 +26,7 @@ export default function useDashboardData() {
     currentGenre: [],
     currentPlaylist: [],
     // Spotfiy Playback SDK
-    initialVolume: 0.05,
+    initialVolume: 1,
     deviceId: null,
     repeat_mode: 0,
     shuffle: false,
@@ -208,6 +208,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
+        console.log('player state =>', playerState);
         // extract information from current track
         const {
           current_track,
