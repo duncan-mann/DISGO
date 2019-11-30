@@ -30,11 +30,6 @@ const theme = createMuiTheme({
       input: {
         color: "#b3b3b3"
       }
-    },
-    MuiInput: {
-      'underline:after' : {
-        'border-bottom':  "#b3b3b3"
-      }
     }
   }
 });
