@@ -31,7 +31,7 @@ export default function useDashboardData() {
     currentGenre: [],
     currentPlaylist: [],
     // Spotfiy Playback SDK
-    initialVolume: 0.05,
+    initialVolume: 0.1,
     deviceId: null,
     repeat_mode: 0,
     shuffle: false,
@@ -73,9 +73,9 @@ export default function useDashboardData() {
   }
 
   function setTimeFrame(startDate, endDate, location) {
-    // clear currentGenre state + switch fetch state to 1 (loading bar)
-    // const tmp = [...state.currentGenre];
-    // console.log(tmp);
+    // pause player for old playlist
+    currentPlayer.pause(() => console.log('Paused!'));
+
     setState(prev => ({
       ...prev,
       fetch: 1
@@ -422,6 +422,7 @@ export default function useDashboardData() {
     }
   }, [state.previousTrackUri]);
 
+  // start/resume user's playback
   const playTracks = (accessToken, deviceId, trackUris) => {
     fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${deviceId}`, {
       method: "PUT",
@@ -439,6 +440,16 @@ export default function useDashboardData() {
       }));
     });
   };
+  // pause user's playback
+  const pauseTracks = (accessToken, deviceId) => {
+    fetch(`https://api.spotify.com/v1/me/player/pause/?device_id=${deviceId}`, {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      }
+    });
+  }
   // Play specific songs on app (device) by default
   useEffect(() => {
     if (
