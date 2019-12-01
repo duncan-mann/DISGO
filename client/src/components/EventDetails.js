@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./eventDetails.css";
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     color: "white",
     width: "60%",
     margin: "auto",
-    borderBottom: "1px solid white",
+    // borderBottom: "1px solid white",
     textAlign: "center",
     paddingTop: "3rem"
   },
@@ -42,21 +43,30 @@ export default function EventDetails(props) {
         date={e.datetime_local.split("T")[0]}
         lowestPrice={e.stats.lowest_price}
         url={e.url}
+        city={e.venue.city}
+        title={e.title}
+        artistImage={props.artistImage}
       />
     );
   });
 
   return (
     <div className={classes.root}>
-    <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1>
-    <Carousel className={classes.carousel}
-      width={"25%"}
-      showThumbs={false}
-      showStatus={false}
-      showIndicators={false}
-    >
-      {list}
-    </Carousel>
+    {/* <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1> */}
+  
+    { props.currentEvent.length > 0 ? (
+      <Carousel className={classes.carousel}
+        width={"25%"}
+        showThumbs={false}
+        showStatus={false}
+        showIndicators={false}
+      >
+        {list}
+      </Carousel>
+      ) : (
+      <CircularProgress color="secondary" />
+      )   
+    }
     </div>
   );
 }
