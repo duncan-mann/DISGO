@@ -113,8 +113,7 @@ export default function useDashboardData() {
       endDate.toJSON().split("T")[0],
       location
     ).then(events => {
-      console.log(events);
-      
+      // check if there are events returned with the search parameters
       if (Object.entries(events).length === 0) {
         console.log('no events!')
         handleSearchAlertOpen(slideTransition);

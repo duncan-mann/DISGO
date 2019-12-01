@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ErrorIcon from '@material-ui/icons/Error';
 import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +39,10 @@ const useStyles = makeStyles(theme => ({
   loadingEventDetails: {
     display: 'flex',
     justifyContent: 'center',
-  }
+  },
+  searchErrorIcon: {
+    paddingTop: 3,
+  },
 }));
 
 export default function Dashboard(props) {
@@ -94,8 +98,12 @@ export default function Dashboard(props) {
         open={state.searchAlertOpen}
         onClose={handleSearchAlertClose}
         TransitionComponent={state.searchAlertTransition}
-        ContentProps={{ 'aria-describedby': 'message-id' }}
-        message={<span id='message-id'><ErrorIcon /><Typography>No events found!</Typography></span>}
+        message={
+          <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
+            <Grid item><ErrorIcon className={classes.searchErrorIcon}/></Grid>
+            <Grid item><Typography>No events found!</Typography></Grid>
+          </Grid>
+          }
       />
       {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
       <div>
