@@ -13,7 +13,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-
 const useStyles = makeStyles(theme => ({
   root: {
     background: `linear-gradient(#212121 50%, #121212 90%)`
@@ -57,6 +56,7 @@ export default function Dashboard(props) {
     filterByGenre,
     addUserPlaylist,
     getCurrentEventDetails,
+    getCurrentArtistImage,
     handleClick,
     handleClose
   } = useDashboardData();
@@ -85,7 +85,7 @@ export default function Dashboard(props) {
         profilePicture={state && state.user && state.user.photos}
       />
       <div>
-        {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
+        {state.fetch === 0 && !state.onMount ? (
           <div>
             <Snackbar
             className={classes.snackbar}
@@ -105,8 +105,9 @@ export default function Dashboard(props) {
             />
             <div>
               <EventDetails
-                artistName={state && state.artistName}
+                // artistName={state && state.artistName}
                 currentEvent={getCurrentEventDetails()}
+                artistImage={getCurrentArtistImage()}
               />
             </div>
             <div>
@@ -122,7 +123,7 @@ export default function Dashboard(props) {
                 albumName={state.albumName}
                 currentAlbumCover={state.currentAlbumCover}
                 prevAlbumCover={prevAlbumCovers}
-                nextAlbumCover={nextAlbumCovers}
+                nextAlbumCover={nextAlbumCovers}ashboardashboard
                 artistName={state.artistName}
                 flipCard={flipCard}
                 isFlipped={isFlipped}
