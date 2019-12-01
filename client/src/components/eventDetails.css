@@ -5,3 +5,15 @@
   text-align: center;
   background: none;
 }
+
+.carousel .slide img {
+  vertical-align: top;
+  border: 0;
+  width: auto;
+}
+
+.carousel img {
+  display: inline-block;
+  pointer-events: none;
+  width: auto;
+}
