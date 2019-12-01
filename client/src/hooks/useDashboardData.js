@@ -115,7 +115,6 @@ export default function useDashboardData() {
     ).then(events => {
       // check if there are events returned with the search parameters
       if (Object.entries(events).length === 0) {
-        console.log('no events!')
         handleSearchAlertOpen(slideTransition);
       } else {
         setState(prev => ({ ...prev, events }));
