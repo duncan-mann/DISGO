@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import custom hooks
+// import custom hooks and helper functions
 import useDashboardData from "../hooks/useDashboardData";
 // import components
 import NavBar from "../components/NavBar";
@@ -11,6 +11,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import ErrorIcon from '@material-ui/icons/Error';
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,7 +62,8 @@ export default function Dashboard(props) {
     addUserPlaylist,
     getCurrentEventDetails,
     handleClick,
-    handleClose
+    handleClose,
+    handleSearchAlertClose,
   } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
@@ -86,23 +89,24 @@ export default function Dashboard(props) {
         location={state.location}
         profilePicture={state && state.user && state.user.photos}
       />
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={state.searchAlertOpen}
+        onClose={handleSearchAlertClose}
+        TransitionComponent={state.searchAlertTransition}
+        ContentProps={{ 'aria-describedby': 'message-id' }}
+        message={<span id='message-id'><ErrorIcon /><Typography>No events found!</Typography></span>}
+      />
       {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
       <div>
         <Snackbar
-        className={classes.snackbar}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+          className={classes.snackbar}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open={state.playlistNotification}
           onClose={handleClose}
           TransitionComponent={state.playlistTransition}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span className={classes.notification}>
-            <CheckCircleIcon/>Playlist Added to Spotify!
-          </span>}
+          ContentProps={{ 'aria-describedby': 'message-id' }}
+          message={<span className={classes.notification}><CheckCircleIcon/>Playlist Added to Spotify!</span>}
         />
         <div>
           <EventDetails

@@ -1,13 +1,25 @@
+import React from 'react';
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  getArtists,
-  getSongs,
-  initPlaylist,
-  addSongsToPlaylist
-} from "../helpers/spotifyHelper";
+import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
-import { pauseTracks } from "../helpers/musicControls";
+import Slide from '@material-ui/core/Slide';
+
+const slideTransition = props => {
+  return <Slide {...props} direction='down' />;
+}
+
+ // pause user's playback
+ export const pauseTracks = (player) => {
+  player.pause(() => console.log('Paused!'));
+  // fetch(`https://api.spotify.com/v1/me/player/pause`, {
+  //   method: "PUT",
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //     "Content-Type": "application/json"
+  //   }
+  // });
+}
 
 export default function useDashboardData() {
   let today = new Date();
@@ -53,11 +65,28 @@ export default function useDashboardData() {
     startDate: today,
     endDate: future,
     location: "Toronto",
+    // alerts / notifications
     playlistNotification: false,
-    playlistTransition: undefined
+    playlistTransition: undefined,
+    searchAlertOpen: false,
+    searchAlertTransition: Slide,
   });
 
   const [currentPlayer, setPlayer] = useState(null);
+
+  const handleSearchAlertOpen = Transition => {
+    setState(prev => ({
+      ...prev,
+      searchAlertOpen: true,
+      searchAlertTransition: Transition,
+    }));
+  }
+  const handleSearchAlertClose = () => {
+    setState(prev => ({
+      ...prev,
+      open: false,
+    }));
+  }
 
   function setStartDate(date) {
     // console.log('Setting start date to:', date);
@@ -72,22 +101,27 @@ export default function useDashboardData() {
   function setLocation(loc) {
     setState(prev => ({ ...prev, location: loc }));
   }
-
+  // start of fetching new playlist with new city and/or time window
   function setTimeFrame(startDate, endDate, location) {
     // pause player for old playlist
     pauseTracks(currentPlayer);
-
-    setState(prev => ({
-      ...prev,
-      fetch: 1
-      // currentGenre: [],
-    }));
+    // toggle fetch state to display loading component
+    setState(prev => ({ ...prev, fetch: 1 }));
+    // fetch event details for new city and/or time window
     getPerformers(
       startDate.toJSON().split("T")[0],
       endDate.toJSON().split("T")[0],
       location
     ).then(events => {
-      setState(prev => ({ ...prev, events }));
+      console.log(events);
+      
+      if (Object.entries(events).length === 0) {
+        console.log('no events!')
+        handleSearchAlertOpen(slideTransition);
+      } else {
+        setState(prev => ({ ...prev, events }));
+      }
+
     });
   }
 
@@ -600,6 +634,8 @@ export default function useDashboardData() {
     addUserPlaylist,
     getCurrentEventDetails,
     handleClick,
-    handleClose
+    handleClose,
+    handleSearchAlertOpen,
+    handleSearchAlertClose,
   };
 }
