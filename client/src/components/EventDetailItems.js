@@ -96,7 +96,7 @@ export default function EventDetailItems(props) {
       </div>
       <div className={classes.addressDetails}>
         <p className={classes.eventDetails}>{props.title}</p>
-        <p className={classes.venueAddress}>{props.address} <a className={classes.addressIcon} href={`https://maps.google.com/maps/place?q=${props.address.split(" ").join("%")}`} target="_blank"><RoomIcon/></a></p> 
+        <p className={classes.venueAddress}>{props.address} <a className={classes.addressIcon} href={`https://www.google.com/maps/search/?api=1&query=${props.venue} ${props.city}`} target="_blank"><RoomIcon/></a></p> 
         <p className={classes.eventDetails}> {props.venue} - {props.city} </p>
         <a href={props.url} target="_blank" className={classes.purchaseButton}>Purchase Ticket</a>
       </div>
