@@ -145,15 +145,15 @@ export const initPlaylist = async (token, user, playlistName) => {
 
   try {
 
-    return await axios(`https://api.spotify.com/v1/users/${user.username}/playlists`, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token },
-      data: {
-        name: playlistName,
-        description: 'Testing adding a playlist to users Library',
-        public: 'false'
-      }
-    });
+  return await axios(`https://api.spotify.com/v1/users/${user.username}/playlists`, {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token },
+          data: {
+            name: playlistName, 
+            description: 'Testing adding a playlist to users Library',
+            public: 'false'
+          }
+        });
 
   } catch (error) {
     console.log(error)
