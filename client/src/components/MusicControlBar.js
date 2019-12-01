@@ -14,7 +14,7 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import Slider from "@material-ui/core/Slider";
-import Slide from '@material-ui/core/Slide';
+import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 
 function TransitionLeft(props) {
@@ -26,11 +26,11 @@ const useStyles = makeStyles(theme => ({
   musicControlBar: {
     top: "auto",
     bottom: 0,
-    height: "10%",
+    // height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,
-    paddingBottom: 10
+    paddingBottom: 5
   },
   barLeft: {
     float: "left",
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   barCenter: {
     float: "none",
     margin: "auto",
-    width: 400
+    width: 600
   },
   barRight: {
     float: "right",
@@ -66,21 +66,20 @@ const useStyles = makeStyles(theme => ({
   },
   volumeSlider: {
     color: "white"
-    // width: 100,
   },
-  positionSliderTime: {
-    fontSize: 10,
+  songController: {
     color: theme.palette.primary.light,
-    width: 25,
-    paddingRight: 10,
-    paddingLeft: 10,
-    // display: 'block',
+    fontSize: 10,
+    width: 400,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   positionSlider: {
-    width: 320,
     color: theme.palette.primary.light,
-    paddingTop: 5,
-    paddingBottom: 5,
+  },
+  time: {
+    margin: 10,
   },
   "@keyframes icon-spin": {
     from: {
@@ -94,8 +93,21 @@ const useStyles = makeStyles(theme => ({
 export default function MusicControlBar(props) {
   const classes = useStyles();
   const [volume, setVolume] = useState(0);
-  const [position, setPosition] = useState(0);
-  // setInterval(setPosition(position + 1000), 1000);
+  const [position, setPosition] = useState(0); // position in milliseconds
+  const [timer, setTimer] = useState(0); //timer in milliseconds
+
+  useEffect(() => {
+    if (props.playing) {
+      setPosition(position + 1000);
+    }
+    setTimeout(() => {
+      setTimer(timer + 1000);
+    }, 1000);
+  }, [timer]);
+
+  // useEffect(() => {
+  //   console.log('position: ', position);
+  // }, [position])
 
   /////////////////////////
   // change music volume //
@@ -125,30 +137,32 @@ export default function MusicControlBar(props) {
   ///////////////////////////
   useEffect(() => {
     if (props.duration) {
-      setPosition((props.position / props.duration) * 100);
+      setPosition(props.position);
     }
-  }, [props.duration]);
+  }, [props.position]);
   // start position timer when the position is set
 
-  const handlePosition = (event, newPosition) => {
-    // newPosition is the new position as percentage
+  const handleSeek = (event, percentage) => {
+    // percentage is the new position as percentage
+    const newPosition = percentage / 100 * props.duration;
     setPosition(newPosition);
-    props.setPosition(((newPosition / 100) * props.duration) / 1000);
+    props.seekPosition(newPosition);
   };
+
   const convertTime = time => {
     // receive duration in milliseconds
-    const seconds = ((time % (60 * 1000)) / 1000);
-    const minutes = (time - (seconds * 1000)) / (60 * 1000);
+    const seconds = Math.floor((time % (60 * 1000)) / 1000);
+    const minutes = Math.floor((time - seconds * 1000) / (60 * 1000));
     // format seconds
     let seconds_format = null;
-    if (seconds.toFixed(0).toString().length === 1) {
-      seconds_format = `0${seconds.toFixed(0)}`;
+    if (seconds.toString().length === 1) {
+      seconds_format = `0${seconds}`;
     } else {
-      seconds_format = `${seconds.toFixed(0)}`;
+      seconds_format = `${seconds}`;
     }
 
     return `${minutes === 0 ? 0 : minutes}:${seconds_format}`;
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -222,26 +236,18 @@ export default function MusicControlBar(props) {
                   />
                 )}
               </Grid>
-              <Grid item >
-                <span className={classes.positionSliderTime}>
-                  {position === 0 ? (
-                    '0:00'
-                  ) : (
-                    convertTime(props.position)
-                  )}
-                </span>
-                <Slider
-                  className={classes.positionSlider}
-                  value={position}
-                  onChange={handlePosition}
-                />
-                <span className={classes.positionSliderTime}>
-                  {!props.duration ? (
-                    '0:00'
-                  ) : (
-                    convertTime(props.duration)
-                  )}
-                </span>
+              <Grid item className={classes.songController}>
+                <div className={classes.time}>
+                  {position === 0 ? "0:00" : convertTime(position)}
+                </div>
+                  <Slider
+                    className={classes.positionSlider}
+                    value={(position / props.duration) * 100 || 0}
+                    onChange={handleSeek}
+                  />
+                <div className={classes.time}>
+                  {!props.duration ? "0:00" : convertTime(props.duration)}
+                </div>
               </Grid>
             </Grid>
           </div>
@@ -249,11 +255,10 @@ export default function MusicControlBar(props) {
             <Grid container spacing={2}>
               <Grid item>
                 <PlaylistAddIcon
-
                   className={classes.musicIcon}
                   onClick={() => {
-                    props.addUserPlaylist()
-                    props.handleClick(TransitionLeft)
+                    props.addUserPlaylist();
+                    props.handleClick(TransitionLeft);
                   }}
                   fontSize="default"
                   aria-label="export-playlist"

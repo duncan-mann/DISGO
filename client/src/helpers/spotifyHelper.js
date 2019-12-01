@@ -41,7 +41,25 @@ export const getSongs = async (token, artists) => {
 
     const artistSong = {}
     const songs = []
-    // const all_genres = {}
+
+    const genreKeywords = {
+      metal: ['metal', 'brutal', 'death'],
+      rock: ['rock', 'americana'],
+      country: ['country'],
+      punk: ['punk', 'emo'],
+      blues: ['blues'],
+      jazz: ['jazz'],
+      soul: ['soul', 'r&b'],
+      folk: ['folk'],
+      pop: ['pop', 'disco', 'dance'],
+      electronic: ['electronic', 'electro', 'tech', 'house', 'edm', 'step', 'tropical', 'tronic', 'bigroom' ],
+      indie: ['indie'],
+      rap: ['rap', 'trap'],
+      hiphop: ['hip', 'hop'],
+      funk: ['funk', 'jam'],
+      classical: ['orchestra'],
+      canadian: ['canadian', 'canada', 'ontario', 'vancouver', 'toronto']
+    }
 
     const songs_by_genre = {
       rock: [],
@@ -58,28 +76,44 @@ export const getSongs = async (token, artists) => {
       rap: [],
       hiphop: [],
       funk: [],
+      classical: [],
+      canadian: [],
+      other: []
     }
 
     for (let artist in artists) {
       if (artists[artist]) {
+
         let res = await axios(`https://api.spotify.com/v1/artists/${artists[artist].id}/top-tracks?country=from_token`, {
           type: 'GET',
           headers: { 'Authorization': 'Bearer ' + token }
         })
 
         if (res.data.tracks[0]) {
+
           songs.push(res.data.tracks[0].uri)
           // fetching artist id and song uri
           artistSong[artists[artist].id] = res.data.tracks[0].uri
-        }
+        
 
         let artists_genres = artists[artist].genres.join()
-
-        for (let genre in songs_by_genre) {
-          if (artists_genres.includes(genre)) {
+        let found = false;
+        for (let genre in genreKeywords) {
+          let contains = false
+          for (let subgenre of genreKeywords[genre]) {
+            if (artists_genres.includes(subgenre) && !songs_by_genre.metal.includes(res.data.tracks[0].uri)) {
+              contains = true
+            }
+          }
+          if (contains) {
             songs_by_genre[genre].push(res.data.tracks[0].uri)
+            found = true
           }
         }
+        if (!found) {
+          songs_by_genre.other.push(res.data.tracks[0].uri)
+        }
+        // let all_genres= {}
         // for (let genre of artists[artist].genres) {
         //   if (!all_genres[genre]) {
         //     all_genres[genre] = [res.data.tracks[0].uri]
@@ -87,6 +121,8 @@ export const getSongs = async (token, artists) => {
         //     all_genres[genre].push(res.data.tracks[0].uri)
         //   }
         // }
+        // console.log(all_genres)
+      }
       }
     }
     // remove genres from songs_by_genre that do not have any songs
