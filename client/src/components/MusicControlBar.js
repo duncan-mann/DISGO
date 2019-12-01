@@ -151,8 +151,8 @@ export default function MusicControlBar(props) {
 
   const convertTime = time => {
     // receive duration in milliseconds
-    const seconds = Math.floor((time % (60 * 1000)) / 1000);
-    const minutes = Math.floor((time - seconds * 1000) / (60 * 1000));
+    const seconds = Math.round((time % (60 * 1000)) / 1000);
+    const minutes = Math.round((time - seconds * 1000) / (60 * 1000));
     // format seconds
     let seconds_format = null;
     if (seconds.toString().length === 1) {

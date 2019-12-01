@@ -14,7 +14,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: `linear-gradient(#212121 50%, #121212 90%)`
+    background: `linear-gradient(#212121 50%, #121212 90%)`,
   },
   loadingBar: {
     marginTop: '10px',
@@ -32,6 +32,10 @@ const useStyles = makeStyles(theme => ({
   notification: {
     display: 'flex',
     alignItems: 'center',
+  },
+  loadingEventDetails: {
+    display: 'flex',
+    justifyContent: 'center',
   }
 }));
 
@@ -82,62 +86,58 @@ export default function Dashboard(props) {
         location={state.location}
         profilePicture={state && state.user && state.user.photos}
       />
+      {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
       <div>
-        {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
-          <div>
-            <Snackbar
-            className={classes.snackbar}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-              open={state.playlistNotification}
-              onClose={handleClose}
-              TransitionComponent={state.playlistTransition}
-              ContentProps={{
-                'aria-describedby': 'message-id',
-              }}
-              message={<span className={classes.notification}>
-                <CheckCircleIcon/>Playlist Added to Spotify!
-              </span>}
-            />
-            <div>
-              <EventDetails
-                artistName={state && state.artistName}
-                currentEvent={getCurrentEventDetails()}
-              />
-            </div>
-            <div>
-              <GenreFilterList
-                allSongs={state && state.allSongs}
-                songsByGenre={state && state.songsByGenre}
-                onChange={filterByGenre}
-                value={state && state.currentGenre}
-              />
-              <SongDetails
-                player={currentPlayer}
-                trackName={state.trackName}
-                albumName={state.albumName}
-                currentAlbumCover={state.currentAlbumCover}
-                prevAlbumCover={prevAlbumCovers}
-                nextAlbumCover={nextAlbumCovers}
-                artistName={state.artistName}
-                flipCard={flipCard}
-                isFlipped={isFlipped}
-                setIsFlipped={setIsFlipped}
-                artistAlbum={state.artistAlbum}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className={classes.loadingBar}>
-            <LinearProgress variant="query" />
-            <LinearProgress variant="query" color="secondary" />
-          </div>
-        )}
+        <Snackbar
+        className={classes.snackbar}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+          open={state.playlistNotification}
+          onClose={handleClose}
+          TransitionComponent={state.playlistTransition}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span className={classes.notification}>
+            <CheckCircleIcon/>Playlist Added to Spotify!
+          </span>}
+        />
         <div>
+          <EventDetails
+            artistName={state && state.artistName}
+            currentEvent={getCurrentEventDetails()}
+          />
+        </div>
+        <div>
+          <GenreFilterList
+            allSongs={state && state.allSongs}
+            songsByGenre={state && state.songsByGenre}
+            onChange={filterByGenre}
+            value={state && state.currentGenre}
+          />
+          <SongDetails
+            player={currentPlayer}
+            trackName={state.trackName}
+            albumName={state.albumName}
+            currentAlbumCover={state.currentAlbumCover}
+            prevAlbumCover={prevAlbumCovers}
+            nextAlbumCover={nextAlbumCovers}
+            artistName={state.artistName}
+            flipCard={flipCard}
+            isFlipped={isFlipped}
+            setIsFlipped={setIsFlipped}
+            artistAlbum={state.artistAlbum}
+          />
         </div>
       </div>
+      ) : (
+      <div className={classes.loadingBar}>
+        <LinearProgress variant="query" />
+        <LinearProgress variant="query" color="secondary" />
+      </div>
+      )}
       <MusicControlBar
         playing={state.playing}
         repeatMode={state.repeat_mode}

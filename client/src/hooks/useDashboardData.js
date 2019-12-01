@@ -7,6 +7,7 @@ import {
   addSongsToPlaylist
 } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
+import { pauseTracks } from "../helpers/musicControls";
 
 export default function useDashboardData() {
   let today = new Date();
@@ -150,7 +151,7 @@ export default function useDashboardData() {
           artistEvent[state.artists[artist].id] = state.events[artist];
         }
       });
-      setState(prev => ({ ...prev, artistEvent}));
+      setState(prev => ({ ...prev, artistEvent }));
     }
   }, [state.artists]);
 
@@ -212,10 +213,10 @@ export default function useDashboardData() {
       setPlayer(player);
 
       player.addListener("initialization_error", ({ msg }) =>
-      console.error(msg)
+        console.error(msg)
       );
       player.addListener("authentication_error", ({ msg }) =>
-      console.error(msg)
+        console.error(msg)
       );
       player.addListener("account_error", ({ msg }) => console.error(msg));
       player.addListener("playback_error", ({ msg }) => console.error(msg));
@@ -440,20 +441,14 @@ export default function useDashboardData() {
       }));
     });
   };
-  // pause user's playback
-  const pauseTracks = (player) => {
-    player.pause(() => console.log('Paused!'));
-    // fetch(`https://api.spotify.com/v1/me/player/pause`, {
-    //   method: "PUT",
-    //   headers: {
-    //     Authorization: `Bearer ${accessToken}`,
-    //     "Content-Type": "application/json"
-    //   }
-    // });
-  }
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
+    if (
+      state.token &&
+      state.deviceId &&
+      state.allSongs.length > 0 &&
+      state.currentGenre
+    ) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -465,7 +460,6 @@ export default function useDashboardData() {
 
         playTracks(state.token, state.deviceId, state.allSongs);
         // pauseTracks(state.token);
-
       } else {
         // play filtered tracks list
         const nonUniqueTracks = [];
@@ -476,7 +470,9 @@ export default function useDashboardData() {
           });
         });
 
-        const uniqueTracks = nonUniqueTracks.filter((item, index) => nonUniqueTracks.indexOf(item) === index);
+        const uniqueTracks = nonUniqueTracks.filter(
+          (item, index) => nonUniqueTracks.indexOf(item) === index
+        );
         // add song uris of current playlist to state
         setState(prev => ({
           ...prev,
@@ -487,7 +483,6 @@ export default function useDashboardData() {
 
         playTracks(state.token, state.deviceId, uniqueTracks);
         // pauseTracks(state.token);
-
       }
     }
   }, [state.deviceId, state.allSongs, state.currentGenre]);
@@ -562,6 +557,7 @@ export default function useDashboardData() {
   const handleToggle = () => {
     currentPlayer.togglePlay();
   };
+  // set user's playback volume
   const setVolume = value => {
     currentPlayer.setVolume(value).then(() => {
       // console.log(`Volume updated to ${value * 100}%`);
@@ -570,7 +566,7 @@ export default function useDashboardData() {
   // set position in the song to play
   const seekPosition = value => {
     currentPlayer.seek(value).then(() => {
-      console.log(`Changed to ${Math.floor(value / 1000)} sec into the track`);
+      console.log(`Changed to ${Math.round(value / 1000)} sec into the track`);
     });
   };
   // return an array of event details for currently playing track
