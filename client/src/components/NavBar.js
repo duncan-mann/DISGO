@@ -57,6 +57,9 @@ const useStyles = makeStyles(theme => ({
   },
   locationIcon: {
     color: 'grey',
+    "&:hover": {
+      color: theme.palette.secondary.main,
+    },
   },
   input: {
     color: 'grey',
@@ -84,20 +87,20 @@ export default function NavBar(props) {
               <Grid container spacing={1} alignItems='flex-end'>
                 <Grid item>
                   <TextField
-                  className={classes.textField}
-                  onChange={event => props.setLocation(event.target.value)}
-                  label='City'
-                  value={props.location}
-                  color='secondary'
-                  InputProps={{
-                    classes: {input: classes.input},
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <PersonPinCircleIcon className={classes.locationIcon}/>
-                    </InputAdornment>
-                    )
-                  }}
-                />
+                    className={classes.textField}
+                    onChange={event => props.setLocation(event.target.value)}
+                    // label='City'
+                    value={props.location}
+                    color='secondary'
+                    InputProps={{
+                      classes: {input: classes.input},
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <PersonPinCircleIcon className={classes.locationIcon}/>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
                 </Grid>
               </Grid>
             </Grid>

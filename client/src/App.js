@@ -23,7 +23,8 @@ const theme = createMuiTheme({
     },
     error: {
       main: '#fff'
-    }
+    },
+    // textColor: 'red',
   },
   overrides: {
     MuiInputBase: {
@@ -31,7 +32,7 @@ const theme = createMuiTheme({
         color: "#b3b3b3"
       }
     }
-  }
+  },
 });
 
 export default function App(props) {
