@@ -4,8 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    textAlign: 'center',
     backgroundColor: 'transparent',
+    width: '70%',
+    textAlign: 'center',
+    margin: 'auto',
   },
 }));
 
