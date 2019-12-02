@@ -462,6 +462,7 @@ export default function useDashboardData() {
 
           console.log(`playing ${state.allSongs.length} tracks`);
           playTracks(state.token, state.deviceId, state.allSongs);
+     
 
       } else {
         // play filtered tracks list
