@@ -32,6 +32,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function EventDetails(props) {
   const classes = useStyles();
+  console.log('props.currentEvent ->', props.currentEvent);
+
 
   const list = props.currentEvent.map((e, index) => {
     return (
@@ -49,6 +51,7 @@ export default function EventDetails(props) {
       />
     );
   });
+  console.log('LIST', list)
 
   return (
     <div className={classes.root}>
@@ -58,7 +61,7 @@ export default function EventDetails(props) {
       <Carousel className={classes.carousel}
         width={"31%"}
         showThumbs={false}
-        showStatus={false}
+        showStatus={false} 
         showIndicators={false}
       >
         {list}

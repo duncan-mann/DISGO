@@ -133,6 +133,7 @@ export default function Dashboard(props) {
               // artistName={state && state.artistName}
               currentEvent={getCurrentEventDetails()}
               artistImage={getCurrentArtistImage()}
+              currentPlayer={currentPlayer}
             />
           </div>
           <div>
