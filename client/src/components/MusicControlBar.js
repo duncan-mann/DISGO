@@ -15,6 +15,7 @@ import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import Slider from "@material-ui/core/Slider";
 import Slide from "@material-ui/core/Slide";
+import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from "@material-ui/core/styles";
 
 function TransitionLeft(props) {
@@ -180,6 +181,10 @@ export default function MusicControlBar(props) {
               justify="center"
             >
               <Grid item className={classes.mediaButtons}>
+                <CloseIcon
+                onClick={() => props.removeSong()}
+                >
+                </CloseIcon>
                 <ShuffleIcon
                   className={classes.musicIcon}
                   onClick={props.handleShuffle}
