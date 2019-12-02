@@ -7,8 +7,15 @@ export default function DateSetter(props) {
       <KeyboardDatePicker
         onChange={props.setStartDate}
         value={props.startDate}
+        variant='inline'
+        disableToolbar
       />
-      <KeyboardDatePicker onChange={props.setEndDate} value={props.endDate} />
+      <KeyboardDatePicker
+        onChange={props.setEndDate}
+        value={props.endDate}
+        variant='inline'
+        disableToolbar
+      />
     </div>
   );
 }
