@@ -257,7 +257,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        console.log("player state =>", playerState);
+        // console.log("player state =>", playerState);
 
         // extract information from current track
         const {
@@ -613,18 +613,25 @@ export default function useDashboardData() {
 
     if (state.currentTrackUri !== "") {
       console.log('Before', state.currentPlaylist.length)
+      const songsByGenre = {...state.songsByGenre}
+      const filteredSongsByGenre = {}
+      Object.keys(songsByGenre).forEach(key => {
+        filteredSongsByGenre[key] = songsByGenre[key].filter(song => song !== state.currentTrackUri)
+      })
+      console.log(filteredSongsByGenre)
 
-      let currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri)
-      let currentIndexAllSongs = state.allSongs.indexOf(state.currentTrackUri)
+
+      const currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri)
+      const currentIndexAllSongs = state.allSongs.indexOf(state.currentTrackUri)
 
       console.log('songIndex', currentIndex, 'Uri', state.currentTrackUri)
 
-      let newPlaylist = [...state.currentPlaylist]
-      let newAllSongs = [...state.allSongs]
+      const newPlaylist = [...state.currentPlaylist]
+      const newAllSongs = [...state.allSongs]
       newAllSongs.splice(currentIndexAllSongs, 1)
       newPlaylist.splice(currentIndex, 1)
       console.log('newPlaylist Length', newPlaylist.length)
-      setState(prev => ({ ...prev, currentPlaylist: newPlaylist, allSongs: newAllSongs, currentTrackIndex: currentIndexAllSongs }))
+      setState(prev => ({ ...prev, currentPlaylist: newPlaylist, allSongs: newAllSongs, currentTrackIndex: currentIndexAllSongs, songsByGenre: filteredSongsByGenre}))
       // handleNext();
     }
   }
