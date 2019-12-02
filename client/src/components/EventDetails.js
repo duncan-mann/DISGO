@@ -53,7 +53,7 @@ export default function EventDetails(props) {
   return (
     <div className={classes.root}>
     {/* <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1> */}
-  
+
     { props.currentEvent.length > 0 ? (
       <Carousel className={classes.carousel}
         width={"30%"}
@@ -64,11 +64,9 @@ export default function EventDetails(props) {
         {list}
       </Carousel>
       ) : (
-      
         <div className={classes.loading}>
           <CircularProgress color="secondary" />
-        </div>
-      
+        </div>      
       )   
     }
     </div>
