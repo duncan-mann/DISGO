@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -17,8 +16,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import logo from '../../public/docs/Logo.png'
 import '../index.css'
 
-<<<<<<< HEAD
-=======
 const title = {
   'fontFamily': 'Bebas Neue',
   'fontSize': '2em',
@@ -30,7 +27,6 @@ const logoStyle = {
   'paddingRight': '0.5em'
 }
 
->>>>>>> master
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
