@@ -56,7 +56,7 @@ export default function EventDetails(props) {
 
     {!props.filtering ? (
       <Carousel className={classes.carousel}
-        width={"30%"}
+        width={"31%"}
         showThumbs={false}
         showStatus={false}
         showIndicators={false}
