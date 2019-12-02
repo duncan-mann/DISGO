@@ -10,13 +10,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     // background: 'none',
   },
-  // event: {
-  //   "padding-top": "5%",
-  //   color: "white",
-  //   backgroundColor: "#393e46",
-  //   padding: "10px",
-  //   borderRadius: "5px"
-  // },
   artist: {
     color: "white",
     width: "60%",
@@ -28,6 +21,13 @@ const useStyles = makeStyles(theme => ({
   carousel: {
     display: "flex",
     justifyContent: "center",
+  },
+  loading : {
+    width: "400px",
+    height: "160px",
+    padding: "20px",
+    textAlign: "center",
+    margin: "auto",
 }}));
 
 export default function EventDetails(props) {
@@ -64,7 +64,11 @@ export default function EventDetails(props) {
         {list}
       </Carousel>
       ) : (
-      <CircularProgress color="secondary" />
+      
+        <div className={classes.loading}>
+          <CircularProgress color="secondary" />
+        </div>
+      
       )   
     }
     </div>

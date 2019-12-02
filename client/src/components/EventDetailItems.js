@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     borderRadius: "5px",
     fontWeight: "bold",
+    fontSize: "13px",
     display: "inline-block",
     marginTop: "5px",
     textDecoration: "none",
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
   eventDetails: {
     color: "white",
-    margin: "auto",
+    margin: "1px auto",
     paddingTop: "4px"
   },
   addressIcon: {
@@ -50,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   },
   dateMonth: {
     color: "white",
-    margin: "4px 9px"
+    margin: "4px 10px"
   },
   eventIcon: {
     color: "white",
@@ -96,6 +97,7 @@ export default function EventDetailItems(props) {
     <div className={classes.details}>
       <div className={classes.dateDetails}>
         <p className={classes.dateNumber}>{date[2]}</p>
+        <p className={classes.dateMonth}>{date[0]}</p>
         <p className={classes.dateMonth}>{date[1]}</p>
         <a href={props.url} target="_blank">
           {" "}
