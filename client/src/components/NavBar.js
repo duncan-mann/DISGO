@@ -57,6 +57,9 @@ const useStyles = makeStyles(theme => ({
   },
   locationIcon: {
     color: 'grey',
+    "&:hover": {
+      color: theme.palette.secondary.main,
+    },
   },
   input: {
     color: 'grey',

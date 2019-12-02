@@ -2,13 +2,15 @@ import React from "react";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from '@material-ui/core/Grid';
+import EventIcon from '@material-ui/icons/Event';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    color: 'red !important',
   },
   startDate: {
     width: 200,
-    // color: 'red',
+    // color: 'red !important',
   },
   endDate: {
     width: 200,
@@ -17,7 +19,13 @@ const useStyles = makeStyles(theme => ({
     color: 'grey',
     "&:focus": {
       color: theme.palette.secondary.main,
-    }
+    },
+  },
+  icon: {
+    color: 'grey',
+    "&:hover": {
+      color: theme.palette.secondary.main,
+    },
   }
 }));
 
@@ -35,7 +43,10 @@ export default function DateSetter(props) {
             variant='inline'
             color='secondary'
             disableToolbar
-            InputProps={{ classes: {input: classes.input}, }}
+            animateYearScrolling={true}
+            disablePast={true}
+            InputProps={{ classes: { input: classes.input } }}
+            keyboardIcon={<EventIcon className={classes.icon} />}
           />
         </Grid>
         <Grid item>
@@ -46,7 +57,10 @@ export default function DateSetter(props) {
             variant='inline'
             color='secondary'
             disableToolbar
-            InputProps={{ classes: {input: classes.input}, }}
+            animateYearScrolling={true}
+            disablePast={true}
+            InputProps={{ classes: { input: classes.input } }}
+            keyboardIcon={<EventIcon className={classes.icon} />}
           />
         </Grid>
       </Grid>
