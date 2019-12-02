@@ -35,10 +35,10 @@ export default function useDashboardData() {
     artistEvent: {},
     artistSong: {},
     songEvent: {},
+    currentTrackUri: "",
     allSongs: [],
     songsByGenre: {},
     currentEvent: {},
-    currentTrackUri: "",
     currentArtistId: "",
     // filtering
     currentGenre: [],
@@ -256,7 +256,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        // console.log("player state =>", playerState);
+        console.log("player state =>", playerState);
 
         // extract information from current track
         const {
@@ -485,7 +485,7 @@ export default function useDashboardData() {
           currentPlaylist: uniqueTracks
         }));
         console.log(`playing ${uniqueTracks.length} tracks`);
-        playTracks(state.token, state.deviceId, uniqueTracks);
+        playTracks(state.token, state.deviceId, uniqueTracks)
 
       }
     }
@@ -615,6 +615,7 @@ export default function useDashboardData() {
       newPlaylist.splice(currentIndex, 1)
       console.log('newPlaylist', newPlaylist)
       setState(prev => ({ ...prev, currentPlaylist: newPlaylist }))
+      handleNext();
     }
   }
 
