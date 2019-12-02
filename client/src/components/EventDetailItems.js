@@ -88,7 +88,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function EventDetailItems(props) {
   const classes = useStyles();
-  const date = new Date(props.date)
+  const date = new Date(props.date.split("-").join("/"))
     .toString()
     .split(" ")
     .splice(0, 4);
