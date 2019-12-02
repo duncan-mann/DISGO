@@ -5,11 +5,11 @@ import EventIcon from "@material-ui/icons/Event";
 
 const useStyles = makeStyles(theme => ({
   details: {
-    padding: "30px 6px 20px 6px",
+    padding: "22px",
     textAlign: "center",
     display: "flex",
-    // border: "solid",
     color: "white",
+    marginRight: "10px",
     justifyContent: "flex-start"
   },
   purchaseButton: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
   eventDetails: {
     color: "white",
-    margin: "1px auto",
+    margin: "1px 0 3.5px 0",
     paddingTop: "4px"
   },
   addressIcon: {
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   },
   dateMonth: {
     color: "white",
-    margin: "4px 10px"
+    margin: "6px 10px"
   },
   eventIcon: {
     color: "white",
@@ -61,12 +61,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   dateDetails: {
-    // border: "solid",
-    // borderColor: "red"
+    // paddingLeft: "5px"
+    marginRight: "5px"
   },
   addressDetails: {
-    // border: "solid",
-    // borderColor: "green",
+
     textAlign: "left",
     margin: "0 6px",
     width: "400px",
@@ -82,8 +81,8 @@ const useStyles = makeStyles(theme => ({
     height: "160px",
   },
   artistImg: {
-    // width: "7vw",
-    height: "10em"
+    height: "8.5em",
+    borderRadius: "3px"
   }
 }));
 
