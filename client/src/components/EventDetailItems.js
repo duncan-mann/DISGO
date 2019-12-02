@@ -82,13 +82,8 @@ const useStyles = makeStyles(theme => ({
     height: "160px",
   },
   artistImg: {
-<<<<<<< HEAD
     // width: "7vw",
     height: "10em"
-=======
-    height: "100%",
-    borderRadius: "3px"
->>>>>>> master
   }
 }));
 
