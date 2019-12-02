@@ -40,9 +40,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
   },
+  searchErrorSnackBar: {
+    marginTop: '5%',
+  },
   searchErrorIcon: {
     paddingTop: 3,
   },
+  searchErrorText: {
+    fontSize: 14,
+  }
 }));
 
 export default function Dashboard(props) {
@@ -94,7 +100,9 @@ export default function Dashboard(props) {
         location={state.location}
         profilePicture={state && state.user && state.user.photos}
       />
+      {/* search error alert */}
       <Snackbar
+        className={classes.searchErrorSnackBar}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={state.searchAlertOpen}
         onClose={handleSearchAlertClose}
@@ -102,7 +110,7 @@ export default function Dashboard(props) {
         message={
           <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
             <Grid item><ErrorIcon className={classes.searchErrorIcon}/></Grid>
-            <Grid item><Typography>No events found!</Typography></Grid>
+            <Grid item><Typography className={classes.searchErrorText}>No events found!</Typography></Grid>
           </Grid>
         }
       />

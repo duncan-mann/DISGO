@@ -9,7 +9,7 @@ const slideTransition = props => {
   return <Slide {...props} direction='down' />;
 }
 // pause user's playback
-export const pauseTracks = (player) => {
+const pauseTracks = (player) => {
 player.pause(() => console.log('Paused!'));
 // fetch(`https://api.spotify.com/v1/me/player/pause`, {
 //   method: "PUT",
@@ -83,10 +83,7 @@ export default function useDashboardData() {
     }));
   }
   const handleSearchAlertClose = () => {
-    setState(prev => ({
-      ...prev,
-      open: false,
-    }));
+    setState(prev => ({ ...prev, searchAlertOpen: false }));
   }
 
   function setStartDate(date) {
