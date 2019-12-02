@@ -75,6 +75,7 @@ export default function Dashboard(props) {
     handleClick,
     handleClose,
     handleSearchAlertClose,
+    removeSong
   } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
@@ -179,6 +180,7 @@ export default function Dashboard(props) {
         position={state && state.position}
         duration={state && state.duration}
         seekPosition={seekPosition}
+        removeSong={removeSong}
       />
     </div>
   );

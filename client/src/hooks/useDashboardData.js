@@ -139,6 +139,7 @@ export default function useDashboardData() {
     setState(prev => ({ ...prev, playlistNotification: false }));
   };
 
+
   // obtain access token using Spotify authentication process
   useEffect(() => {
     axios
@@ -377,13 +378,13 @@ export default function useDashboardData() {
     if (state.currentTrackUri) {
       if (!state.currentEvent[state.currentTrackUri]) {
         // make copy of currentEvent state
-        const temp = { ...state.currentEvent};
+        const temp = { ...state.currentEvent };
         const eventDetails = [];
         for (let event of state.songEvent[state.currentTrackUri]) {
           axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-          .then(res => {
-            eventDetails.push(res.data);
-          });
+            .then(res => {
+              eventDetails.push(res.data);
+            });
         }
         temp[state.currentTrackUri] = eventDetails;
 
@@ -402,9 +403,9 @@ export default function useDashboardData() {
 
           for (let event of state.songEvent[nextTrack]) {
             axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+              .then(res => {
+                eventDetails.push(res.data);
+              });
           }
           temp[nextTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
@@ -422,9 +423,9 @@ export default function useDashboardData() {
           const eventDetails = [];
           for (let event of state.songEvent[prevTrack]) {
             axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+              .then(res => {
+                eventDetails.push(res.data);
+              });
           }
           temp[prevTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
@@ -445,9 +446,9 @@ export default function useDashboardData() {
         uris: trackUris
       })
     })
-    .then(() => {
-      setState(prev => ({ ...prev, fetch: 0 }));
-    });
+      .then(() => {
+        setState(prev => ({ ...prev, fetch: 0 }));
+      });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
@@ -459,8 +460,8 @@ export default function useDashboardData() {
           currentPlaylist: state.allSongs
         }));
 
-        console.log(`playing ${state.allSongs.length} tracks`);
-        playTracks(state.token, state.deviceId, state.allSongs);
+          console.log(`playing ${state.allSongs.length} tracks`);
+          playTracks(state.token, state.deviceId, state.allSongs);
 
       } else {
         // play filtered tracks list
@@ -486,6 +487,13 @@ export default function useDashboardData() {
       }
     }
   }, [state.deviceId, state.allSongs, state.currentGenre]);
+
+  useEffect(() => {
+    if (state.token && state.deviceId && state.currentPlaylist.length > 0) {
+    console.log('newPlaylist')
+    playTracks(state.token, state.deviceId, state.currentPlaylist)
+    }
+  }, [state.currentPlaylist])
 
   // Repeat user playback
   const handleRepeat = repeat_mode => {
@@ -594,6 +602,19 @@ export default function useDashboardData() {
     return "";
   };
 
+  //Remove song from current playlist function
+  const removeSong = () => {
+    console.log('clicking removeSong button')
+    if (state.currentTrackUri !== "") {
+      let currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri)
+      console.log('songIndex', currentIndex, 'Uri', state.currentTrackUri)
+      let newPlaylist = state.currentPlaylist
+      newPlaylist.splice(currentIndex, 1)
+      console.log('newPlaylist', newPlaylist)
+      setState(prev => ({ ...prev, currentPlaylist: newPlaylist }))
+    }
+  }
+
   return {
     state,
     currentPlayer,
@@ -615,6 +636,7 @@ export default function useDashboardData() {
     handleClick,
     handleClose,
     handleSearchAlertOpen,
-    handleSearchAlertClose
+    handleSearchAlertClose,
+    removeSong
   };
 }
