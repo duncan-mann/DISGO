@@ -28,7 +28,7 @@ export default function useDashboardData() {
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
-    filtering: false,
+    // filtering: false,
     user: {},
     token: null,
     artists: {},
@@ -392,7 +392,7 @@ export default function useDashboardData() {
         }
         temp[state.currentTrackUri] = eventDetails;
 
-        setState(prev => ({ ...prev, currentEvent: temp, filtering: false }));
+        setState(prev => ({ ...prev, currentEvent: temp }));
       }
     }
   }, [state.currentTrackUri]);
@@ -413,6 +413,7 @@ export default function useDashboardData() {
           }
           temp[nextTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
+          // setState(prev => ({ ...prev, filtering: false }));
         }
       }
     }
@@ -497,7 +498,7 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.currentPlaylist.length > 0) {
     console.log('newPlaylist')
-    playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex)
+    playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex);
     }
   }, [state.currentPlaylist])
 
@@ -544,7 +545,7 @@ export default function useDashboardData() {
       setState(prev => ({
         ...prev,
         currentGenre: tmp,
-        filtering: true,
+        // filtering: true,
       }));
     }
   };
@@ -583,12 +584,7 @@ export default function useDashboardData() {
   };
   // return an array of event details for currently playing track
   const getCurrentEventDetails = () => {
-    if (
-      state.currentEvent !== {} &&
-      state.currentTrackUri &&
-      state.currentEvent[state.currentTrackUri] &&
-      state.currentEvent[state.currentTrackUri].length > 0
-    ) {
+    if (state.currentEvent !== {} && state.currentTrackUri && state.currentEvent[state.currentTrackUri] && state.currentEvent[state.currentTrackUri].length > 0) {
       return state.currentEvent[state.currentTrackUri];
     }
     return [];

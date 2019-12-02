@@ -87,7 +87,7 @@ export default function NavBar(props) {
     <div className={classes.root}>
       <AppBar className={classes.navBar} position="static">
         <Toolbar>
-        <img src={logo} style={logoStyle}></img>
+        <img src={logo} style={logoStyle} alt=''></img>
           <Typography variant="h6" style={title}>
             DISGO
           </Typography>
