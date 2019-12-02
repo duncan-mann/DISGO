@@ -121,6 +121,7 @@ export default function useDashboardData() {
   }
 
   function addUserPlaylist() {
+    if (state.currentPlaylist.length <= 100) {
     initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(response => {
       addSongsToPlaylist(
         state.token,
@@ -128,6 +129,7 @@ export default function useDashboardData() {
         state.currentPlaylist
       );
     });
+  }
   }
 
   const handleClick = Transition => {
