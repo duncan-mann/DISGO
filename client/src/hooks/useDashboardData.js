@@ -35,10 +35,11 @@ export default function useDashboardData() {
     artistEvent: {},
     artistSong: {},
     songEvent: {},
+    currentTrackUri: "",
+    currentTrackIndex: 0,
     allSongs: [],
     songsByGenre: {},
     currentEvent: {},
-    currentTrackUri: "",
     currentArtistId: "",
     // filtering
     currentGenre: [],
@@ -70,7 +71,7 @@ export default function useDashboardData() {
     playlistNotification: false,
     playlistTransition: undefined,
     searchAlertOpen: false,
-    searchAlertTransition: Slide
+    searchAlertTransition: Slide,
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -140,6 +141,7 @@ export default function useDashboardData() {
   const handleClose = () => {
     setState(prev => ({ ...prev, playlistNotification: false }));
   };
+
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
@@ -379,13 +381,13 @@ export default function useDashboardData() {
     if (state.currentTrackUri) {
       if (!state.currentEvent[state.currentTrackUri]) {
         // make copy of currentEvent state
-        const temp = { ...state.currentEvent};
+        const temp = { ...state.currentEvent };
         const eventDetails = [];
         for (let event of state.songEvent[state.currentTrackUri]) {
           axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-          .then(res => {
-            eventDetails.push(res.data);
-          });
+            .then(res => {
+              eventDetails.push(res.data);
+            });
         }
         temp[state.currentTrackUri] = eventDetails;
 
@@ -404,9 +406,9 @@ export default function useDashboardData() {
 
           for (let event of state.songEvent[nextTrack]) {
             axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+              .then(res => {
+                eventDetails.push(res.data);
+              });
           }
           temp[nextTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
@@ -424,9 +426,9 @@ export default function useDashboardData() {
           const eventDetails = [];
           for (let event of state.songEvent[prevTrack]) {
             axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+              .then(res => {
+                eventDetails.push(res.data);
+              });
           }
           temp[prevTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
@@ -436,7 +438,7 @@ export default function useDashboardData() {
   }, [state.previousTrackUri]);
 
   // start/resume user's playback
-  const playTracks = (accessToken, deviceId, trackUris) => {
+  const playTracks = (accessToken, deviceId, trackUris, index = 0) => {
     fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${deviceId}`, {
       method: "PUT",
       headers: {
@@ -444,12 +446,13 @@ export default function useDashboardData() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        uris: trackUris
+        uris: trackUris,
+        offset: {position: index}
       })
     })
-    .then(() => {
-      setState(prev => ({ ...prev, fetch: 0 }));
-    });
+      .then(() => {
+        setState(prev => ({ ...prev, fetch: 0 }));
+      });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
@@ -461,8 +464,9 @@ export default function useDashboardData() {
           currentPlaylist: state.allSongs
         }));
 
-        console.log(`playing ${state.allSongs.length} tracks`);
-        playTracks(state.token, state.deviceId, state.allSongs);
+          // console.log(`playing ${state.allSongs.length} tracks`);
+          // playTracks(state.token, state.deviceId, state.allSongs);
+     
 
       } else {
         // play filtered tracks list
@@ -482,12 +486,19 @@ export default function useDashboardData() {
           ...prev,
           currentPlaylist: uniqueTracks
         }));
-        console.log(`playing ${uniqueTracks.length} tracks`);
-        playTracks(state.token, state.deviceId, uniqueTracks);
+        // console.log(`playing ${uniqueTracks.length} tracks`);
+        // playTracks(state.token, state.deviceId, uniqueTracks)
 
       }
     }
   }, [state.deviceId, state.allSongs, state.currentGenre]);
+
+  useEffect(() => {
+    if (state.currentPlaylist.length > 0) {
+    console.log('newPlaylist')
+    playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex)
+    }
+  }, [state.currentPlaylist])
 
   // Repeat user playback
   const handleRepeat = repeat_mode => {
@@ -596,6 +607,35 @@ export default function useDashboardData() {
     return "";
   };
 
+  //Remove song from current playlist function
+  const removeSong = () => {
+    console.log('clicking removeSong button')
+
+    if (state.currentTrackUri !== "") {
+      console.log('Before', state.currentPlaylist.length)
+      const songsByGenre = {...state.songsByGenre}
+      const filteredSongsByGenre = {}
+      Object.keys(songsByGenre).forEach(key => {
+        filteredSongsByGenre[key] = songsByGenre[key].filter(song => song !== state.currentTrackUri)
+      })
+      console.log(filteredSongsByGenre)
+
+
+      const currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri)
+      const currentIndexAllSongs = state.allSongs.indexOf(state.currentTrackUri)
+
+      console.log('songIndex', currentIndex, 'Uri', state.currentTrackUri)
+
+      const newPlaylist = [...state.currentPlaylist]
+      const newAllSongs = [...state.allSongs]
+      newAllSongs.splice(currentIndexAllSongs, 1)
+      newPlaylist.splice(currentIndex, 1)
+      console.log('newPlaylist Length', newPlaylist.length)
+      setState(prev => ({ ...prev, currentPlaylist: newPlaylist, allSongs: newAllSongs, currentTrackIndex: currentIndexAllSongs, songsByGenre: filteredSongsByGenre}))
+      // handleNext();
+    }
+  }
+
   return {
     state,
     currentPlayer,
@@ -617,6 +657,7 @@ export default function useDashboardData() {
     handleClick,
     handleClose,
     handleSearchAlertOpen,
-    handleSearchAlertClose
+    handleSearchAlertClose,
+    removeSong
   };
 }

@@ -6,7 +6,6 @@ import EventIcon from '@material-ui/icons/Event';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    color: 'red !important',
   },
   startDate: {
     width: 200,

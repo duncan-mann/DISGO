@@ -66,8 +66,8 @@ export default function EventDetails(props) {
       ) : (
         <div className={classes.loading}>
           <CircularProgress color="secondary" />
-        </div>      
-      )   
+        </div>
+      )
     }
     </div>
   );

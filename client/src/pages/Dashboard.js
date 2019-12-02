@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     "& > * + *": {
       marginTop: theme.spacing(2)
     },
-    height: '84vh',
+    height: '90vh',
   },
   snackbar: {
     'margin-bottom': '3%',
@@ -76,6 +76,7 @@ export default function Dashboard(props) {
     handleClick,
     handleClose,
     handleSearchAlertClose,
+    removeSong
   } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
@@ -87,7 +88,7 @@ export default function Dashboard(props) {
     <Grid item><CheckCircleIcon className={classes.searchErrorIcon} /></Grid>
     <Grid item><Typography className={classes.searchErrorText}>Playlist Added to Spotify!</Typography></Grid>
   </Grid>
-  : 
+  :
   <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
     <Grid item><HighlightOffIcon className={classes.searchErrorIcon} /></Grid>
     <Grid item><Typography className={classes.searchErrorText}>Song limit exceeded! 😥</Typography></Grid>
@@ -190,6 +191,7 @@ export default function Dashboard(props) {
         position={state && state.position}
         duration={state && state.duration}
         seekPosition={seekPosition}
+        removeSong={removeSong}
       />
     </div>
   );
