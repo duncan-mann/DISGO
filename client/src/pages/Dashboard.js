@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import custom hooks and helper functions
 import useDashboardData from "../hooks/useDashboardData";
 // import components
@@ -71,7 +71,6 @@ export default function Dashboard(props) {
     setLocation,
     filterByGenre,
     addUserPlaylist,
-    getCurrentEventDetails,
     getCurrentArtistImage,
     handleClick,
     handleClose,
@@ -130,9 +129,7 @@ export default function Dashboard(props) {
         <div>
           <div>
             <EventDetails
-              // artistName={state && state.artistName}
-              // filtering={state && state.filtering}
-              currentEvent={getCurrentEventDetails()}
+              currentEvent={state && state.currentEventDetails}
               artistImage={getCurrentArtistImage()}
             />
           </div>
