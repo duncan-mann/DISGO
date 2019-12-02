@@ -11,10 +11,14 @@ import TextField from "@material-ui/core/TextField";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    // color: 'white',
   },
   navBar: {
     height: "8%"
@@ -27,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     // 'margin-right': 90
   },
   form: {
-    color: "white"
+    // color: "white"
   },
   avatar: {
     width: 5,
@@ -49,7 +53,16 @@ const useStyles = makeStyles(theme => ({
     }
   },
   textField: {
-    color: theme.palette.secondary.light
+    width: 150,
+  },
+  locationIcon: {
+    color: 'grey',
+  },
+  input: {
+    color: 'grey',
+    "&:focus": {
+      color: theme.palette.secondary.main,
+    }
   }
 }));
 
@@ -68,35 +81,43 @@ export default function NavBar(props) {
           </Typography>
           <Grid container spacing={2} direction="row" alignItems="center" justify="center">
             <Grid item>
-              <TextField
-                className={classes.textField}
-                onChange={event => props.setLocation(event.target.value)}
-                value={props.location}
-              />
+              <Grid container spacing={1} alignItems='flex-end'>
+                <Grid item>
+                  <TextField
+                  className={classes.textField}
+                  onChange={event => props.setLocation(event.target.value)}
+                  label='City'
+                  value={props.location}
+                  color='secondary'
+                  InputProps={{
+                    classes: {input: classes.input},
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <PersonPinCircleIcon className={classes.locationIcon}/>
+                    </InputAdornment>
+                    )
+                  }}
+                />
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item>
               <DateSetter
-                  startDate={props.startDate}
-                  setStartDate={props.setStartDate}
-                  endDate={props.endDate}
-                  setEndDate={props.setEndDate}
+                startDate={props.startDate}
+                setStartDate={props.setStartDate}
+                endDate={props.endDate}
+                setEndDate={props.setEndDate}
               />
             </Grid>
             <Grid item>
               <Button
-                  className={classes.submitButton}
-                  variant="contained"
-                  color="secondary"
-                  onClick={() =>
-                    props.setTimeFrame(
-                      props.startDate,
-                      props.endDate,
-                      props.location
-                    )
-                  }
-                >
-                  Submit
-                </Button>
+                className={classes.submitButton}
+                variant="contained"
+                color="secondary"
+                onClick={() => props.setTimeFrame(props.startDate, props.endDate, props.location)}
+              >
+                Submit
+              </Button>
             </Grid>
           </Grid>
           <IconButton edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit">
