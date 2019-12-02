@@ -56,7 +56,7 @@ export default function EventDetails(props) {
 
     { props.currentEvent.length > 0 ? (
       <Carousel className={classes.carousel}
-        width={"30%"}
+        width={"31%"}
         showThumbs={false}
         showStatus={false}
         showIndicators={false}
