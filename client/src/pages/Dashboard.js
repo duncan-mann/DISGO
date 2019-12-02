@@ -106,7 +106,7 @@ export default function Dashboard(props) {
           </Grid>
         }
       />
-      {state.fetch === 0 && !state.onMount (
+      {state.fetch === 0 && !state.onMount ? (
       <div>
         <div>
           <EventDetails
@@ -122,13 +122,15 @@ export default function Dashboard(props) {
             onChange={filterByGenre}
             value={state && state.currentGenre}
           />
+        </div>
+        <div>
           <SongDetails
             player={currentPlayer}
             trackName={state.trackName}
             albumName={state.albumName}
             currentAlbumCover={state.currentAlbumCover}
             prevAlbumCover={prevAlbumCovers}
-            nextAlbumCover={nextAlbumCovers}ashboardashboard
+            nextAlbumCover={nextAlbumCovers}
             artistName={state.artistName}
             flipCard={flipCard}
             isFlipped={isFlipped}
@@ -136,11 +138,11 @@ export default function Dashboard(props) {
             artistAlbum={state.artistAlbum}
           />
         </div>
-        ) : (
-        <div className={classes.loadingBar}>
-          <LinearProgress variant="query" />
-          <LinearProgress variant="query" color="secondary" />
-        </div>
+      </div>
+      ) : (
+      <div className={classes.loadingBar}>
+        <LinearProgress variant="query" />
+        <LinearProgress variant="query" color="secondary" />
       </div>
       )}
       <Snackbar

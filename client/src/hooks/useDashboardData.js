@@ -3,27 +3,22 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
-<<<<<<< HEAD
 import Slide from '@material-ui/core/Slide';
 
 const slideTransition = props => {
   return <Slide {...props} direction='down' />;
 }
-
- // pause user's playback
- export const pauseTracks = (player) => {
-  player.pause(() => console.log('Paused!'));
-  // fetch(`https://api.spotify.com/v1/me/player/pause`, {
-  //   method: "PUT",
-  //   headers: {
-  //     Authorization: `Bearer ${accessToken}`,
-  //     "Content-Type": "application/json"
-  //   }
-  // });
+// pause user's playback
+export const pauseTracks = (player) => {
+player.pause(() => console.log('Paused!'));
+// fetch(`https://api.spotify.com/v1/me/player/pause`, {
+//   method: "PUT",
+//   headers: {
+//     Authorization: `Bearer ${accessToken}`,
+//     "Content-Type": "application/json"
+//   }
+// });
 }
-=======
-import { object } from "prop-types";
->>>>>>> master
 
 export default function useDashboardData() {
   let today = new Date();
@@ -192,11 +187,7 @@ export default function useDashboardData() {
           artistImage[state.artists[artist].id] = state.artists[artist].images[0]
         }
       });
-<<<<<<< HEAD
-      setState(prev => ({ ...prev, artistEvent }));
-=======
       setState(prev => ({ ...prev, artistEvent, artistImage }));
->>>>>>> master
     }
   }, [state.artists]);
 
@@ -661,10 +652,7 @@ const getCurrentArtistImage = () => {
     getCurrentArtistImage,
     handleClick,
     handleClose,
-<<<<<<< HEAD
     handleSearchAlertOpen,
     handleSearchAlertClose,
-=======
->>>>>>> master
   };
 }

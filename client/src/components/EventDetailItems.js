@@ -4,7 +4,7 @@ import RoomIcon from '@material-ui/icons/Room';
 import EventIcon from '@material-ui/icons/Event';
 
 const useStyles = makeStyles(theme => ({
-  details: {  
+  details: {
     padding: "30px 6px 20px 6px",
     textAlign: "center",
     display: "flex",
