@@ -71,7 +71,7 @@ export default function useDashboardData() {
     playlistNotification: false,
     playlistTransition: undefined,
     searchAlertOpen: false,
-    searchAlertTransition: Slide
+    searchAlertTransition: Slide,
   });
 
   const [currentPlayer, setPlayer] = useState(null);

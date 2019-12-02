@@ -7,7 +7,8 @@ const useStyles = makeStyles(theme => ({
   genre_item: {
     color: 'white',
     borderColor: 'white',
-    fontSize: 14,
+    fontSize: '0.8em',
+    padding: '1.2em',
     margin: theme.spacing(0.5),
     '&:hover': {
       backgroundColor: 'white !important',
@@ -18,7 +19,8 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
     borderColor: 'white',
     backgroundColor: 'white !important',
-    fontSize: 14,
+    fontSize: '0.8em',
+    padding: '1.2em',
     margin: theme.spacing(0.5),
     '&:hover': {
       backgroundColor: 'transparent !important',
