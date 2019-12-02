@@ -71,6 +71,7 @@ export default function Dashboard(props) {
     setLocation,
     filterByGenre,
     addUserPlaylist,
+    getCurrentEventDetails,
     getCurrentArtistImage,
     handleClick,
     handleClose,
@@ -129,7 +130,7 @@ export default function Dashboard(props) {
         <div>
           <div>
             <EventDetails
-              currentEvent={state && state.currentEventDetails}
+              currentEvent={getCurrentEventDetails()}
               artistImage={getCurrentArtistImage()}
             />
           </div>
