@@ -182,7 +182,7 @@ export default function MusicControlBar(props) {
             >
               <Grid item className={classes.mediaButtons}>
                 <CloseIcon
-                onClick={props.removeSong}
+                onClick={() => props.removeSong()}
                 >
                 </CloseIcon>
                 <ShuffleIcon

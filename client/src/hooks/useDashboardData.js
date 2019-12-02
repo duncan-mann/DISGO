@@ -36,6 +36,7 @@ export default function useDashboardData() {
     artistSong: {},
     songEvent: {},
     currentTrackUri: "",
+    currentTrackIndex: 0,
     allSongs: [],
     songsByGenre: {},
     currentEvent: {},
@@ -437,7 +438,7 @@ export default function useDashboardData() {
   }, [state.previousTrackUri]);
 
   // start/resume user's playback
-  const playTracks = (accessToken, deviceId, trackUris) => {
+  const playTracks = (accessToken, deviceId, trackUris, index = 0) => {
     fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${deviceId}`, {
       method: "PUT",
       headers: {
@@ -445,7 +446,8 @@ export default function useDashboardData() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        uris: trackUris
+        uris: trackUris,
+        offset: {position: index}
       })
     })
       .then(() => {
@@ -462,8 +464,8 @@ export default function useDashboardData() {
           currentPlaylist: state.allSongs
         }));
 
-          console.log(`playing ${state.allSongs.length} tracks`);
-          playTracks(state.token, state.deviceId, state.allSongs);
+          // console.log(`playing ${state.allSongs.length} tracks`);
+          // playTracks(state.token, state.deviceId, state.allSongs);
      
 
       } else {
@@ -484,17 +486,17 @@ export default function useDashboardData() {
           ...prev,
           currentPlaylist: uniqueTracks
         }));
-        console.log(`playing ${uniqueTracks.length} tracks`);
-        playTracks(state.token, state.deviceId, uniqueTracks)
+        // console.log(`playing ${uniqueTracks.length} tracks`);
+        // playTracks(state.token, state.deviceId, uniqueTracks)
 
       }
     }
   }, [state.deviceId, state.allSongs, state.currentGenre]);
 
   useEffect(() => {
-    if (state.token && state.deviceId && state.currentPlaylist.length > 0) {
+    if (state.currentPlaylist.length > 0) {
     console.log('newPlaylist')
-    playTracks(state.token, state.deviceId, state.currentPlaylist)
+    playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex)
     }
   }, [state.currentPlaylist])
 
@@ -608,14 +610,22 @@ export default function useDashboardData() {
   //Remove song from current playlist function
   const removeSong = () => {
     console.log('clicking removeSong button')
+
     if (state.currentTrackUri !== "") {
+      console.log('Before', state.currentPlaylist.length)
+
       let currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri)
+      let currentIndexAllSongs = state.allSongs.indexOf(state.currentTrackUri)
+
       console.log('songIndex', currentIndex, 'Uri', state.currentTrackUri)
-      let newPlaylist = state.currentPlaylist
+
+      let newPlaylist = [...state.currentPlaylist]
+      let newAllSongs = [...state.allSongs]
+      newAllSongs.splice(currentIndexAllSongs, 1)
       newPlaylist.splice(currentIndex, 1)
-      console.log('newPlaylist', newPlaylist)
-      setState(prev => ({ ...prev, currentPlaylist: newPlaylist }))
-      handleNext();
+      console.log('newPlaylist Length', newPlaylist.length)
+      setState(prev => ({ ...prev, currentPlaylist: newPlaylist, allSongs: newAllSongs, currentTrackIndex: currentIndexAllSongs }))
+      // handleNext();
     }
   }
 
