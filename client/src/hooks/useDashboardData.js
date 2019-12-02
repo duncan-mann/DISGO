@@ -1,24 +1,24 @@
-import React from 'react';
+import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
-import Slide from '@material-ui/core/Slide';
+import Slide from "@material-ui/core/Slide";
 
 const slideTransition = props => {
-  return <Slide {...props} direction='down' />;
-}
+  return <Slide {...props} direction="down" />;
+};
 // pause user's playback
-const pauseTracks = (player) => {
-player.pause(() => console.log('Paused!'));
-// fetch(`https://api.spotify.com/v1/me/player/pause`, {
-//   method: "PUT",
-//   headers: {
-//     Authorization: `Bearer ${accessToken}`,
-//     "Content-Type": "application/json"
-//   }
-// });
-}
+const pauseTracks = player => {
+  player.pause(() => console.log("Paused!"));
+  // fetch(`https://api.spotify.com/v1/me/player/pause`, {
+  //   method: "PUT",
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //     "Content-Type": "application/json"
+  //   }
+  // });
+};
 
 export default function useDashboardData() {
   let today = new Date();
@@ -70,7 +70,7 @@ export default function useDashboardData() {
     playlistNotification: false,
     playlistTransition: undefined,
     searchAlertOpen: false,
-    searchAlertTransition: Slide,
+    searchAlertTransition: Slide
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -79,12 +79,12 @@ export default function useDashboardData() {
     setState(prev => ({
       ...prev,
       searchAlertOpen: true,
-      searchAlertTransition: Transition,
+      searchAlertTransition: Transition
     }));
-  }
+  };
   const handleSearchAlertClose = () => {
     setState(prev => ({ ...prev, searchAlertOpen: false }));
-  }
+  };
 
   function setStartDate(date) {
     // console.log('Setting start date to:', date);
@@ -102,9 +102,8 @@ export default function useDashboardData() {
   // start of fetching new playlist with new city and/or time window
   function setTimeFrame(startDate, endDate, location) {
     // pause player for old playlist
-    pauseTracks(currentPlayer);
     // toggle fetch state to display loading component
-    setState(prev => ({ ...prev, fetch: 1 }));
+    // setState(prev => ({ ...prev, fetch: 1 }));
     // fetch event details for new city and/or time window
     getPerformers(
       startDate.toJSON().split("T")[0],
@@ -115,9 +114,9 @@ export default function useDashboardData() {
       if (Object.entries(events).length === 0) {
         handleSearchAlertOpen(slideTransition);
       } else {
-        setState(prev => ({ ...prev, events }));
+        pauseTracks(currentPlayer);
+        setState(prev => ({ ...prev, events, fetch: 1 }));
       }
-
     });
   }
 
@@ -181,7 +180,8 @@ export default function useDashboardData() {
       Object.keys(state.artists).forEach(artist => {
         if (state.artists[artist]) {
           artistEvent[state.artists[artist].id] = state.events[artist];
-          artistImage[state.artists[artist].id] = state.artists[artist].images[0]
+          artistImage[state.artists[artist].id] =
+            state.artists[artist].images[0];
         }
       });
       setState(prev => ({ ...prev, artistEvent, artistImage }));
@@ -616,18 +616,22 @@ export default function useDashboardData() {
     return [];
   };
 
-// return current artist image
-const getCurrentArtistImage = () => {
-  if (
-    state.artistSong !== {} &&
-    state.artistImage !== {} &&
-    state.currentTrackUri 
-  ) {
-    let artistKey = Object.keys(state.artistSong).find(key => state.artistSong[key] === state.currentTrackUri)
-    return state.artistImage[artistKey] ? state.artistImage[artistKey].url : "";
-  }
-  return "";
-};
+  // return current artist image
+  const getCurrentArtistImage = () => {
+    if (
+      state.artistSong !== {} &&
+      state.artistImage !== {} &&
+      state.currentTrackUri
+    ) {
+      let artistKey = Object.keys(state.artistSong).find(
+        key => state.artistSong[key] === state.currentTrackUri
+      );
+      return state.artistImage[artistKey]
+        ? state.artistImage[artistKey].url
+        : "";
+    }
+    return "";
+  };
 
   return {
     state,
@@ -650,6 +654,6 @@ const getCurrentArtistImage = () => {
     handleClick,
     handleClose,
     handleSearchAlertOpen,
-    handleSearchAlertClose,
+    handleSearchAlertClose
   };
 }

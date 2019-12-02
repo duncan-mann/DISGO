@@ -110,7 +110,7 @@ export default function Dashboard(props) {
         message={
           <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
             <Grid item><ErrorIcon className={classes.searchErrorIcon}/></Grid>
-            <Grid item><Typography className={classes.searchErrorText}>No events found!</Typography></Grid>
+            <Grid item><Typography className={classes.searchErrorText}>No events found! Try again 😅</Typography></Grid>
           </Grid>
         }
       />
