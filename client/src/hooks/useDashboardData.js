@@ -121,15 +121,13 @@ export default function useDashboardData() {
   }
 
   function addUserPlaylist() {
-    initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(
-      response => {
-        addSongsToPlaylist(
-          state.token,
-          response.data.id,
-          state.currentPlaylist
-        );
-      }
-    );
+    initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(response => {
+      addSongsToPlaylist(
+        state.token,
+        response.data.id,
+        state.currentPlaylist
+      );
+    });
   }
 
   const handleClick = Transition => {
@@ -172,7 +170,6 @@ export default function useDashboardData() {
   }, [state.token, state.events]);
 
   // fetch artist id with event ids
-
   useEffect(() => {
     if (state.artists && state.artists !== {}) {
       const artistEvent = {};
@@ -379,25 +376,18 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.currentTrackUri) {
       if (!state.currentEvent[state.currentTrackUri]) {
-        const temp = {
-          ...state.currentEvent
-        };
+        // make copy of currentEvent state
+        const temp = { ...state.currentEvent};
         const eventDetails = [];
         for (let event of state.songEvent[state.currentTrackUri]) {
-          axios
-            .get(
-              `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
-            )
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+          axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
+          .then(res => {
+            eventDetails.push(res.data);
+          });
         }
         temp[state.currentTrackUri] = eventDetails;
 
-        setState(prev => ({
-          ...prev,
-          currentEvent: temp
-        }));
+        setState(prev => ({ ...prev, currentEvent: temp }));
       }
     }
   }, [state.currentTrackUri]);
@@ -411,20 +401,13 @@ export default function useDashboardData() {
           const eventDetails = [];
 
           for (let event of state.songEvent[nextTrack]) {
-            axios
-              .get(
-                `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
-              )
-              .then(res => {
-                eventDetails.push(res.data);
-              });
+            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
+            .then(res => {
+              eventDetails.push(res.data);
+            });
           }
           temp[nextTrack] = eventDetails;
-
-          setState(prev => ({
-            ...prev,
-            currentEvent: temp
-          }));
+          setState(prev => ({ ...prev, currentEvent: temp }));
         }
       }
     }
@@ -438,20 +421,13 @@ export default function useDashboardData() {
           const temp = { ...state.currentEvent };
           const eventDetails = [];
           for (let event of state.songEvent[prevTrack]) {
-            axios
-              .get(
-                `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
-              )
-              .then(res => {
-                eventDetails.push(res.data);
-              });
+            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
+            .then(res => {
+              eventDetails.push(res.data);
+            });
           }
           temp[prevTrack] = eventDetails;
-
-          setState(prev => ({
-            ...prev,
-            currentEvent: temp
-          }));
+          setState(prev => ({ ...prev, currentEvent: temp }));
         }
       }
     }
@@ -468,21 +444,14 @@ export default function useDashboardData() {
       body: JSON.stringify({
         uris: trackUris
       })
-    }).then(() => {
-      setState(prev => ({
-        ...prev,
-        fetch: 0
-      }));
+    })
+    .then(() => {
+      setState(prev => ({ ...prev, fetch: 0 }));
     });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (
-      state.token &&
-      state.deviceId &&
-      state.allSongs.length > 0 &&
-      state.currentGenre
-    ) {
+    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -491,9 +460,8 @@ export default function useDashboardData() {
         }));
 
         console.log(`playing ${state.allSongs.length} tracks`);
-
         playTracks(state.token, state.deviceId, state.allSongs);
-        // pauseTracks(state.token);
+
       } else {
         // play filtered tracks list
         const nonUniqueTracks = [];
@@ -512,11 +480,9 @@ export default function useDashboardData() {
           ...prev,
           currentPlaylist: uniqueTracks
         }));
-
         console.log(`playing ${uniqueTracks.length} tracks`);
-
         playTracks(state.token, state.deviceId, uniqueTracks);
-        // pauseTracks(state.token);
+
       }
     }
   }, [state.deviceId, state.allSongs, state.currentGenre]);
@@ -567,18 +533,13 @@ export default function useDashboardData() {
   };
   // toggle shuffle for user's playback
   const handleShuffle = () => {
-    fetch(
-      `https://api.spotify.com/v1/me/player/shuffle?state=${
-        state.shuffle ? false : true
-      }`,
-      {
-        method: "PUT",
-        headers: {
-          authorization: `Bearer ${state.token}`,
-          "Content-Type": "application/json"
-        }
+    fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${state.shuffle ? false : true}`, {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${state.token}`,
+        "Content-Type": "application/json"
       }
-    );
+    });
   };
 
   // music player control functions
