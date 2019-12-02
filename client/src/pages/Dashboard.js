@@ -9,6 +9,7 @@ import GenreFilterList from "../components/GenreFilterList";
 import MusicControlBar from "../components/MusicControlBar";
 import Snackbar from '@material-ui/core/Snackbar';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ErrorIcon from '@material-ui/icons/Error';
@@ -81,6 +82,16 @@ export default function Dashboard(props) {
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
   const [isFlipped, setIsFlipped] = useState(false);
+  const playlistMessage = state.currentPlaylist.length < 100 ?
+  <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
+    <Grid item><CheckCircleIcon className={classes.searchErrorIcon} /></Grid>
+    <Grid item><Typography className={classes.searchErrorText}>Playlist Added to Spotify!</Typography></Grid>
+  </Grid>
+  : 
+  <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
+    <Grid item><HighlightOffIcon className={classes.searchErrorIcon} /></Grid>
+    <Grid item><Typography className={classes.searchErrorText}>Song limit exceeded! 😥</Typography></Grid>
+  </Grid>
 
   const flipCard = (e) => {
     e.preventDefault();
@@ -109,50 +120,50 @@ export default function Dashboard(props) {
         TransitionComponent={state.searchAlertTransition}
         message={
           <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
-            <Grid item><ErrorIcon className={classes.searchErrorIcon}/></Grid>
+            <Grid item><ErrorIcon className={classes.searchErrorIcon} /></Grid>
             <Grid item><Typography className={classes.searchErrorText}>No events found! Try again 😅</Typography></Grid>
           </Grid>
         }
       />
       {state.fetch === 0 && !state.onMount ? (
-      <div>
         <div>
-          <EventDetails
-            // artistName={state && state.artistName}
-            currentEvent={getCurrentEventDetails()}
-            artistImage={getCurrentArtistImage()}
-          />
+          <div>
+            <EventDetails
+              // artistName={state && state.artistName}
+              currentEvent={getCurrentEventDetails()}
+              artistImage={getCurrentArtistImage()}
+            />
+          </div>
+          <div>
+            <GenreFilterList
+              allSongs={state && state.allSongs}
+              songsByGenre={state && state.songsByGenre}
+              onChange={filterByGenre}
+              value={state && state.currentGenre}
+            />
+          </div>
+          <div>
+            <SongDetails
+              player={currentPlayer}
+              trackName={state.trackName}
+              albumName={state.albumName}
+              currentAlbumCover={state.currentAlbumCover}
+              prevAlbumCover={prevAlbumCovers}
+              nextAlbumCover={nextAlbumCovers}
+              artistName={state.artistName}
+              flipCard={flipCard}
+              isFlipped={isFlipped}
+              setIsFlipped={setIsFlipped}
+              artistAlbum={state.artistAlbum}
+            />
+          </div>
         </div>
-        <div>
-          <GenreFilterList
-            allSongs={state && state.allSongs}
-            songsByGenre={state && state.songsByGenre}
-            onChange={filterByGenre}
-            value={state && state.currentGenre}
-          />
-        </div>
-        <div>
-          <SongDetails
-            player={currentPlayer}
-            trackName={state.trackName}
-            albumName={state.albumName}
-            currentAlbumCover={state.currentAlbumCover}
-            prevAlbumCover={prevAlbumCovers}
-            nextAlbumCover={nextAlbumCovers}
-            artistName={state.artistName}
-            flipCard={flipCard}
-            isFlipped={isFlipped}
-            setIsFlipped={setIsFlipped}
-            artistAlbum={state.artistAlbum}
-          />
-        </div>
-      </div>
       ) : (
-      <div className={classes.loadingBar}>
-        <LinearProgress variant="query" />
-        <LinearProgress variant="query" color="secondary" />
-      </div>
-      )}
+          <div className={classes.loadingBar}>
+            <LinearProgress variant="query" />
+            <LinearProgress variant="query" color="secondary" />
+          </div>
+        )}
       <Snackbar
         className={classes.snackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -160,7 +171,7 @@ export default function Dashboard(props) {
         onClose={handleClose}
         TransitionComponent={state.playlistTransition}
         ContentProps={{ 'aria-describedby': 'message-id' }}
-        message={<span className={classes.notification}><CheckCircleIcon/>Playlist Added to Spotify!</span>}
+        message={playlistMessage}
       />
       <MusicControlBar
         playing={state.playing}
