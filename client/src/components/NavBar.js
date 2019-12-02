@@ -15,7 +15,6 @@ import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -123,7 +122,12 @@ export default function NavBar(props) {
               </Button>
             </Grid>
           </Grid>
-          <IconButton edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit">
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-haspopup="true" color="inherit"
+            href="http://localhost:8888/auth/spotify"
+          >
           {props.profilePicture && props.profilePicture.length > 0 ? (
             <Avatar
               alt="profile-picture"
