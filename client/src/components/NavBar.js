@@ -12,6 +12,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   submitButton: {
     "margin-left": "20px",
     height: "30px",
-    width: "100px",
+    width: "20px",
     color: "#b3b3b3",
     border: "1px solid #b3b3b3",
     backgroundColor: "rgba(0,0,0,0)",
@@ -119,7 +120,7 @@ export default function NavBar(props) {
                 color="secondary"
                 onClick={() => props.setTimeFrame(props.startDate, props.endDate, props.location)}
               >
-                Submit
+                <SearchIcon></SearchIcon>
               </Button>
             </Grid>
           </Grid>
