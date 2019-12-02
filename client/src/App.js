@@ -23,16 +23,8 @@ const theme = createMuiTheme({
     },
     error: {
       main: '#fff'
-    },
-    // textColor: 'red',
-  },
-  overrides: {
-    MuiInputBase: {
-      input: {
-        color: "#b3b3b3"
-      }
     }
-  },
+  }
 });
 
 export default function App(props) {

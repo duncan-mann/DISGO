@@ -14,7 +14,19 @@ import Grid from "@material-ui/core/Grid";
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import logo from '../../public/docs/Logo.png'
+import '../index.css'
 
+const title = {
+  'fontFamily': 'Bebas Neue',
+  'fontSize': '2em',
+  'letterSpacing': '0.1em'
+}
+
+const logoStyle = {
+  'height': '2em',
+  'paddingRight': '0.5em'
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,11 +88,9 @@ export default function NavBar(props) {
     <div className={classes.root}>
       <AppBar className={classes.navBar} position="static">
         <Toolbar>
-          <IconButton className={classes.menuButton} edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Discover
+        <img src={logo} style={logoStyle}></img>
+          <Typography variant="h6" style={title}>
+            DISGO
           </Typography>
           <Grid container spacing={2} direction="row" alignItems="center" justify="center">
             <Grid item>
