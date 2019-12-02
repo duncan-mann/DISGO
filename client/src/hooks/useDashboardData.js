@@ -28,6 +28,7 @@ export default function useDashboardData() {
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
+    filtering: false,
     user: {},
     token: null,
     artists: {},
@@ -389,7 +390,7 @@ export default function useDashboardData() {
         }
         temp[state.currentTrackUri] = eventDetails;
 
-        setState(prev => ({ ...prev, currentEvent: temp }));
+        setState(prev => ({ ...prev, currentEvent: temp, filtering: false }));
       }
     }
   }, [state.currentTrackUri]);
@@ -448,7 +449,7 @@ export default function useDashboardData() {
       })
     })
     .then(() => {
-      setState(prev => ({ ...prev, fetch: 0 }));
+      setState(prev => ({ ...prev, fetch: 0, }));
     });
   };
   // Play specific songs on app (device) by default
@@ -458,7 +459,7 @@ export default function useDashboardData() {
         // start with all of the genres in the tracks list
         setState(prev => ({
           ...prev,
-          currentPlaylist: state.allSongs
+          currentPlaylist: state.allSongs,
         }));
 
         console.log(`playing ${state.allSongs.length} tracks`);
@@ -480,7 +481,7 @@ export default function useDashboardData() {
         // add song uris of current playlist to state
         setState(prev => ({
           ...prev,
-          currentPlaylist: uniqueTracks
+          currentPlaylist: uniqueTracks,
         }));
         console.log(`playing ${uniqueTracks.length} tracks`);
         playTracks(state.token, state.deviceId, uniqueTracks);
@@ -513,6 +514,8 @@ export default function useDashboardData() {
   };
   // filter by genre helper function
   const filterByGenre = genreStr => {
+    // set filtering state to true
+
     const tmp = [...state.currentGenre];
 
     if (tmp.includes(genreStr)) {
@@ -529,7 +532,8 @@ export default function useDashboardData() {
 
       setState(prev => ({
         ...prev,
-        currentGenre: tmp
+        currentGenre: tmp,
+        filtering: true,
       }));
     }
   };

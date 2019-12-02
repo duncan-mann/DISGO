@@ -54,7 +54,7 @@ export default function EventDetails(props) {
     <div className={classes.root}>
     {/* <h1 className={classes.artist}>{props.artistName && props.artistName.join(", ")}</h1> */}
 
-    { props.currentEvent.length > 0 ? (
+    {!props.filtering ? (
       <Carousel className={classes.carousel}
         width={"30%"}
         showThumbs={false}
