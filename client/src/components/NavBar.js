@@ -19,10 +19,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    // color: 'white',
   },
   navBar: {
-    height: "8%"
+    height: "8%",
   },
   menuButton: {
     marginRight: theme.spacing(2)
