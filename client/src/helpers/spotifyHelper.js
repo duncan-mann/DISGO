@@ -52,7 +52,7 @@ export const getSongs = async (token, artists) => {
       soul: ['soul', 'r&b'],
       folk: ['folk'],
       pop: ['pop', 'disco', 'dance'],
-      electronic: ['electronic', 'electro', 'tech', 'house', 'edm', 'step', 'tropical', 'tronic', 'bigroom' ],
+      electronic: ['electronic', 'electro', 'tech', 'house', 'edm', 'step', 'tropical', 'tronic', 'bigroom'],
       indie: ['indie'],
       rap: ['rap', 'trap'],
       hiphop: ['hip', 'hop'],
@@ -96,33 +96,33 @@ export const getSongs = async (token, artists) => {
           artistSong[artists[artist].id] = res.data.tracks[0].uri
 
 
-        let artists_genres = artists[artist].genres.join()
-        let found = false;
-        for (let genre in genreKeywords) {
-          let contains = false
-          for (let subgenre of genreKeywords[genre]) {
-            if (artists_genres.includes(subgenre) && !songs_by_genre.metal.includes(res.data.tracks[0].uri)) {
-              contains = true
+          let artists_genres = artists[artist].genres.join()
+          let found = false;
+          for (let genre in genreKeywords) {
+            let contains = false
+            for (let subgenre of genreKeywords[genre]) {
+              if (artists_genres.includes(subgenre) && !songs_by_genre.metal.includes(res.data.tracks[0].uri)) {
+                contains = true
+              }
+            }
+            if (contains) {
+              songs_by_genre[genre].push(res.data.tracks[0].uri)
+              found = true
             }
           }
-          if (contains) {
-            songs_by_genre[genre].push(res.data.tracks[0].uri)
-            found = true
+          if (!found) {
+            songs_by_genre.other.push(res.data.tracks[0].uri)
           }
+          // let all_genres= {}
+          // for (let genre of artists[artist].genres) {
+          //   if (!all_genres[genre]) {
+          //     all_genres[genre] = [res.data.tracks[0].uri]
+          //   } else {
+          //     all_genres[genre].push(res.data.tracks[0].uri)
+          //   }
+          // }
+          // console.log(all_genres)
         }
-        if (!found) {
-          songs_by_genre.other.push(res.data.tracks[0].uri)
-        }
-        // let all_genres= {}
-        // for (let genre of artists[artist].genres) {
-        //   if (!all_genres[genre]) {
-        //     all_genres[genre] = [res.data.tracks[0].uri]
-        //   } else {
-        //     all_genres[genre].push(res.data.tracks[0].uri)
-        //   }
-        // }
-        // console.log(all_genres)
-      }
       }
     }
     // remove genres from songs_by_genre that do not have any songs
@@ -165,12 +165,12 @@ export const addSongsToPlaylist = async (token, playlistId, songsArray) => {
   try {
 
     return await axios(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-          method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + token },
-          data: {
-            uris: songsArray
-          }
-        })
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      data: {
+        uris: songsArray
+      }
+    })
 
   } catch (error) {
     console.log(error)
