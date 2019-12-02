@@ -91,7 +91,7 @@ export default function NavBar(props) {
         <Toolbar>
         <img src={logo} style={logoStyle}></img>
           <Typography variant="h6" style={title}>
-            DISCO
+            DISGO
           </Typography>
           <Grid container spacing={2} direction="row" alignItems="center" justify="center">
             <Grid item>
