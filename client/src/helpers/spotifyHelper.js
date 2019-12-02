@@ -94,7 +94,7 @@ export const getSongs = async (token, artists) => {
           songs.push(res.data.tracks[0].uri)
           // fetching artist id and song uri
           artistSong[artists[artist].id] = res.data.tracks[0].uri
-        
+
 
         let artists_genres = artists[artist].genres.join()
         let found = false;
