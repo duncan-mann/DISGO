@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
+<<<<<<< HEAD
 import Slide from '@material-ui/core/Slide';
 
 const slideTransition = props => {
@@ -20,6 +21,9 @@ const slideTransition = props => {
   //   }
   // });
 }
+=======
+import { object } from "prop-types";
+>>>>>>> master
 
 export default function useDashboardData() {
   let today = new Date();
@@ -40,6 +44,7 @@ export default function useDashboardData() {
     songsByGenre: {},
     currentEvent: {},
     currentTrackUri: "",
+    currentArtistId: "",
     // filtering
     currentGenre: [],
     currentPlaylist: [],
@@ -54,6 +59,7 @@ export default function useDashboardData() {
     albumName: "",
     artistName: "",
     artistAlbum: "",
+    artistImage: {},
     currentAlbumCover: null,
     prevAlbumCover1: null,
     prevAlbumCover2: null,
@@ -175,15 +181,22 @@ export default function useDashboardData() {
   }, [state.token, state.events]);
 
   // fetch artist id with event ids
+
   useEffect(() => {
     if (state.artists && state.artists !== {}) {
       const artistEvent = {};
+      const artistImage = {};
       Object.keys(state.artists).forEach(artist => {
         if (state.artists[artist]) {
           artistEvent[state.artists[artist].id] = state.events[artist];
+          artistImage[state.artists[artist].id] = state.artists[artist].images[0]
         }
       });
+<<<<<<< HEAD
       setState(prev => ({ ...prev, artistEvent }));
+=======
+      setState(prev => ({ ...prev, artistEvent, artistImage }));
+>>>>>>> master
     }
   }, [state.artists]);
 
@@ -256,6 +269,7 @@ export default function useDashboardData() {
       // playback status updates
       player.addListener("player_state_changed", playerState => {
         // console.log("player state =>", playerState);
+
         // extract information from current track
         const {
           current_track,
@@ -614,6 +628,19 @@ export default function useDashboardData() {
     return [];
   };
 
+// return current artist image
+const getCurrentArtistImage = () => {
+  if (
+    state.artistSong !== {} &&
+    state.artistImage !== {} &&
+    state.currentTrackUri 
+  ) {
+    let artistKey = Object.keys(state.artistSong).find(key => state.artistSong[key] === state.currentTrackUri)
+    return state.artistImage[artistKey] ? state.artistImage[artistKey].url : "";
+  }
+  return "";
+};
+
   return {
     state,
     currentPlayer,
@@ -631,9 +658,13 @@ export default function useDashboardData() {
     setLocation,
     addUserPlaylist,
     getCurrentEventDetails,
+    getCurrentArtistImage,
     handleClick,
     handleClose,
+<<<<<<< HEAD
     handleSearchAlertOpen,
     handleSearchAlertClose,
+=======
+>>>>>>> master
   };
 }

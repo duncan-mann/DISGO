@@ -41,7 +41,6 @@ export const getSongs = async (token, artists) => {
 
     const artistSong = {}
     const songs = []
-    // const all_genres = {}
 
     const genreKeywords = {
       metal: ['metal', 'brutal', 'death'],
@@ -55,9 +54,10 @@ export const getSongs = async (token, artists) => {
       pop: ['pop', 'disco', 'dance'],
       electronic: ['electronic', 'electro', 'tech', 'house', 'edm', 'step', 'tropical', 'tronic', 'bigroom' ],
       indie: ['indie'],
-      rap: ['rap', 'trap', ''],
+      rap: ['rap', 'trap'],
       hiphop: ['hip', 'hop'],
       funk: ['funk', 'jam'],
+      classical: ['orchestra'],
       canadian: ['canadian', 'canada', 'ontario', 'vancouver', 'toronto']
     }
 
@@ -76,11 +76,14 @@ export const getSongs = async (token, artists) => {
       rap: [],
       hiphop: [],
       funk: [],
-      canadian: []
+      classical: [],
+      canadian: [],
+      other: []
     }
 
     for (let artist in artists) {
       if (artists[artist]) {
+
         let res = await axios(`https://api.spotify.com/v1/artists/${artists[artist].id}/top-tracks?country=from_token`, {
           type: 'GET',
           headers: { 'Authorization': 'Bearer ' + token }
@@ -94,7 +97,7 @@ export const getSongs = async (token, artists) => {
         
 
         let artists_genres = artists[artist].genres.join()
-
+        let found = false;
         for (let genre in genreKeywords) {
           let contains = false
           for (let subgenre of genreKeywords[genre]) {
@@ -104,7 +107,11 @@ export const getSongs = async (token, artists) => {
           }
           if (contains) {
             songs_by_genre[genre].push(res.data.tracks[0].uri)
+            found = true
           }
+        }
+        if (!found) {
+          songs_by_genre.other.push(res.data.tracks[0].uri)
         }
         // let all_genres= {}
         // for (let genre of artists[artist].genres) {
@@ -138,7 +145,7 @@ export const initPlaylist = async (token, user, playlistName) => {
 
   try {
 
-   return await axios(`https://api.spotify.com/v1/users/${user.username}/playlists`, {
+  return await axios(`https://api.spotify.com/v1/users/${user.username}/playlists`, {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token },
           data: {

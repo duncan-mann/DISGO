@@ -65,6 +65,7 @@ export default function Dashboard(props) {
     filterByGenre,
     addUserPlaylist,
     getCurrentEventDetails,
+    getCurrentArtistImage,
     handleClick,
     handleClose,
     handleSearchAlertClose,
@@ -103,23 +104,15 @@ export default function Dashboard(props) {
             <Grid item><ErrorIcon className={classes.searchErrorIcon}/></Grid>
             <Grid item><Typography>No events found!</Typography></Grid>
           </Grid>
-          }
+        }
       />
-      {state.fetch === 0 && !state.onMount && getCurrentEventDetails().length > 0 ? (
+      {state.fetch === 0 && !state.onMount (
       <div>
-        <Snackbar
-          className={classes.snackbar}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          open={state.playlistNotification}
-          onClose={handleClose}
-          TransitionComponent={state.playlistTransition}
-          ContentProps={{ 'aria-describedby': 'message-id' }}
-          message={<span className={classes.notification}><CheckCircleIcon/>Playlist Added to Spotify!</span>}
-        />
         <div>
           <EventDetails
-            artistName={state && state.artistName}
+            // artistName={state && state.artistName}
             currentEvent={getCurrentEventDetails()}
+            artistImage={getCurrentArtistImage()}
           />
         </div>
         <div>
@@ -135,7 +128,7 @@ export default function Dashboard(props) {
             albumName={state.albumName}
             currentAlbumCover={state.currentAlbumCover}
             prevAlbumCover={prevAlbumCovers}
-            nextAlbumCover={nextAlbumCovers}
+            nextAlbumCover={nextAlbumCovers}ashboardashboard
             artistName={state.artistName}
             flipCard={flipCard}
             isFlipped={isFlipped}
@@ -143,13 +136,22 @@ export default function Dashboard(props) {
             artistAlbum={state.artistAlbum}
           />
         </div>
-      </div>
-      ) : (
-      <div className={classes.loadingBar}>
-        <LinearProgress variant="query" />
-        <LinearProgress variant="query" color="secondary" />
+        ) : (
+        <div className={classes.loadingBar}>
+          <LinearProgress variant="query" />
+          <LinearProgress variant="query" color="secondary" />
+        </div>
       </div>
       )}
+      <Snackbar
+        className={classes.snackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={state.playlistNotification}
+        onClose={handleClose}
+        TransitionComponent={state.playlistTransition}
+        ContentProps={{ 'aria-describedby': 'message-id' }}
+        message={<span className={classes.notification}><CheckCircleIcon/>Playlist Added to Spotify!</span>}
+      />
       <MusicControlBar
         playing={state.playing}
         repeatMode={state.repeat_mode}
