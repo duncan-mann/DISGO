@@ -1,13 +1,24 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  getArtists,
-  getSongs,
-  initPlaylist,
-  addSongsToPlaylist
-} from "../helpers/spotifyHelper";
+import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
-import { object } from "prop-types";
+import Slide from "@material-ui/core/Slide";
+
+const slideTransition = props => {
+  return <Slide {...props} direction="down" />;
+};
+// pause user's playback
+const pauseTracks = player => {
+  player.pause(() => console.log("Paused!"));
+  // fetch(`https://api.spotify.com/v1/me/player/pause`, {
+  //   method: "PUT",
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //     "Content-Type": "application/json"
+  //   }
+  // });
+};
 
 export default function useDashboardData() {
   let today = new Date();
@@ -55,11 +66,25 @@ export default function useDashboardData() {
     startDate: today,
     endDate: future,
     location: "Toronto",
+    // alerts / notifications
     playlistNotification: false,
-    playlistTransition: undefined
+    playlistTransition: undefined,
+    searchAlertOpen: false,
+    searchAlertTransition: Slide
   });
 
   const [currentPlayer, setPlayer] = useState(null);
+
+  const handleSearchAlertOpen = Transition => {
+    setState(prev => ({
+      ...prev,
+      searchAlertOpen: true,
+      searchAlertTransition: Transition
+    }));
+  };
+  const handleSearchAlertClose = () => {
+    setState(prev => ({ ...prev, searchAlertOpen: false }));
+  };
 
   function setStartDate(date) {
     // console.log('Setting start date to:', date);
@@ -74,22 +99,24 @@ export default function useDashboardData() {
   function setLocation(loc) {
     setState(prev => ({ ...prev, location: loc }));
   }
-
+  // start of fetching new playlist with new city and/or time window
   function setTimeFrame(startDate, endDate, location) {
     // pause player for old playlist
-    pauseTracks(currentPlayer);
-
-    setState(prev => ({
-      ...prev,
-      fetch: 1
-      // currentGenre: [],
-    }));
+    // toggle fetch state to display loading component
+    // setState(prev => ({ ...prev, fetch: 1 }));
+    // fetch event details for new city and/or time window
     getPerformers(
       startDate.toJSON().split("T")[0],
       endDate.toJSON().split("T")[0],
       location
     ).then(events => {
-      setState(prev => ({ ...prev, events }));
+      // check if there are events returned with the search parameters
+      if (Object.entries(events).length === 0) {
+        handleSearchAlertOpen(slideTransition);
+      } else {
+        pauseTracks(currentPlayer);
+        setState(prev => ({ ...prev, events, fetch: 1 }));
+      }
     });
   }
 
@@ -153,7 +180,8 @@ export default function useDashboardData() {
       Object.keys(state.artists).forEach(artist => {
         if (state.artists[artist]) {
           artistEvent[state.artists[artist].id] = state.events[artist];
-          artistImage[state.artists[artist].id] = state.artists[artist].images[0]
+          artistImage[state.artists[artist].id] =
+            state.artists[artist].images[0];
         }
       });
       setState(prev => ({ ...prev, artistEvent, artistImage }));
@@ -218,10 +246,10 @@ export default function useDashboardData() {
       setPlayer(player);
 
       player.addListener("initialization_error", ({ msg }) =>
-      console.error(msg)
+        console.error(msg)
       );
       player.addListener("authentication_error", ({ msg }) =>
-      console.error(msg)
+        console.error(msg)
       );
       player.addListener("account_error", ({ msg }) => console.error(msg));
       player.addListener("playback_error", ({ msg }) => console.error(msg));
@@ -447,20 +475,14 @@ export default function useDashboardData() {
       }));
     });
   };
-  // pause user's playback
-  const pauseTracks = (player) => {
-    player.pause(() => console.log('Paused!'));
-    // fetch(`https://api.spotify.com/v1/me/player/pause`, {
-    //   method: "PUT",
-    //   headers: {
-    //     Authorization: `Bearer ${accessToken}`,
-    //     "Content-Type": "application/json"
-    //   }
-    // });
-  }
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
+    if (
+      state.token &&
+      state.deviceId &&
+      state.allSongs.length > 0 &&
+      state.currentGenre
+    ) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
@@ -472,7 +494,6 @@ export default function useDashboardData() {
 
         playTracks(state.token, state.deviceId, state.allSongs);
         // pauseTracks(state.token);
-
       } else {
         // play filtered tracks list
         const nonUniqueTracks = [];
@@ -483,7 +504,9 @@ export default function useDashboardData() {
           });
         });
 
-        const uniqueTracks = nonUniqueTracks.filter((item, index) => nonUniqueTracks.indexOf(item) === index);
+        const uniqueTracks = nonUniqueTracks.filter(
+          (item, index) => nonUniqueTracks.indexOf(item) === index
+        );
         // add song uris of current playlist to state
         setState(prev => ({
           ...prev,
@@ -494,7 +517,6 @@ export default function useDashboardData() {
 
         playTracks(state.token, state.deviceId, uniqueTracks);
         // pauseTracks(state.token);
-
       }
     }
   }, [state.deviceId, state.allSongs, state.currentGenre]);
@@ -569,6 +591,7 @@ export default function useDashboardData() {
   const handleToggle = () => {
     currentPlayer.togglePlay();
   };
+  // set user's playback volume
   const setVolume = value => {
     currentPlayer.setVolume(value).then(() => {
       // console.log(`Volume updated to ${value * 100}%`);
@@ -577,7 +600,7 @@ export default function useDashboardData() {
   // set position in the song to play
   const seekPosition = value => {
     currentPlayer.seek(value).then(() => {
-      console.log(`Changed to ${Math.floor(value / 1000)} sec into the track`);
+      console.log(`Changed to ${Math.round(value / 1000)} sec into the track`);
     });
   };
   // return an array of event details for currently playing track
@@ -593,18 +616,22 @@ export default function useDashboardData() {
     return [];
   };
 
-// return current artist image
-const getCurrentArtistImage = () => {
-  if (
-    state.artistSong !== {} &&
-    state.artistImage !== {} &&
-    state.currentTrackUri 
-  ) {
-    let artistKey = Object.keys(state.artistSong).find(key => state.artistSong[key] === state.currentTrackUri)
-    return state.artistImage[artistKey] ? state.artistImage[artistKey].url : "";
-  }
-  return "";
-};
+  // return current artist image
+  const getCurrentArtistImage = () => {
+    if (
+      state.artistSong !== {} &&
+      state.artistImage !== {} &&
+      state.currentTrackUri
+    ) {
+      let artistKey = Object.keys(state.artistSong).find(
+        key => state.artistSong[key] === state.currentTrackUri
+      );
+      return state.artistImage[artistKey]
+        ? state.artistImage[artistKey].url
+        : "";
+    }
+    return "";
+  };
 
   return {
     state,
@@ -626,5 +653,7 @@ const getCurrentArtistImage = () => {
     getCurrentArtistImage,
     handleClick,
     handleClose,
+    handleSearchAlertOpen,
+    handleSearchAlertClose
   };
 }

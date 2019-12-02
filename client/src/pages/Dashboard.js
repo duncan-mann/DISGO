@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import custom hooks
+// import custom hooks and helper functions
 import useDashboardData from "../hooks/useDashboardData";
 // import components
 import NavBar from "../components/NavBar";
@@ -11,10 +11,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import ErrorIcon from '@material-ui/icons/Error';
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: `linear-gradient(#212121 50%, #121212 90%)`
+    background: `linear-gradient(#212121 50%, #121212 90%)`,
   },
   loadingBar: {
     marginTop: '10px',
@@ -32,6 +35,19 @@ const useStyles = makeStyles(theme => ({
   notification: {
     display: 'flex',
     alignItems: 'center',
+  },
+  loadingEventDetails: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  searchErrorSnackBar: {
+    marginTop: '5%',
+  },
+  searchErrorIcon: {
+    paddingTop: 3,
+  },
+  searchErrorText: {
+    fontSize: 14,
   }
 }));
 
@@ -57,7 +73,8 @@ export default function Dashboard(props) {
     getCurrentEventDetails,
     getCurrentArtistImage,
     handleClick,
-    handleClose
+    handleClose,
+    handleSearchAlertClose,
   } = useDashboardData();
 
   const nextAlbumCovers = [state.nextAlbumCover1, state.nextAlbumCover2];
@@ -83,63 +100,68 @@ export default function Dashboard(props) {
         location={state.location}
         profilePicture={state && state.user && state.user.photos}
       />
+      {/* search error alert */}
+      <Snackbar
+        className={classes.searchErrorSnackBar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={state.searchAlertOpen}
+        onClose={handleSearchAlertClose}
+        TransitionComponent={state.searchAlertTransition}
+        message={
+          <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
+            <Grid item><ErrorIcon className={classes.searchErrorIcon}/></Grid>
+            <Grid item><Typography className={classes.searchErrorText}>No events found! Try again 😅</Typography></Grid>
+          </Grid>
+        }
+      />
+      {state.fetch === 0 && !state.onMount ? (
       <div>
-        {state.fetch === 0 && !state.onMount ? (
-          <div>
-            <Snackbar
-            className={classes.snackbar}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-              open={state.playlistNotification}
-              onClose={handleClose}
-              TransitionComponent={state.playlistTransition}
-              ContentProps={{
-                'aria-describedby': 'message-id',
-              }}
-              message={<span className={classes.notification}>
-                <CheckCircleIcon/>Playlist Added to Spotify!
-              </span>}
-            />
-            <div>
-              <EventDetails
-                // artistName={state && state.artistName}
-                currentEvent={getCurrentEventDetails()}
-                artistImage={getCurrentArtistImage()}
-              />
-            </div>
-            <div>
-              <GenreFilterList
-                allSongs={state && state.allSongs}
-                songsByGenre={state && state.songsByGenre}
-                onChange={filterByGenre}
-                value={state && state.currentGenre}
-              />
-              <SongDetails
-                player={currentPlayer}
-                trackName={state.trackName}
-                albumName={state.albumName}
-                currentAlbumCover={state.currentAlbumCover}
-                prevAlbumCover={prevAlbumCovers}
-                nextAlbumCover={nextAlbumCovers}ashboardashboard
-                artistName={state.artistName}
-                flipCard={flipCard}
-                isFlipped={isFlipped}
-                setIsFlipped={setIsFlipped}
-                artistAlbum={state.artistAlbum}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className={classes.loadingBar}>
-            <LinearProgress variant="query" />
-            <LinearProgress variant="query" color="secondary" />
-          </div>
-        )}
         <div>
+          <EventDetails
+            // artistName={state && state.artistName}
+            currentEvent={getCurrentEventDetails()}
+            artistImage={getCurrentArtistImage()}
+          />
+        </div>
+        <div>
+          <GenreFilterList
+            allSongs={state && state.allSongs}
+            songsByGenre={state && state.songsByGenre}
+            onChange={filterByGenre}
+            value={state && state.currentGenre}
+          />
+        </div>
+        <div>
+          <SongDetails
+            player={currentPlayer}
+            trackName={state.trackName}
+            albumName={state.albumName}
+            currentAlbumCover={state.currentAlbumCover}
+            prevAlbumCover={prevAlbumCovers}
+            nextAlbumCover={nextAlbumCovers}
+            artistName={state.artistName}
+            flipCard={flipCard}
+            isFlipped={isFlipped}
+            setIsFlipped={setIsFlipped}
+            artistAlbum={state.artistAlbum}
+          />
         </div>
       </div>
+      ) : (
+      <div className={classes.loadingBar}>
+        <LinearProgress variant="query" />
+        <LinearProgress variant="query" color="secondary" />
+      </div>
+      )}
+      <Snackbar
+        className={classes.snackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={state.playlistNotification}
+        onClose={handleClose}
+        TransitionComponent={state.playlistTransition}
+        ContentProps={{ 'aria-describedby': 'message-id' }}
+        message={<span className={classes.notification}><CheckCircleIcon/>Playlist Added to Spotify!</span>}
+      />
       <MusicControlBar
         playing={state.playing}
         repeatMode={state.repeat_mode}
