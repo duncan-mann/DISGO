@@ -21,7 +21,6 @@ export default function useDashboardData() {
   const [state, setState] = useState({
     onMount: true,
     fetch: 0,
-    // filtering: false,
     user: {},
     token: null,
     artists: {},
@@ -34,7 +33,7 @@ export default function useDashboardData() {
     allSongs: [],
     songsByGenre: {},
     currentEvent: {},
-    currentEventDetails: [],
+    // currentEventDetails: [],
     currentArtistId: "",
     // filtering
     currentGenre: [],
@@ -388,7 +387,7 @@ export default function useDashboardData() {
           })
           .then(() => {
             temp[state.currentTrackUri] = eventDetails;
-            setState(prev => ({ ...prev, currentEvent: temp, currentEventDetails: eventDetails }));
+            setState(prev => ({ ...prev, currentEvent: temp }));
           })
           return acc;
         }, []);
@@ -578,6 +577,13 @@ export default function useDashboardData() {
       console.log(`Changed to ${Math.round(value / 1000)} sec into the track`);
     });
   };
+  // return current event details
+  const getCurrentEventDetails = () => {
+    if (state.currentTrackUri && state.currentEvent[state.currentTrackUri] && state.currentEvent[state.currentTrackUri].length > 0) {
+      return state.currentEvent[state.currentTrackUri];
+    }
+    return [];
+  }
   // return current artist image
   const getCurrentArtistImage = () => {
     if (state.artistSong !== {} && state.artistImage !== {} && state.currentTrackUri) {
@@ -636,6 +642,7 @@ export default function useDashboardData() {
     setTimeFrame,
     setLocation,
     addUserPlaylist,
+    getCurrentEventDetails,
     getCurrentArtistImage,
     handleClick,
     handleClose,
