@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // import custom hooks and helper functions
 import useDashboardData from "../hooks/useDashboardData";
 // import components

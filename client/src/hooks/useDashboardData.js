@@ -336,11 +336,9 @@ export default function useDashboardData() {
           let previousTrackUri = [];
           setState(prev => ({ ...prev, previousTrackUri }));
         }
-
+        // set currentTrackUri
         if (current_track !== {}) {
           const currentTrackUri = current_track.uri;
-          // setState(prev => ({ ...prev, currentTrackUri }));
-
           if (state.currentTrackUri !== currentTrackUri) {
             setState(prev => ({ ...prev, currentTrackUri }));
           }
@@ -401,17 +399,18 @@ export default function useDashboardData() {
       for (let nextTrack of state.nextTrackUri) {
         if (!state.currentEvent[nextTrack]) {
           const temp = { ...state.currentEvent };
-          const eventDetails = [];
 
-          for (let event of state.songEvent[nextTrack]) {
-            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-              .then(res => {
-                eventDetails.push(res.data);
-              });
-          }
+          const eventDetails = state.songEvent[nextTrack].reduce((acc, cur) => {
+            axios.get(`https://api.seatgeek.com/2/events/${cur}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
+            .then(res => {
+              acc.push(res.data);
+              return acc;
+            });
+            return acc;
+          }, []);
           temp[nextTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
-          // setState(prev => ({ ...prev, filtering: false }));
+
         }
       }
     }
@@ -426,9 +425,9 @@ export default function useDashboardData() {
           const eventDetails = [];
           for (let event of state.songEvent[prevTrack]) {
             axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-              .then(res => {
-                eventDetails.push(res.data);
-              });
+            .then(res => {
+              eventDetails.push(res.data);
+            });
           }
           temp[prevTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
@@ -579,11 +578,16 @@ export default function useDashboardData() {
   };
   // return current event details
   const getCurrentEventDetails = () => {
-    if (state.currentTrackUri && state.currentEvent[state.currentTrackUri] && state.currentEvent[state.currentTrackUri].length > 0) {
+    if (
+      state.currentEvent !== {} &&
+      state.currentTrackUri &&
+      state.currentEvent[state.currentTrackUri] &&
+      state.currentEvent[state.currentTrackUri].length > 0
+    ) {
       return state.currentEvent[state.currentTrackUri];
     }
     return [];
-  }
+  };
   // return current artist image
   const getCurrentArtistImage = () => {
     if (state.artistSong !== {} && state.artistImage !== {} && state.currentTrackUri) {
@@ -621,7 +625,7 @@ export default function useDashboardData() {
       newAllSongs.splice(currentIndexAllSongs, 1)
       newPlaylist.splice(currentIndex, 1)
       console.log('newPlaylist Length', newPlaylist.length)
-      setState(prev => ({ ...prev, currentPlaylist: newPlaylist, allSongs: newAllSongs, currentTrackIndex: currentIndexAllSongs, songsByGenre: filteredSongsByGenre}))
+      setState(prev => ({ ...prev, currentPlaylist: newPlaylist, allSongs: newAllSongs, currentTrackIndex: currentIndexAllSongs, songsByGenre: {...filteredSongsByGenre }}))
       // handleNext();
     }
   }
