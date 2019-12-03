@@ -23,11 +23,12 @@ function TransitionLeft(props) {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    height: '8%',
+  },
   musicControlBar: {
     top: "auto",
     bottom: 0,
-    height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect }  from "react";
 import axios from "axios";
 import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
@@ -33,7 +32,6 @@ export default function useDashboardData() {
     allSongs: [],
     songsByGenre: {},
     currentEvent: {},
-    // currentEventDetails: [],
     currentArtistId: "",
     // filtering
     currentGenre: [],
@@ -463,7 +461,7 @@ export default function useDashboardData() {
           ...prev,
           currentPlaylist: state.allSongs,
         }));
-        // console.log(`playing ${state.allSongs.length} tracks`);
+        console.log(`playing ${state.allSongs.length} tracks`);
         // playTracks(state.token, state.deviceId, state.allSongs);
       } else {
         // play filtered tracks list
@@ -483,7 +481,7 @@ export default function useDashboardData() {
           ...prev,
           currentPlaylist: uniqueTracks,
         }));
-        // console.log(`playing ${uniqueTracks.length} tracks`);
+        console.log(`playing ${uniqueTracks.length} tracks`);
         // playTracks(state.token, state.deviceId, uniqueTracks)
       }
     }
