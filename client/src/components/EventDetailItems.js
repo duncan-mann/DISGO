@@ -26,8 +26,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: "5px",
     textDecoration: "none",
     "&:hover": {
-      backgroundColor: "white",
-      color: "black"
+      backgroundColor: "#1db954",
     }
   },
   eventDetails: {
@@ -55,10 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   eventIcon: {
     color: "white",
-    marginTop: "5px",
-    "&:hover": {
-      color: "#1db954"
-    }
+    marginTop: "5px"
   },
   dateDetails: {
     // paddingLeft: "5px"
@@ -98,10 +94,7 @@ export default function EventDetailItems(props) {
         <p className={classes.dateNumber}>{date[2]}</p>
         <p className={classes.dateMonth}>{date[0]}</p>
         <p className={classes.dateMonth}>{date[1]}</p>
-        <a href={props.url} target="_blank">
-          {" "}
-          <EventIcon className={classes.eventIcon} />{" "}
-        </a>
+        <EventIcon className={classes.eventIcon} />{" "}
       </div>
       <div className={classes.addressDetails}>
         <h3 className={classes.eventDetails}>{props.title}</h3>
