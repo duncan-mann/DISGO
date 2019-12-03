@@ -135,12 +135,11 @@ export default function useDashboardData() {
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
-    axios
-      .get("/getUser")
-      .then(async res => {
-        setState(state => ({ ...state, ...res.data }));
-      })
-      .catch(err => console.log("error:", err));
+    axios.get("/getUser")
+    .then(async res => {
+      setState(state => ({ ...state, ...res.data }));
+    })
+    .catch(err => console.log("error:", err));
   }, []);
   // SeatGeek API call to fetch performers coming to a city in a specified time window
   useEffect(() => {
