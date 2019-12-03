@@ -4,6 +4,7 @@ import { flexbox } from '@material-ui/system';
 import { useMediaQuery } from 'react-responsive';
 import ReactCardFlip from 'react-card-flip';
 import SpotifyWidget from "../components/SpotifyWidget";
+import FollowerWidget from "./FollowerWidget";
 import "./songDetails.css"
 
 const useStyles = makeStyles(theme => ({
@@ -130,6 +131,7 @@ export default function MusicControls(props) {
       </div>
       <p className={classes.song}>{props.trackName}</p>
       <p className={classes.songInfo}>{props.artistName && props.artistName.join(", ")}</p>
+      <FollowerWidget currentArtistId={props.currentArtistId} />
     </div>
   );
 }
