@@ -158,6 +158,7 @@ export default function Dashboard(props) {
               isFlipped={isFlipped}
               setIsFlipped={setIsFlipped}
               artistAlbum={state.artistAlbum}
+              currentArtistId={state.currentArtistId}
             />
           </div>
         </div>

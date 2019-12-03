@@ -12,14 +12,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     // background: 'none',
   },
-  artist: {
-    color: "white",
-    width: "60%",
-    margin: "auto",
-    // borderBottom: "1px solid white",
-    textAlign: "center",
-    paddingTop: "3rem"
-  },
   carousel: {
     display: "flex",
     justifyContent: "center",
