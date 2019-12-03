@@ -266,7 +266,7 @@ export default function useDashboardData() {
         const albumName = current_track.album.name;
         const artistName = current_track.artists.map(artist => artist.name);
         const artistAlbum = current_track.album.uri.split(":")[2];
-
+        const currentArtistId = current_track.artists[0].uri
         const currentAlbumCover = current_track.album.images[0].url;
         const playing = !playerState.paused;
         const repeat_mode = playerState.repeat_mode;
@@ -339,6 +339,7 @@ export default function useDashboardData() {
           artistAlbum,
           playing,
           currentAlbumCover,
+          currentArtistId,
           // fetch: 0,
           onMount: false,
           repeat_mode,

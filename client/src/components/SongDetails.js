@@ -130,7 +130,7 @@ export default function MusicControls(props) {
 
       <p className={classes.song}>{props.trackName}</p>
       <p className={classes.songInfo}>{props.artistName && props.artistName.join(", ")}</p>
-      <FollowerWidget />
+      <FollowerWidget currentArtistId={props.currentArtistId} />
     </div>
   );
 }
