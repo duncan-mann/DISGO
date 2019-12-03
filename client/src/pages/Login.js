@@ -16,7 +16,7 @@ const title = {
   'fontSize': '20vh',
   'letterSpacing': '0.1em',
   'position': 'absolute',
-  'top': '35vh',
+  'top': '32vh',
   'z-index': 1,
   'text-align': 'center',
   'text-indent': '0.1em'
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   loginButton: {
     fontSize: 18,
     width: "20vw",
-    top: '60vh',
+    top: '58vh',
     borderRadius: 25,
     position: 'absolute',
     zIndex: 1,
