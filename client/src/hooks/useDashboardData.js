@@ -489,10 +489,10 @@ export default function useDashboardData() {
 
   useEffect(() => {
     if (state.currentPlaylist.length > 0) {
-    console.log('newPlaylist')
+    // console.log('newPlaylist')
     playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex);
     }
-  }, [state.currentPlaylist])
+  }, [state.currentPlaylist]);
 
   // Repeat user playback
   const handleRepeat = repeat_mode => {
@@ -613,25 +613,27 @@ export default function useDashboardData() {
   const removeSong = () => {
     if (state.currentTrackUri !== "") {
       console.log('removing track =>', state.currentTrackUri);
-
-      const songsByGenre = {...state.songsByGenre};
+      // make a copy of songsByGenre array
+      const tmp = {...state.songsByGenre};
+      // remove song from songsByGenre object
       const filteredSongsByGenre = {};
-      Object.keys(songsByGenre).forEach(key => {
-        filteredSongsByGenre[key] = songsByGenre[key].filter(song => song !== state.currentTrackUri)
+      Object.keys(tmp).forEach(key => {
+        filteredSongsByGenre[key] = tmp[key].filter(song => song !== state.currentTrackUri)
       });
-
-      const currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri);
-      const currentIndexAllSongs = state.allSongs.indexOf(state.currentTrackUri);
-
+      // remove song from currentPlaylist array
+      const rmIdx = state.currentPlaylist.indexOf(state.currentTrackUri);
       const newPlaylist = [...state.currentPlaylist];
+      newPlaylist.splice(rmIdx, 1);
+      // remove song from allSongs array
+      const rmIdxAllSongs = state.allSongs.indexOf(state.currentTrackUri);
       const newAllSongs = [...state.allSongs];
-      newAllSongs.splice(currentIndexAllSongs, 1);
-      newPlaylist.splice(currentIndex, 1);
+      newAllSongs.splice(rmIdxAllSongs, 1);
+      // setting state time!
       setState(prev => ({
         ...prev,
         currentPlaylist: newPlaylist,
         allSongs: newAllSongs,
-        currentTrackIndex: currentIndexAllSongs,
+        currentTrackIndex: rmIdxAllSongs,
         songsByGenre: {...filterObjKeys(filteredSongsByGenre) }
       }));
     }
