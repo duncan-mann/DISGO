@@ -64,7 +64,7 @@ export default function EventDetails(props) {
 
     {props.currentEvent && props.currentEvent.length > 0 ? (
       <Carousel className={classes.carousel}
-        width={"31%"}
+        width={"33%"}
         showThumbs={false}
         showStatus={false} 
         showIndicators={false}
@@ -73,8 +73,8 @@ export default function EventDetails(props) {
       </Carousel>
       ) : (
         <div className={classes.loadingDiv}>
-          <CircularProgress 
-          color="secondary" 
+          <CircularProgress
+          color="secondary"
           />
         </div>
       )

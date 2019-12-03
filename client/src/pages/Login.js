@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   backgroundVideo: {
     height: '100%',
     width: '100%',
-    opacity: '0.1',
+    opacity: '0.3',
     position: 'relative',
     'z-index': 0
   },
