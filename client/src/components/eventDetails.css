@@ -6,6 +6,12 @@
   background: none;
 }
 
+.carousel.carousel-slider {
+  border-radius: 45px;
+  margin: 20px;
+  box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.75);
+}
+
 .carousel .slide img {
   vertical-align: top;
   border: 0;
@@ -16,4 +22,8 @@
   display: inline-block;
   pointer-events: none;
   width: auto;
+}
+
+.slider.animated {
+  margin-top: 11px;
 }
