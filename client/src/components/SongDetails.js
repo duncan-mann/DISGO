@@ -101,10 +101,11 @@ export default function MusicControls(props) {
     allAlbums.push(<img className={classes.nextAlbum2} src={props.nextAlbumCover[1]} alt='' key='12'/>)
   }
 
-  if (!props.nextAlbumCover[1]) {
-    allAlbums.splice(0,1)
-    allAlbums.pop();
-  }
+  // if (!props.nextAlbumCover[1]) {
+  //   allAlbums.splice(0,1)
+  //   allAlbums.pop();
+  // }
+
 
   return (
     <div className={classes.root} onClick={props.flipCard}>
