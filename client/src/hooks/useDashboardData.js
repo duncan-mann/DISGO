@@ -1,6 +1,11 @@
 import React, { useState, useEffect }  from "react";
 import axios from "axios";
-import { getArtists, getSongs, initPlaylist, addSongsToPlaylist } from "../helpers/spotifyHelper";
+import {
+  getArtists,
+  getSongs,
+  initPlaylist,
+  addSongsToPlaylist
+} from "../helpers/spotifyHelper";
 import { getPerformers } from "../helpers/seatGeekHelper";
 import Slide from "@material-ui/core/Slide";
 
@@ -63,7 +68,7 @@ export default function useDashboardData() {
     playlistNotification: false,
     playlistTransition: undefined,
     searchAlertOpen: false,
-    searchAlertTransition: Slide,
+    searchAlertTransition: Slide
   });
 
   const [currentPlayer, setPlayer] = useState(null);
@@ -115,14 +120,16 @@ export default function useDashboardData() {
 
   function addUserPlaylist() {
     if (state.currentPlaylist.length <= 100) {
-    initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(response => {
-      addSongsToPlaylist(
-        state.token,
-        response.data.id,
-        state.currentPlaylist
+      initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(
+        response => {
+          addSongsToPlaylist(
+            state.token,
+            response.data.id,
+            state.currentPlaylist
+          );
+        }
       );
-    });
-  }
+    }
   }
 
   const handleClick = Transition => {
@@ -133,7 +140,6 @@ export default function useDashboardData() {
   const handleClose = () => {
     setState(prev => ({ ...prev, playlistNotification: false }));
   };
-
 
   // obtain access token using Spotify authentication process
   useEffect(() => {
@@ -251,7 +257,11 @@ export default function useDashboardData() {
         // console.log("player state =>", playerState);
 
         // extract information from current track
-        const { current_track, next_tracks, previous_tracks } = playerState.track_window;
+        const {
+          current_track,
+          next_tracks,
+          previous_tracks
+        } = playerState.track_window;
         const trackName = current_track.name;
         const albumName = current_track.album.name;
         const artistName = current_track.artists.map(artist => artist.name);
@@ -292,10 +302,28 @@ export default function useDashboardData() {
           }));
         }
 
-        if (next_tracks && next_tracks.length > 0) {
+        if (next_tracks && next_tracks.length === 1) {
+          const nextAlbumCover1 = next_tracks[0].album.images[0].url;
+          const nextAlbumCover2 = null;
+          // console.log("Next.length === 1", nextAlbumCover1, nextAlbumCover2);
+          setState(prev => ({
+            ...prev,
+            nextAlbumCover1,
+            nextAlbumCover2
+          }));
+        } else if (next_tracks.length > 1) {
           const nextAlbumCover1 = next_tracks[0].album.images[0].url;
           const nextAlbumCover2 = next_tracks[1].album.images[0].url;
-
+          // console.log("next.Length > 1", nextAlbumCover1, nextAlbumCover2);
+          setState(prev => ({
+            ...prev,
+            nextAlbumCover1,
+            nextAlbumCover2
+          }));
+        } else {
+          const nextAlbumCover1 = null;
+          const nextAlbumCover2 = null;
+          // console.log("next.length === 0", nextAlbumCover2, nextAlbumCover1);
           setState(prev => ({
             ...prev,
             nextAlbumCover1,
@@ -320,7 +348,18 @@ export default function useDashboardData() {
         }));
 
         //////////////////////////////////////////////////
-        const nextTrackUri = [next_tracks[0].uri, next_tracks[1].uri];
+
+        if (next_tracks.length === 1) {
+          let nextTrackUri = [next_tracks[0].uri];
+          setState(prev => ({ ...prev, nextTrackUri }));
+        } else if (next_tracks.length > 1) {
+          let nextTrackUri = [next_tracks[0].uri, next_tracks[1].uri];
+          setState(prev => ({ ...prev, nextTrackUri }));
+        } else {
+          let nextTrackUri = [];
+          setState(prev => ({ ...prev, nextTrackUri }));
+        }
+
         if (previous_tracks.length === 1) {
           let previousTrackUri = [previous_tracks[0].uri];
           setState(prev => ({ ...prev, previousTrackUri }));
@@ -342,7 +381,7 @@ export default function useDashboardData() {
           }
         }
 
-        setState(prev => ({ ...prev, nextTrackUri }));
+        // setState(prev => ({ ...prev, nextTrackUri }));
       });
       // Ready
       player.addListener("ready", ({ device_id }) => {
@@ -375,18 +414,24 @@ export default function useDashboardData() {
         // make copy of currentEvent state
         const temp = { ...state.currentEvent };
 
-        const eventDetails = state.songEvent[state.currentTrackUri].reduce((acc, cur) => {
-          axios.get(`https://api.seatgeek.com/2/events/${cur}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-          .then(res => {
-            acc.push(res.data);
+        const eventDetails = state.songEvent[state.currentTrackUri].reduce(
+          (acc, cur) => {
+            axios
+              .get(
+                `https://api.seatgeek.com/2/events/${cur}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+              )
+              .then(res => {
+                acc.push(res.data);
+                return acc;
+              })
+              .then(() => {
+                temp[state.currentTrackUri] = eventDetails;
+                setState(prev => ({ ...prev, currentEvent: temp }));
+              });
             return acc;
-          })
-          .then(() => {
-            temp[state.currentTrackUri] = eventDetails;
-            setState(prev => ({ ...prev, currentEvent: temp }));
-          })
-          return acc;
-        }, []);
+          },
+          []
+        );
       }
     }
   }, [state.currentTrackUri]);
@@ -399,16 +444,18 @@ export default function useDashboardData() {
           const temp = { ...state.currentEvent };
 
           const eventDetails = state.songEvent[nextTrack].reduce((acc, cur) => {
-            axios.get(`https://api.seatgeek.com/2/events/${cur}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              acc.push(res.data);
-              return acc;
-            });
+            axios
+              .get(
+                `https://api.seatgeek.com/2/events/${cur}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+              )
+              .then(res => {
+                acc.push(res.data);
+                return acc;
+              });
             return acc;
           }, []);
           temp[nextTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
-
         }
       }
     }
@@ -422,10 +469,13 @@ export default function useDashboardData() {
           const temp = { ...state.currentEvent };
           const eventDetails = [];
           for (let event of state.songEvent[prevTrack]) {
-            axios.get(`https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`)
-            .then(res => {
-              eventDetails.push(res.data);
-            });
+            axios
+              .get(
+                `https://api.seatgeek.com/2/events/${event}?&client_id=MTk1NDA1NjF8MTU3NDE4NzA5OS41OQ`
+              )
+              .then(res => {
+                eventDetails.push(res.data);
+              });
           }
           temp[prevTrack] = eventDetails;
           setState(prev => ({ ...prev, currentEvent: temp }));
@@ -444,22 +494,26 @@ export default function useDashboardData() {
       },
       body: JSON.stringify({
         uris: trackUris,
-        offset: {position: index}
+        offset: { position: index }
       })
-    })
-    .then(() => {
+    }).then(() => {
       setState(prev => ({ ...prev, fetch: 0 }));
       // pauseTracks(currentPlayer);
     });
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (state.token && state.deviceId && state.allSongs.length > 0 && state.currentGenre) {
+    if (
+      state.token &&
+      state.deviceId &&
+      state.allSongs.length > 0 &&
+      state.currentGenre
+    ) {
       if (state.currentGenre.length === 0) {
         // start with all of the genres in the tracks list
         setState(prev => ({
           ...prev,
-          currentPlaylist: state.allSongs,
+          currentPlaylist: state.allSongs
         }));
         console.log(`playing ${state.allSongs.length} tracks`);
         // playTracks(state.token, state.deviceId, state.allSongs);
@@ -479,7 +533,7 @@ export default function useDashboardData() {
         // add song uris of current playlist to state
         setState(prev => ({
           ...prev,
-          currentPlaylist: uniqueTracks,
+          currentPlaylist: uniqueTracks
         }));
         console.log(`playing ${uniqueTracks.length} tracks`);
         // playTracks(state.token, state.deviceId, uniqueTracks)
@@ -536,20 +590,25 @@ export default function useDashboardData() {
 
       setState(prev => ({
         ...prev,
-        currentGenre: tmp,
+        currentGenre: tmp
         // filtering: true,
       }));
     }
   };
   // toggle shuffle for user's playback
   const handleShuffle = () => {
-    fetch(`https://api.spotify.com/v1/me/player/shuffle?state=${state.shuffle ? false : true}`, {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${state.token}`,
-        "Content-Type": "application/json"
+    fetch(
+      `https://api.spotify.com/v1/me/player/shuffle?state=${
+        state.shuffle ? false : true
+      }`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `Bearer ${state.token}`,
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
   };
 
   // music player control functions
@@ -588,7 +647,11 @@ export default function useDashboardData() {
   };
   // return current artist image
   const getCurrentArtistImage = () => {
-    if (state.artistSong !== {} && state.artistImage !== {} && state.currentTrackUri) {
+    if (
+      state.artistSong !== {} &&
+      state.artistImage !== {} &&
+      state.currentTrackUri
+    ) {
       let artistKey = Object.keys(state.artistSong).find(
         key => state.artistSong[key] === state.currentTrackUri
       );
@@ -637,7 +700,7 @@ export default function useDashboardData() {
         songsByGenre: {...filterObjKeys(filteredSongsByGenre) }
       }));
     }
-  }
+  };
 
   return {
     state,
