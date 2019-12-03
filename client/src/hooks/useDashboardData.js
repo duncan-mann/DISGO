@@ -440,7 +440,9 @@ export default function useDashboardData() {
 
   // start/resume user's playback
   const playTracks = (accessToken, deviceId, trackUris, index = 0) => {
+
     const trackIndex = trackUris.length === index ? index - 1 : index;
+
     fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${deviceId}`, {
       method: "PUT",
       headers: {
@@ -482,6 +484,8 @@ export default function useDashboardData() {
   useEffect(() => {
     if (state.currentPlaylist.length > 0) {
       playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex);
+    } else {
+      playTracks(state.token, state.deviceId, state.allSongs);
     }
   }, [state.currentPlaylist]);
 
@@ -595,7 +599,7 @@ export default function useDashboardData() {
   //Remove song from current playlist function
   const removeSong = () => {
     if (state.currentTrackUri !== "") {
-      console.log('removing track =>', state.currentTrackUri);
+      // console.log('removing track =>', state.currentTrackUri);
       // make a copy of songsByGenre array
       const tmp = {...state.songsByGenre};
       // remove song from songsByGenre object
@@ -615,8 +619,8 @@ export default function useDashboardData() {
       // setting state time!
       setState(prev => ({
         ...prev,
-        currentPlaylist: [ ...newPlaylist],
-        allSongs: [...newAllSongs],
+        currentPlaylist: newPlaylist,
+        allSongs: newAllSongs,
         currentTrackIndex: rmIdxAllSongs,
         songsByGenre: { ...newSongsByGenre }
       }));
