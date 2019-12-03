@@ -108,7 +108,8 @@ export default function MusicControls(props) {
 
 
   return (
-    <div className={classes.root} onClick={props.flipCard}>
+    <div className={classes.root}>
+      <div onClick={props.flipCard}>
       {bigScreen &&
         <div>
           {allAlbums}
@@ -125,8 +126,8 @@ export default function MusicControls(props) {
         <div>
           {albumsSmall}
         </div>
-        }
-
+      }
+      </div>
       <p className={classes.song}>{props.trackName}</p>
       <p className={classes.songInfo}>{props.artistName && props.artistName.join(", ")}</p>
     </div>
