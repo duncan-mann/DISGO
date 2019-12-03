@@ -11,14 +11,15 @@ import { withTheme } from "@material-ui/styles";
 
 
 const title = {
-  'fontFamily': 'Bebas Neue',
-  'fontSize': '8em',
-  'letterSpacing': '0.1em',
-  'z-index': 1,
   'color': 'white',
+  'fontFamily': 'Bebas Neue',
+  'fontSize': '20vh',
+  'letterSpacing': '0.1em',
   'position': 'absolute',
-  // 'left': '50%',
-  // 'margin-left': '-145px'
+  'top': '35vh',
+  'z-index': 1,
+  'text-align': 'center',
+  'text-indent': '0.1em'
 }
 
 const useStyles = makeStyles(theme => ({
@@ -30,10 +31,12 @@ const useStyles = makeStyles(theme => ({
   },
   loginButton: {
     fontSize: 18,
-    width: "20%",
+    width: "20vw",
+    top: '60vh',
     borderRadius: 25,
     position: 'absolute',
-    zIndex: 2,
+    zIndex: 1,
+    // margin: '0 auto',
     "&:hover": {
       backgroundColor: theme.palette.secondary.light
     }
@@ -46,12 +49,11 @@ const useStyles = makeStyles(theme => ({
     'z-index': 0
   },
   logoImg: {
-    height: '200px',
-    'z-index': 1,
+    height: '20vh',
+    'z-index': 2,
     position: 'absolute',
-    left: '50%',
-    top: '10%',
-    'margin-left': '-100px',
+    top: '15vh',
+    // margin: '0 auto',
   }
 }));
 
@@ -60,14 +62,11 @@ export default function Login(props) {
 
   return (
     <div className={classes.root}>
-        <div>
         <Grid
         container
         spacing={0}
         direction="column"
-        alignItems="center"
-        justify="center"
-        // style={{ minHeight: "100vh" }}
+        alignItems='center'
       >
         <video loop autoPlay className={classes.backgroundVideo}>
             <source src={backgroundVideo} type="video/mp4" />
@@ -85,7 +84,6 @@ export default function Login(props) {
           Login
         </Button>
         </Grid>
-        </div>
     </div>
   );
 }
