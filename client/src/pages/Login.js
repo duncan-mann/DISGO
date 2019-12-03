@@ -7,8 +7,6 @@ import backgroundVideo from "../../public/docs/video3.mp4";
 import Grid from "@material-ui/core/Grid";
 import logo from '../../public/docs/Logo-cropped.png';
 import '../index.css'
-import { withTheme } from "@material-ui/styles";
-
 
 const title = {
   'color': 'white',
@@ -72,7 +70,7 @@ export default function Login(props) {
             <source src={backgroundVideo} type="video/mp4" />
             Your browser does not support the video tag.
         </video>
-        <img src={logo} className={classes.logoImg}></img>
+        <img src={logo} className={classes.logoImg} alt=''></img>
         <Typography style={title}>DISGO</Typography>
         <Button
           className={classes.loginButton}

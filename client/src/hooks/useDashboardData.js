@@ -482,10 +482,12 @@ export default function useDashboardData() {
   }, [state.currentGenre]);
 
   useEffect(() => {
-    if (state.currentPlaylist.length > 0) {
-      playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex);
-    } else {
-      playTracks(state.token, state.deviceId, state.allSongs);
+    if (state.deviceId) {
+      if (state.currentPlaylist.length > 0) {
+        playTracks(state.token, state.deviceId, state.currentPlaylist, state.currentTrackIndex);
+      } else {
+        playTracks(state.token, state.deviceId, state.allSongs);
+      }
     }
   }, [state.currentPlaylist]);
 

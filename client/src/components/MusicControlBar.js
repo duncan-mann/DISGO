@@ -25,8 +25,8 @@ function TransitionLeft(props) {
 const playlistLength = {
   'fontFamily': 'Bebas Neue',
   'margin': 'auto 0%',
-  'padding-bottom': '7px',
-  'padding-right' : '5px'
+  'paddingBottom': '7px',
+  'paddingRight' : '5px'
 }
 
 const useStyles = makeStyles(theme => ({
