@@ -18,9 +18,17 @@ import Slider from "@material-ui/core/Slider";
 import Slide from "@material-ui/core/Slide";
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from "@material-ui/core/styles";
+import '../index.css'
 
 function TransitionLeft(props) {
   return <Slide {...props} direction="right" />;
+}
+
+const playlistLength = {
+  'fontFamily': 'Bebas Neue',
+  'margin': 'auto 0%',
+  'padding-bottom': '7px',
+  'padding-right' : '5px'
 }
 
 const useStyles = makeStyles(theme => ({
@@ -259,6 +267,7 @@ export default function MusicControlBar(props) {
           </div>
           <div className={classes.barRight}>
             <Grid container spacing={2}>
+                {<p style={playlistLength}>{props.currentPlaylist.length} Tracks</p>}
               <Grid item>
                 <PlaylistAddIcon
                   className={classes.musicIcon}
