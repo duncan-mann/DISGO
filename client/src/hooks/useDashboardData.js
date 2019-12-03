@@ -515,6 +515,8 @@ export default function useDashboardData() {
           ...prev,
           currentPlaylist: state.allSongs
         }));
+
+        // console.log('playin')
         console.log(`playing ${state.allSongs.length} tracks`);
         // playTracks(state.token, state.deviceId, state.allSongs);
       } else {
