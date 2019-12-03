@@ -440,6 +440,7 @@ export default function useDashboardData() {
 
   // start/resume user's playback
   const playTracks = (accessToken, deviceId, trackUris, index = 0) => {
+    const trackIndex = trackUris.length === index ? index - 1 : index;
     fetch(`https://api.spotify.com/v1/me/player/play/?device_id=${deviceId}`, {
       method: "PUT",
       headers: {
@@ -448,7 +449,7 @@ export default function useDashboardData() {
       },
       body: JSON.stringify({
         uris: trackUris,
-        offset: { position: index }
+        offset: { position: trackIndex }
       })
     }).then(() => {
       setState(prev => ({ ...prev, fetch: 0 }));
@@ -558,12 +559,8 @@ export default function useDashboardData() {
   };
   // return current event details
   const getCurrentEventDetails = () => {
-    if (
-      state.currentEvent !== {} &&
-      state.currentTrackUri &&
-      state.currentEvent[state.currentTrackUri] &&
-      state.currentEvent[state.currentTrackUri].length > 0
-    ) {
+    if (state.currentEvent !== {} && state.currentTrackUri &&
+      state.currentEvent[state.currentTrackUri] &&state.currentEvent[state.currentTrackUri].length > 0) {
       return state.currentEvent[state.currentTrackUri];
     }
     return [];
