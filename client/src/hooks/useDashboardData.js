@@ -120,7 +120,7 @@ export default function useDashboardData() {
 
   function addUserPlaylist() {
     if (state.currentPlaylist.length <= 100) {
-      initPlaylist(state.token, state.user, `Shows in ${state.location}`).then(
+      initPlaylist(state.token, state.user, state.location, state.currentGenre).then(
         response => {
           addSongsToPlaylist(
             state.token,

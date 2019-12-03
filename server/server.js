@@ -88,7 +88,7 @@ app.get(
   //   which, in this example, will redirect the user to the home page.
   app.get(
     '/callback',
-    passport.authenticate('spotify', { failureRedirect: '/login' }),
+    passport.authenticate('spotify', { failureRedirect: '/cancel' }),
     function(req, res) {
       current_user = req.user;
       res.redirect('http://localhost:3000/dashboard');
@@ -97,6 +97,10 @@ app.get(
 
   app.get('/getUser', (req, res) => {
     res.json({ user: current_user, token: access_token});
+  })
+
+  app.get('/cancel', (req, res) => {
+    res.redirect('http://localhost:3000')
   })
 
   // Simple route middleware to ensure user is authenticated.
@@ -108,5 +112,5 @@ app.get(
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect('/login');
+    res.redirect('/cancel');
   }
