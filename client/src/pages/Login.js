@@ -17,9 +17,9 @@ const title = {
   'letterSpacing': '0.1em',
   'position': 'absolute',
   'top': '32vh',
-  'z-index': 1,
-  'text-align': 'center',
-  'text-indent': '0.1em'
+  'zIndex': 1,
+  'textAlign': 'center',
+  'textIndent': '0.1em'
 }
 
 const useStyles = makeStyles(theme => ({

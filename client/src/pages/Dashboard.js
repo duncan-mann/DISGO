@@ -134,6 +134,7 @@ export default function Dashboard(props) {
             <EventDetails
               currentEvent={getCurrentEventDetails()}
               artistImage={getCurrentArtistImage()}
+              currentPlayer={currentPlayer}
             />
           </div>
           <div>
