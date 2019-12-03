@@ -24,28 +24,29 @@ function TransitionLeft(props) {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    height: '8%',
+  },
   musicControlBar: {
     top: "auto",
     bottom: 0,
-    // height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   barLeft: {
     float: "left",
-    width: 200
+    width: 200,
   },
   barCenter: {
     float: "none",
     margin: "auto",
-    width: 600
+    width: 600,
   },
   barRight: {
     float: "right",
-    width: 200
+    width: 200,
   },
   deleteSong: {
     left: 0,
@@ -56,17 +57,17 @@ const useStyles = makeStyles(theme => ({
   },
   musicIcon: {
     "&:hover": {
-      color: theme.palette.secondary.light
+      color: theme.palette.secondary.light,
     }
   },
   mediaButtons: {
     width: 200,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   volumeSlider: {
-    color: "white"
+    color: "white",
   },
   songController: {
     color: theme.palette.primary.light,
@@ -74,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     width: 400,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   positionSlider: {
     color: theme.palette.primary.light,
@@ -84,10 +85,10 @@ const useStyles = makeStyles(theme => ({
   },
   "@keyframes icon-spin": {
     from: {
-      transform: "rotate(360deg)"
+      transform: "rotate(360deg)",
     },
     to: {
-      transform: "rotate(0deg)"
+      transform: "rotate(0deg)",
     }
   }
 }));
