@@ -29,10 +29,9 @@ const logoStyle = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-  },
-  navBar: {
-    height: "8%",
+    bottom: "auto",
+    top: 0,
+    height: '8%',
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -85,7 +84,7 @@ export default function NavBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.navBar} position="static">
+      <AppBar position="fixed">
         <Toolbar>
         <img src={logo} style={logoStyle} alt=''></img>
           <Typography variant="h6" style={title}>

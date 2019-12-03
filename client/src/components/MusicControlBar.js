@@ -23,7 +23,9 @@ function TransitionLeft(props) {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    height: '8%',
+  },
   musicControlBar: {
     top: "auto",
     bottom: 0,
