@@ -10,6 +10,7 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import RepeatOneIcon from "@material-ui/icons/RepeatOne";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
@@ -23,50 +24,50 @@ function TransitionLeft(props) {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    height: '8%',
+  },
   musicControlBar: {
     top: "auto",
     bottom: 0,
-    // height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   barLeft: {
     float: "left",
-    width: 200
+    width: 200,
   },
   barCenter: {
     float: "none",
     margin: "auto",
-    width: 600
+    width: 600,
   },
   barRight: {
     float: "right",
-    width: 200
+    width: 200,
   },
-  toysIcon: {
+  deleteSong: {
     left: 0,
     right: 0,
-    animationName: "$icon-spin",
-    animationDuration: "2s",
-    animationTimingFunction: "linear",
-    animationIterationCount: "infinite"
+    "&:hover": {
+      color: theme.palette.secondary.light
+    }
   },
   musicIcon: {
     "&:hover": {
-      color: theme.palette.secondary.light
+      color: theme.palette.secondary.light,
     }
   },
   mediaButtons: {
     width: 200,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   volumeSlider: {
-    color: "white"
+    color: "white",
   },
   songController: {
     color: theme.palette.primary.light,
@@ -74,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     width: 400,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   positionSlider: {
     color: theme.palette.primary.light,
@@ -84,10 +85,10 @@ const useStyles = makeStyles(theme => ({
   },
   "@keyframes icon-spin": {
     from: {
-      transform: "rotate(360deg)"
+      transform: "rotate(360deg)",
     },
     to: {
-      transform: "rotate(0deg)"
+      transform: "rotate(0deg)",
     }
   }
 }));
@@ -170,7 +171,10 @@ export default function MusicControlBar(props) {
       <AppBar className={classes.musicControlBar} position="fixed">
         <Toolbar>
           <div className={classes.barLeft}>
-            <ToysIcon className={classes.toysIcon} />
+            <DeleteForeverIcon 
+            className={classes.deleteSong} 
+            onClick={() => props.removeSong()}
+            />
           </div>
           <div className={classes.barCenter}>
             <Grid
@@ -181,10 +185,6 @@ export default function MusicControlBar(props) {
               justify="center"
             >
               <Grid item className={classes.mediaButtons}>
-                <CloseIcon
-                onClick={() => props.removeSong()}
-                >
-                </CloseIcon>
                 <ShuffleIcon
                   className={classes.musicIcon}
                   onClick={props.handleShuffle}

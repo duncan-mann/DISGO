@@ -5,6 +5,8 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./eventDetails.css";
 import { CircularProgress } from '@material-ui/core';
+import Grid from "@material-ui/core/Grid";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,13 +24,17 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "center",
   },
-  loading : {
+  loadingDiv : {
     width: "400px",
-    height: "160px",
+    height: "215px",
     padding: "20px",
-    textAlign: "center",
-    margin: "auto",
-}}));
+    display: "flex",
+    justifyContent: "center",
+    position: 'relative',
+    left: '50%',
+    'left-margin': '-200px'
+  }
+}));
 
 export default function EventDetails(props) {
   const classes = useStyles();
@@ -63,8 +69,10 @@ export default function EventDetails(props) {
         {list}
       </Carousel>
       ) : (
-        <div className={classes.loading}>
-          <CircularProgress color="secondary" />
+        <div className={classes.loadingDiv}>
+          <CircularProgress 
+          color="secondary" 
+          />
         </div>
       )
     }

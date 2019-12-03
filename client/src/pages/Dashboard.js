@@ -18,15 +18,19 @@ import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: `linear-gradient(#212121 50%, #121212 90%)`,
+    background: `linear-gradient(#212121 35%, #121212 70%)`,
+  },
+  mainContent: {
+    paddingTop: '5%',
+    paddingBottom: '5%',
   },
   loadingBar: {
-    marginTop: '10px',
+    paddingTop: '7%',
+    paddingBottom: '93%',
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2)
     },
-    height: '90vh',
   },
   snackbar: {
     'margin-bottom': '3%',
@@ -96,7 +100,6 @@ export default function Dashboard(props) {
 
   const flipCard = (e) => {
     e.preventDefault();
-    // console.log("flipped was clicked!")
     setIsFlipped(!isFlipped);
   }
 
@@ -112,7 +115,6 @@ export default function Dashboard(props) {
         location={state.location}
         profilePicture={state && state.user && state.user.photos}
       />
-      {/* search error alert */}
       <Snackbar
         className={classes.searchErrorSnackBar}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -127,7 +129,7 @@ export default function Dashboard(props) {
         }
       />
       {state.fetch === 0 && !state.onMount ? (
-        <div>
+        <div className={classes.mainContent}>
           <div>
             <EventDetails
               currentEvent={getCurrentEventDetails()}
