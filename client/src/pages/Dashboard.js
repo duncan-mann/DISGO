@@ -25,7 +25,8 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: '5%',
   },
   loadingBar: {
-    paddingTop: '5%',
+    paddingTop: '7%',
+    paddingBottom: '93%',
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2)

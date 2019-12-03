@@ -599,32 +599,41 @@ export default function useDashboardData() {
     return "";
   };
 
+  // remove keys with empty values
+  const filterObjKeys = (obj) => {
+    return Object.keys(obj).reduce((acc, cur) => {
+      if (obj[cur].length > 0) {
+        acc[cur] = obj[cur];
+        return acc;
+      }
+      return acc;
+    }, {})
+  }
   //Remove song from current playlist function
   const removeSong = () => {
-    console.log('clicking removeSong button')
-
     if (state.currentTrackUri !== "") {
-      console.log('Before', state.currentPlaylist.length)
-      const songsByGenre = {...state.songsByGenre}
-      const filteredSongsByGenre = {}
+      console.log('removing track =>', state.currentTrackUri);
+
+      const songsByGenre = {...state.songsByGenre};
+      const filteredSongsByGenre = {};
       Object.keys(songsByGenre).forEach(key => {
         filteredSongsByGenre[key] = songsByGenre[key].filter(song => song !== state.currentTrackUri)
-      })
-      console.log(filteredSongsByGenre)
+      });
 
+      const currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri);
+      const currentIndexAllSongs = state.allSongs.indexOf(state.currentTrackUri);
 
-      const currentIndex = state.currentPlaylist.indexOf(state.currentTrackUri)
-      const currentIndexAllSongs = state.allSongs.indexOf(state.currentTrackUri)
-
-      console.log('songIndex', currentIndex, 'Uri', state.currentTrackUri)
-
-      const newPlaylist = [...state.currentPlaylist]
-      const newAllSongs = [...state.allSongs]
-      newAllSongs.splice(currentIndexAllSongs, 1)
-      newPlaylist.splice(currentIndex, 1)
-      console.log('newPlaylist Length', newPlaylist.length)
-      setState(prev => ({ ...prev, currentPlaylist: newPlaylist, allSongs: newAllSongs, currentTrackIndex: currentIndexAllSongs, songsByGenre: {...filteredSongsByGenre }}))
-      // handleNext();
+      const newPlaylist = [...state.currentPlaylist];
+      const newAllSongs = [...state.allSongs];
+      newAllSongs.splice(currentIndexAllSongs, 1);
+      newPlaylist.splice(currentIndex, 1);
+      setState(prev => ({
+        ...prev,
+        currentPlaylist: newPlaylist,
+        allSongs: newAllSongs,
+        currentTrackIndex: currentIndexAllSongs,
+        songsByGenre: {...filterObjKeys(filteredSongsByGenre) }
+      }));
     }
   }
 
