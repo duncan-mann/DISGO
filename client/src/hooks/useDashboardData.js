@@ -254,7 +254,7 @@ export default function useDashboardData() {
 
       // playback status updates
       player.addListener("player_state_changed", playerState => {
-        console.log("player state =>", playerState);
+        // console.log("player state =>", playerState);
 
         // extract information from current track
         const {

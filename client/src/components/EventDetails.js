@@ -30,9 +30,9 @@ const useStyles = makeStyles(theme => ({
     padding: "20px",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     position: 'relative',
-    left: '50%',
-    'left-margin': '-200px'
+    'margin': 'auto'
   }
 }));
 
