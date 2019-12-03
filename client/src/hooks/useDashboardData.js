@@ -599,7 +599,8 @@ export default function useDashboardData() {
   //Remove song from current playlist function
   const removeSong = () => {
     if (state.currentTrackUri !== "") {
-      // console.log('removing track =>', state.currentTrackUri);
+      // make a copy of currentGenre array
+      const currentGenre = [...state.currentGenre];
       // make a copy of songsByGenre array
       const tmp = {...state.songsByGenre};
       // remove song from songsByGenre object
@@ -621,7 +622,7 @@ export default function useDashboardData() {
         ...prev,
         currentPlaylist: newPlaylist,
         allSongs: newAllSongs,
-        currentTrackIndex: rmIdxAllSongs,
+        currentTrackIndex: currentGenre.length > 0 ? rmIdx : rmIdxAllSongs,
         songsByGenre: { ...newSongsByGenre }
       }));
     }
