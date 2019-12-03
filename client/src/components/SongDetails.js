@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
   songInfo: {
     color: '#b3b3b3',
-    paddingBottom: '10px',
+    // paddingBottom: '10px',
   },
   carousel: {
     display: flexbox,

@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   musicControlBar: {
     top: "auto",
     bottom: 0,
-    height: "10%",
+    // height: "10%",
     background: `linear-gradient(#212121 25%, #121212 75%)`,
     color: "white",
     paddingTop: 5,
