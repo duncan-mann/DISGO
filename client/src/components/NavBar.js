@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -30,11 +29,9 @@ const logoStyle = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-    // color: 'white',
-  },
-  navBar: {
-    height: "8%"
+    bottom: "auto",
+    top: 0,
+    height: '8%',
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -87,9 +84,9 @@ export default function NavBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.navBar} position="static">
+      <AppBar position="fixed">
         <Toolbar>
-        <img src={logo} style={logoStyle}></img>
+        <img src={logo} style={logoStyle} alt=''></img>
           <Typography variant="h6" style={title}>
             DISGO
           </Typography>
@@ -134,7 +131,12 @@ export default function NavBar(props) {
               </Button>
             </Grid>
           </Grid>
-          <IconButton edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit">
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-haspopup="true" color="inherit"
+            href="http://localhost:8888/auth/spotify"
+          >
           {props.profilePicture && props.profilePicture.length > 0 ? (
             <Avatar
               alt="profile-picture"

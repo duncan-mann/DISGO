@@ -3,8 +3,8 @@ const session = require('express-session')
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 
-var appKey = '7544e8ff2a8646b5a82425034662a889';
-var appSecret = 'a2b8ec44058346b38b3b9ef2f8afe23c';
+var appKey = '648c7f7f959e46f8bdb43d2d0e8d3c18';
+var appSecret = '48b6945ffc9c43c79efed3b45abd8c43';
 
 let access_token = undefined;
 let current_user = undefined;
@@ -88,7 +88,7 @@ app.get(
   //   which, in this example, will redirect the user to the home page.
   app.get(
     '/callback',
-    passport.authenticate('spotify', { failureRedirect: '/login' }),
+    passport.authenticate('spotify', { failureRedirect: '/cancel' }),
     function(req, res) {
       current_user = req.user;
       res.redirect('http://localhost:3000/dashboard');
@@ -97,6 +97,10 @@ app.get(
 
   app.get('/getUser', (req, res) => {
     res.json({ user: current_user, token: access_token});
+  })
+
+  app.get('/cancel', (req, res) => {
+    res.redirect('http://localhost:3000')
   })
 
   // Simple route middleware to ensure user is authenticated.
@@ -108,5 +112,5 @@ app.get(
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect('/login');
+    res.redirect('/cancel');
   }

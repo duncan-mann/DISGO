@@ -7,18 +7,16 @@ import SpotifyWidget from "../components/SpotifyWidget";
 import "./songDetails.css"
 
 const useStyles = makeStyles(theme => ({
-  MusicControls: {
-    // 'background': `linear-gradient(#212121 50%, #121212 90%)`,
+  root: {
     'color': 'white',
     'text-align': 'center',
-    height: '100vh',
   },
   song: {
     'font-size': 20
   },
   songInfo: {
     color: '#b3b3b3',
-    paddingBottom: '8%',
+    paddingBottom: '10px',
   },
   carousel: {
     display: flexbox,
@@ -29,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     'width': 'auto',
     'height': 'auto',
     'max-width': '40vw',
-    'max-height': '40vh'
+    'max-height': '40vh',
   },
   nextAlbum: {
     'margin-bottom': 60,
@@ -103,13 +101,14 @@ export default function MusicControls(props) {
     allAlbums.push(<img className={classes.nextAlbum2} src={props.nextAlbumCover[1]} alt='' key='12'/>)
   }
 
-  if (!props.nextAlbumCover[1]) {
-    allAlbums.splice(0,1)
-    allAlbums.pop();
-  }
+  // if (!props.nextAlbumCover[1]) {
+  //   allAlbums.splice(0,1)
+  //   allAlbums.pop();
+  // }
+
 
   return (
-    <div className={classes.MusicControls} onClick={props.flipCard}>
+    <div className={classes.root} onClick={props.flipCard}>
       {bigScreen &&
         <div>
           {allAlbums}
