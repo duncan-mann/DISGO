@@ -88,7 +88,7 @@ app.get(
   //   which, in this example, will redirect the user to the home page.
   app.get(
     '/callback',
-    passport.authenticate('spotify', { failureRedirect: '/login' }),
+    passport.authenticate('spotify', { failureRedirect: '/cancel' }),
     function(req, res) {
       current_user = req.user;
       res.redirect('http://localhost:3000/dashboard');
