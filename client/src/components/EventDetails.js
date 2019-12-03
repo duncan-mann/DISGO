@@ -22,14 +22,16 @@ const useStyles = makeStyles(theme => ({
     padding: "20px",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     position: 'relative',
-    left: '50%',
-    'left-margin': '-200px'
+    'margin': 'auto'
   }
 }));
 
 export default function EventDetails(props) {
   const classes = useStyles();
+  console.log('props.currentEvent ->', props.currentEvent);
+
 
   const list = props.currentEvent.map((e, index) => {
     return (
@@ -47,6 +49,7 @@ export default function EventDetails(props) {
       />
     );
   });
+  console.log('LIST', list)
 
   return (
     <div className={classes.root}>
@@ -55,7 +58,7 @@ export default function EventDetails(props) {
       <Carousel className={classes.carousel}
         width={"33%"}
         showThumbs={false}
-        showStatus={false}
+        showStatus={false} 
         showIndicators={false}
       >
         {list}
