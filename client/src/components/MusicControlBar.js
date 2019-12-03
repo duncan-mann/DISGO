@@ -10,6 +10,7 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import RepeatOneIcon from "@material-ui/icons/RepeatOne";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
@@ -47,13 +48,12 @@ const useStyles = makeStyles(theme => ({
     float: "right",
     width: 200,
   },
-  toysIcon: {
+  deleteSong: {
     left: 0,
     right: 0,
-    animationName: "$icon-spin",
-    animationDuration: "2s",
-    animationTimingFunction: "linear",
-    animationIterationCount: "infinite",
+    "&:hover": {
+      color: theme.palette.secondary.light
+    }
   },
   musicIcon: {
     "&:hover": {
@@ -171,7 +171,10 @@ export default function MusicControlBar(props) {
       <AppBar className={classes.musicControlBar} position="fixed">
         <Toolbar>
           <div className={classes.barLeft}>
-            <ToysIcon className={classes.toysIcon} />
+            <DeleteForeverIcon 
+            className={classes.deleteSong} 
+            onClick={() => props.removeSong()}
+            />
           </div>
           <div className={classes.barCenter}>
             <Grid
@@ -182,10 +185,6 @@ export default function MusicControlBar(props) {
               justify="center"
             >
               <Grid item className={classes.mediaButtons}>
-                <CloseIcon
-                onClick={() => props.removeSong()}
-                >
-                </CloseIcon>
                 <ShuffleIcon
                   className={classes.musicIcon}
                   onClick={props.handleShuffle}
