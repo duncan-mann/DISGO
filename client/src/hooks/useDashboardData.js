@@ -503,10 +503,7 @@ export default function useDashboardData() {
   };
   // Play specific songs on app (device) by default
   useEffect(() => {
-    if (
-      state.token &&
-      state.deviceId &&
-      state.allSongs.length > 0 &&
+    if (state.token && state.deviceId && state.allSongs.length > 0 &&
       state.currentGenre
     ) {
       if (state.currentGenre.length === 0) {
@@ -685,6 +682,7 @@ export default function useDashboardData() {
       Object.keys(tmp).forEach(key => {
         filteredSongsByGenre[key] = tmp[key].filter(song => song !== state.currentTrackUri)
       });
+      const newSongsByGenre = filterObjKeys(filteredSongsByGenre);
       // remove song from currentPlaylist array
       const rmIdx = state.currentPlaylist.indexOf(state.currentTrackUri);
       const newPlaylist = [...state.currentPlaylist];
@@ -696,10 +694,10 @@ export default function useDashboardData() {
       // setting state time!
       setState(prev => ({
         ...prev,
-        currentPlaylist: newPlaylist,
-        allSongs: newAllSongs,
+        currentPlaylist: [ ...newPlaylist],
+        allSongs: [...newAllSongs],
         currentTrackIndex: rmIdxAllSongs,
-        songsByGenre: {...filterObjKeys(filteredSongsByGenre) }
+        songsByGenre: { ...newSongsByGenre }
       }));
     }
   };

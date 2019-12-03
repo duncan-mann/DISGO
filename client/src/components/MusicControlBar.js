@@ -68,7 +68,7 @@ const useStyles = makeStyles(theme => ({
     color: "white",
   },
   songController: {
-    color: theme.palette.primary.light,
+    color: 'lightgrey',
     fontSize: 10,
     width: 400,
     display: "flex",
@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
   },
   positionSlider: {
-    color: theme.palette.primary.light,
+    color: 'lightgrey',
   },
   time: {
     margin: 10,
