@@ -29,7 +29,6 @@ const logoStyle = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
     bottom: "auto",
     top: 0,
     height: '8%',

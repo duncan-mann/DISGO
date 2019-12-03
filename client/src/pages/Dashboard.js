@@ -19,15 +19,17 @@ import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles(theme => ({
   root: {
     background: `linear-gradient(#212121 35%, #121212 70%)`,
-    height: '100vh',
+  },
+  mainContent: {
+    paddingTop: '5%',
+    paddingBottom: '5%',
   },
   loadingBar: {
-    marginTop: '20px',
+    paddingTop: '5%',
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2)
     },
-    height: '100vh',
   },
   snackbar: {
     'margin-bottom': '3%',
@@ -126,7 +128,7 @@ export default function Dashboard(props) {
         }
       />
       {state.fetch === 0 && !state.onMount ? (
-        <div>
+        <div className={classes.mainContent}>
           <div>
             <EventDetails
               currentEvent={getCurrentEventDetails()}
