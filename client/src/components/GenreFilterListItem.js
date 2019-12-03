@@ -6,8 +6,9 @@ import MusicNoteIcon from "@material-ui/icons/MusicNote";
 const useStyles = makeStyles(theme => ({
   genre_item: {
     color: 'white',
-    borderColor: 'white',
+    borderColor: theme.palette.primary.light,
     fontSize: '0.8em',
+    fontWeight: 'bold',
     padding: '1.2em',
     margin: theme.spacing(0.5),
     '&:hover': {
@@ -17,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
   genre_item_selected: {
     color: 'black',
-    borderColor: 'white',
+    borderColor: theme.palette.primary.light,
     backgroundColor: 'white !important',
     fontSize: '0.8em',
     padding: '1.2em',
