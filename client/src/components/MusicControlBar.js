@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import ToysIcon from "@material-ui/icons/Toys";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
@@ -16,7 +15,6 @@ import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import Slider from "@material-ui/core/Slider";
 import Slide from "@material-ui/core/Slide";
-import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from "@material-ui/core/styles";
 import '../index.css'
 
@@ -79,7 +77,7 @@ const useStyles = makeStyles(theme => ({
     color: "white",
   },
   songController: {
-    color: theme.palette.primary.light,
+    color: 'lightgrey',
     fontSize: 10,
     width: 400,
     display: "flex",
@@ -87,7 +85,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
   },
   positionSlider: {
-    color: theme.palette.primary.light,
+    color: 'lightgrey',
   },
   time: {
     margin: 10,
