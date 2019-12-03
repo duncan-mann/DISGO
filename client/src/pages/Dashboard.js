@@ -87,7 +87,7 @@ export default function Dashboard(props) {
   const prevAlbumCovers = [state.prevAlbumCover1, state.prevAlbumCover2];
 
   const [isFlipped, setIsFlipped] = useState(false);
-  const playlistMessage = state.currentPlaylist.length < 100 ?
+  const playlistMessage = state.currentPlaylist.length < 101 ?
   <Grid container direction='row' alignItems='center' justify='center' spacing={2}>
     <Grid item><CheckCircleIcon className={classes.searchErrorIcon} /></Grid>
     <Grid item><Typography className={classes.searchErrorText}>Playlist Added to Spotify!</Typography></Grid>
@@ -193,6 +193,7 @@ export default function Dashboard(props) {
         duration={state && state.duration}
         seekPosition={seekPosition}
         removeSong={removeSong}
+        currentPlaylist={state.currentPlaylist}
       />
     </div>
   );
