@@ -58,7 +58,7 @@ app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.listen(8888);
+app.listen(process.env.PORT || 8888);
 console.log('App is listening on port 8888');
 
 // GET /auth/spotify
