@@ -37,7 +37,7 @@ export default function useDashboardData() {
     currentGenre: [],
     currentPlaylist: [],
     // Spotfiy Playback SDK
-    initialVolume: 1,
+    initialVolume: 0.5,
     deviceId: null,
     repeat_mode: 0,
     shuffle: false,
