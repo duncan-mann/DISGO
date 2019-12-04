@@ -15,7 +15,7 @@ const pauseTracks = player => {
 export default function useDashboardData() {
   let today = new Date();
   let future = new Date();
-  future.setDate(today.getDate() + 29);
+  future.setDate(today.getDate() + 14);
 
   const [state, setState] = useState({
     onMount: true,
