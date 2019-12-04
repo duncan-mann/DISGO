@@ -35,7 +35,7 @@ passport.use(
       {
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: 'http://localhost:8888/callback'
+        callbackURL: process.env.DOMAIN + '/callback'
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
 
