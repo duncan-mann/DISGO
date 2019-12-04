@@ -8,7 +8,6 @@ import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // background: 'none',
   },
   carousel: {
     display: "flex",

@@ -25,6 +25,10 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: '5%',
   },
   loadingBar: {
+    background: `linear-gradient(#212121 35%, #121212 70%)`,
+    position: 'absolute',
+    height: '100%',
+    paddingTop: '5%',
     width: "100%",
     "& > * + *": {
       marginTop: theme.spacing(2)
