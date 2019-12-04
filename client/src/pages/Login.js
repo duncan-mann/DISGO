@@ -93,7 +93,7 @@ export default function Login(props) {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item><Typography className={classes.subtitle}>Never miss another live show</Typography></Grid>
+          <Grid item><Typography className={classes.subtitle}>Never miss another show</Typography></Grid>
         </Grid>
       </div>
     </div>
