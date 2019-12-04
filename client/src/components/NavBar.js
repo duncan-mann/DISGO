@@ -135,7 +135,7 @@ export default function NavBar(props) {
             edge="end"
             aria-label="account of current user"
             aria-haspopup="true" color="inherit"
-            href="http://localhost:8888/auth/spotify"
+            href={`${process.env.REACT_APP_API_BASE_URL}/auth/spotify`}
           >
           {props.profilePicture && props.profilePicture.length > 0 ? (
             <Avatar
