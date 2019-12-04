@@ -77,7 +77,7 @@ export default function Login(props) {
           color="secondary"
           variant="contained"
           aria-label="login"
-          href="http://localhost:8888/auth/spotify"
+          href={`${process.env.REACT_APP_API_BASE_URL}/auth/spotify`}
         >
           Login
         </Button>

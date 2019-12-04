@@ -32,13 +32,9 @@ export default function App(props) {
   const App = () => (
     <div>
       <Switch>
-        <Route exact path='/'>
-          <Login />
-        </Route>
-        <Route path='/dashboard'>
-          <Dashboard />
-        </Route>/>
-        </Switch>
+        <Route exact path='/' component={Login} />
+        <Route path='/dashboard' component={Dashboard} />
+      </Switch>
     </div>
   )
   return (
