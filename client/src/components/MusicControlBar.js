@@ -26,7 +26,8 @@ const playlistLength = {
   'fontFamily': 'Bebas Neue',
   'margin': 'auto 0%',
   'paddingBottom': '7px',
-  'paddingRight' : '5px'
+  'paddingRight' : '5px',
+  'letterSpacing': "0.1em",
 }
 
 const useStyles = makeStyles(theme => ({

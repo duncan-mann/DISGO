@@ -11,13 +11,13 @@ const useStyles = makeStyles(theme => ({
   root: {
     'color': 'white',
     'text-align': 'center',
+    paddingBottom: '3vh',
   },
   song: {
     'font-size': 20
   },
   songInfo: {
     color: '#b3b3b3',
-    // paddingBottom: '10px',
   },
   carousel: {
     display: flexbox,
@@ -101,13 +101,10 @@ export default function MusicControls(props) {
     allAlbums.unshift(<img className={classes.prevAlbum2} src={props.prevAlbumCover[1]} alt='' key='11'/>)
     allAlbums.push(<img className={classes.nextAlbum2} src={props.nextAlbumCover[1]} alt='' key='12'/>)
   }
-
   // if (!props.nextAlbumCover[1]) {
   //   allAlbums.splice(0,1)
   //   allAlbums.pop();
   // }
-
-
   return (
     <div className={classes.root}>
       <div onClick={props.flipCard}>
