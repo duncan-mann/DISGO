@@ -35,7 +35,7 @@ passport.use(
       {
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: process.env.DOMAIN + '/callback'
+        callbackURL: process.env.BACKEND_DOMAIN + '/callback'
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
 
@@ -88,7 +88,7 @@ app.get('/auth/spotify',
     passport.authenticate('spotify', { failureRedirect: '/cancel' }),
     function(req, res) {
       current_user = req.user;
-      res.redirect(process.env.DOMAIN + '/dashboard');
+      res.redirect(process.env.FRONTEND_DOMAIN + '/dashboard');
     }
   );
 
@@ -97,7 +97,7 @@ app.get('/auth/spotify',
   })
 
   app.get('/cancel', (req, res) => {
-    res.redirect(process.env.DOMAIN)
+    res.redirect(process.env.FRONTEND_DOMAIN)
   })
 
   // Simple route middleware to ensure user is authenticated.
