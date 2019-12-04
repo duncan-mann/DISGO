@@ -60,12 +60,6 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     zIndex: -1,
   },
-  logoImg: {
-    height: '20vh',
-    'z-index': 2,
-    position: 'absolute',
-    top: '15vh',
-  }
 }));
 
 export default function Login(props) {
