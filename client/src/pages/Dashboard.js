@@ -18,11 +18,12 @@ import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: `linear-gradient(#212121 35%, #121212 70%)`,
   },
   mainContent: {
+    background: `linear-gradient(#212121 35%, #121212 70%)`,
     paddingTop: '5%',
     paddingBottom: '5%',
+    height: '100%',
   },
   loadingBar: {
     background: `linear-gradient(#212121 35%, #121212 70%)`,
