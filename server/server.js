@@ -65,20 +65,15 @@ console.log('App is listening on port 8888');
 //   the user to spotify.com. After authorization, spotify will redirect the user
 //   back to this application at /auth/spotify/callback
 app.get('/auth/spotify',
-    passport.authenticate('spotify', {
-      scope: ['user-read-email',
-      'user-read-private',
-      'streaming',
-      'user-modify-playback-state',
-      'playlist-modify-private',
-      ],
-      showDialog: true
-    }),
-    function(req, res) {
-      // The request will be redirected to spotify for authentication, so this
-      // function will not be called.
-    }
-  );
+  passport.authenticate('spotify', {
+    scope: ['user-read-email', 'user-read-private', 'streaming', 'user-modify-playback-state', 'playlist-modify-private'],
+    showDialog: true
+  }),
+  function(req, res) {
+    // The request will be redirected to spotify for authentication, so this
+    // function will not be called.
+  }
+);
 
   // GET /auth/spotify/callback
   //   Use passport.authenticate() as route middleware to authenticate the
