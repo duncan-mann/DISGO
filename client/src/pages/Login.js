@@ -58,7 +58,13 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     opacity: 0.3,
     position: "relative",
-    zIndex: -1
+    zIndex: -1,
+  },
+  logoImg: {
+    height: '20vh',
+    'z-index': 2,
+    position: 'absolute',
+    top: '15vh',
   }
 }));
 
