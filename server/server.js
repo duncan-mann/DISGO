@@ -3,6 +3,7 @@ const session = require('express-session')
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const cors = require('cors');
+require('dotenv').config();
 
 var appKey = '648c7f7f959e46f8bdb43d2d0e8d3c18';
 var appSecret = '48b6945ffc9c43c79efed3b45abd8c43';
@@ -34,7 +35,7 @@ passport.use(
       {
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: 'http://localhost:8888/callback'
+        callbackURL: process.env.BACKEND_DOMAIN + '/callback'
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
 
@@ -58,7 +59,7 @@ app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.listen(8888);
+app.listen(process.env.PORT || 8888);
 console.log('App is listening on port 8888');
 
 // GET /auth/spotify
@@ -67,20 +68,15 @@ console.log('App is listening on port 8888');
 //   the user to spotify.com. After authorization, spotify will redirect the user
 //   back to this application at /auth/spotify/callback
 app.get('/auth/spotify',
-    passport.authenticate('spotify', {
-      scope: ['user-read-email',
-      'user-read-private',
-      'streaming',
-      'user-modify-playback-state',
-      'playlist-modify-private',
-      ],
-      showDialog: true
-    }),
-    function(req, res) {
-      // The request will be redirected to spotify for authentication, so this
-      // function will not be called.
-    }
-  );
+  passport.authenticate('spotify', {
+    scope: ['user-read-email', 'user-read-private', 'streaming', 'user-modify-playback-state', 'playlist-modify-private'],
+    showDialog: true
+  }),
+  function(req, res) {
+    // The request will be redirected to spotify for authentication, so this
+    // function will not be called.
+  }
+);
 
   // GET /auth/spotify/callback
   //   Use passport.authenticate() as route middleware to authenticate the
@@ -92,7 +88,7 @@ app.get('/auth/spotify',
     passport.authenticate('spotify', { failureRedirect: '/cancel' }),
     function(req, res) {
       current_user = req.user;
-      res.redirect('http://localhost:3000/dashboard');
+      res.redirect(process.env.FRONTEND_DOMAIN + '/dashboard');
     }
   );
 
@@ -101,7 +97,7 @@ app.get('/auth/spotify',
   })
 
   app.get('/cancel', (req, res) => {
-    res.redirect('http://localhost:3000')
+    res.redirect(process.env.FRONTEND_DOMAIN)
   })
 
   // Simple route middleware to ensure user is authenticated.
