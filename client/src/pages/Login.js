@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-// import backgroundVideo from "../../public/docs/background-video.mp4";
 import backgroundVideo from "../../public/docs/video3.mp4";
 import Grid from "@material-ui/core/Grid";
 import logo from '../../public/docs/Logo-cropped.png';
@@ -22,10 +21,6 @@ const title = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // background: 'black',
-    // justifyContent: 'center',
-    // backgroundColor: '#111',
-    // marginTop: '5%',
   },
   loginButton: {
     fontSize: 18,
@@ -34,7 +29,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 25,
     position: 'absolute',
     zIndex: 1,
-    // margin: '0 auto',
     "&:hover": {
       backgroundColor: theme.palette.secondary.light
     }
@@ -51,7 +45,6 @@ const useStyles = makeStyles(theme => ({
     'z-index': 2,
     position: 'absolute',
     top: '15vh',
-    // margin: '0 auto',
   }
 }));
 

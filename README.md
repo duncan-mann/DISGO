@@ -1,4 +1,4 @@
-# Spotify Discover Events App (name TBD 😎)
+# Disgo 
 
 ## Getting Started
 
